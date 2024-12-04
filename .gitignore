@@ -1,0 +1,11 @@
+.vscode
+
+build
+node_modules
+dist
+out
+.DS_Store
+*.log*
+
+repertoire.db
+
