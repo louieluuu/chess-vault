@@ -85,9 +85,9 @@ app.whenReady().then(() => {
   })
 
   // Socket.on functions
-  ipcMain.handle('db-checkDuplicate', (event, pgn) => {
-    const query = `SELECT pgn FROM Repertoire WHERE pgn = ?`
-    const result = db.prepare(query).get(pgn)
+  ipcMain.handle('db-checkDuplicate', (event, variation) => {
+    const query = `SELECT pgn, orientation FROM Repertoire WHERE pgn = ? AND orientation = ?`
+    const result = db.prepare(query).get(variation.pgn, variation.orientation)
     return result ? true : false
   })
 

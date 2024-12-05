@@ -12,8 +12,8 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('db', {
       ping: () => ipcRenderer.invoke('ping').then((result) => console.log(result)),
 
-      checkDuplicate: (pgn) => {
-        return ipcRenderer.invoke('db-checkDuplicate', pgn)
+      checkDuplicate: (variation) => {
+        return ipcRenderer.invoke('db-checkDuplicate', variation)
       },
       save: (variation) => {
         ipcRenderer.invoke('db-save', variation)

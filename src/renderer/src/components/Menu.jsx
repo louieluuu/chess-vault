@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Menu({ chess, orientation }) {
-  async function isValidVariation() {
+  async function isValidVariation(variation) {
     // Empty variation
     if (chess.pgn() === '') {
       console.log('Empty variation')
@@ -9,7 +9,7 @@ function Menu({ chess, orientation }) {
     }
 
     // Duplicate variation
-    const isDuplicate = await window.db.checkDuplicate(chess.pgn())
+    const isDuplicate = await window.db.checkDuplicate(variation)
     console.log(`isDuplicate: ${isDuplicate}`)
     if (isDuplicate) {
       console.log('Duplicate variation')
@@ -20,15 +20,17 @@ function Menu({ chess, orientation }) {
     return true
   }
 
-  function saveVariation() {
-    if (!isValidVariation()) {
-      return
-    }
-
+  async function saveVariation() {
     const variation = {
       pgn: chess.pgn(),
       orientation: orientation
     }
+
+    const isValid = await isValidVariation(variation)
+    if (!isValid) {
+      return
+    }
+
     window.db.save(variation)
 
     // TODO Reset the board
