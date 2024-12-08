@@ -91,6 +91,11 @@ app.whenReady().then(() => {
     return result ? true : false
   })
 
+  ipcMain.handle('db-retrieve', (event) => {
+    const query = `SELECT pgn, orientation FROM Repertoire`
+    return db.prepare(query).all()
+  })
+
   ipcMain.handle('db-save', (event, variation) => {
     const query = `INSERT INTO Repertoire (pgn, orientation, last_study, next_study) VALUES (?, ?, ?, ?)`
     db.prepare(query).run(variation.pgn, variation.orientation, null, new Date().toLocaleString())

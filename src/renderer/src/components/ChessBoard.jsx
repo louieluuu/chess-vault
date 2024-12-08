@@ -1,17 +1,29 @@
+// TODO check purpose of lastMove and pendingMove
+
 // Chessground styles
 import 'react-chessground/dist/styles/chessground.css'
 
 import React, { useState, useEffect } from 'react'
 import Chessground from 'react-chessground'
-import { SQUARES } from 'chess.js'
+import { SQUARES, DEFAULT_POSITION } from 'chess.js'
 
-const DIMENSION = '45vw'
+import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 
-function ChessBoard({ chess, orientation, setOrientation }) {
+const DIMENSION = '50vw'
+
+function ChessBoard({ chess, orientation, setOrientation, variations, isStudying, setIsStudying }) {
   const [fen, setFen] = useState('')
+  const [pgn, setPgn] = useState('')
   const [lastMove, setLastMove] = useState()
   const [pendingMove, setPendingMove] = useState()
   const [turnColor, setTurnColor] = useState('white')
+  const [currVariation, setCurrVariation] = useState(0)
+  const [currCorrectMove, setCurrCorrectMove] = useState(0)
+
+  // Flips the orientation of the board
+  function flipBoard() {
+    setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
+  }
 
   useEffect(() => {
     function handleKeyDown(e) {
@@ -27,39 +39,125 @@ function ChessBoard({ chess, orientation, setOrientation }) {
     }
   }, [])
 
-  function flipBoard() {
-    setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
+  // Resets the board to its initial state
+  function resetBoard() {
+    chess.reset()
+    setFen(chess.fen())
+    setLastMove(null)
+    setTurnColor('white')
+  }
+
+  // Returns the opposite color of the current turn
+  function oppositeColor() {
+    return chess.turn() === 'w' ? 'white' : 'black'
+  }
+
+  // Auto-move the first couple of moves so the player knows which variation is pulled up
+  function autoMove(pgnMoves, orientation) {
+    const numAutoMoves = orientation === 'white' ? NUM_AUTO_MOVES_WHITE : NUM_AUTO_MOVES_BLACK
+    for (let i = 0; i < numAutoMoves; ++i) {
+      setTimeout(() => {
+        const move = chess.move(pgnMoves[i])
+        setLastMove([move.from, move.to])
+        setFen(chess.fen())
+        setTurnColor(oppositeColor())
+        setCurrCorrectMove((prev) => prev + 1)
+      }, i * 500)
+    }
+  }
+
+  // Reset the board and set the PGN to the current variation
+  useEffect(() => {
+    resetBoard()
+    if (variations.length === 0) {
+      return
+    }
+    if (!isStudying) {
+      return
+    }
+    const { pgn, orientation } = variations[currVariation]
+    const pgnMoves = pgnToMovesArray(pgn)
+    console.log(pgnMoves)
+    setOrientation(orientation)
+    setPgn(pgnMoves)
+    autoMove(pgnMoves, orientation)
+  }, [isStudying, currVariation])
+
+  function isCorrectMove(moveAttempt) {
+    console.log(`moveAttempt: ${moveAttempt}, correct move: ${pgn[currCorrectMove]}`)
+    return moveAttempt === pgn[currCorrectMove]
+  }
+
+  function undoMove(to, from) {
+    chess.undo()
+    setLastMove([to, from])
+    setFen(chess.fen())
   }
 
   function onMove(from, to) {
-    const moves = chess.moves({ verbose: true })
-    for (let i = 0, len = moves.length; i < len; i++) {
+    const legalMoves = chess.moves({ verbose: true })
+    for (let i = 0, len = legalMoves.length; i < len; i++) {
       /* eslint-disable-line */
-      if (moves[i].flags.indexOf('p') !== -1 && moves[i].from === from) {
+      if (legalMoves[i].flags.indexOf('p') !== -1 && legalMoves[i].from === from) {
         setPendingMove([from, to])
         setSelectVisible(true)
         return
       }
     }
-    if (chess.move({ from, to, promotion: 'x' }, { strict: true })) {
+    // When studying, moves require an extra validation against the current variation
+    if (isStudying) {
+      const moveAttempt = chess.move({ from, to, promotion: 'x' }, { strict: true })
+
+      // Incorrect
+      if (!isCorrectMove(moveAttempt.san)) {
+        setTimeout(() => {
+          undoMove(to, from)
+        }, 1000)
+        return
+      }
+
+      // Correct
+      const nextCurrCorrectMove = currCorrectMove + 1
+
+      // Current variation is finished; move onto next
+      if (nextCurrCorrectMove >= pgn.length) {
+        const nextVariation = currVariation + 1
+        // All variations finished
+        if (nextVariation >= variations.length) {
+          console.log("You're all booked up!")
+          setIsStudying(false)
+          return
+        }
+        setCurrVariation(nextVariation)
+        setCurrCorrectMove(0)
+        return
+      }
+
+      // Current variation is ongoing
+      chess.move(pgn[nextCurrCorrectMove])
       setFen(chess.fen())
       setLastMove([from, to])
-      setTurnColor(chess.turn() === 'w' ? 'white' : 'black')
-
-      console.log(`Current fen: ${chess.fen()}`)
-      console.log(`Current pgn: ${chess.pgn()}`)
-      console.log(`Current date: ${new Date().toLocaleString()}`)
+      setTurnColor(oppositeColor())
+      setCurrCorrectMove(nextCurrCorrectMove + 1) // TODO will bug out if ends on the wrong side
+    }
+    // When not studying, any legal moves are passable
+    else {
+      if (chess.move({ from, to, promotion: 'x' }, { strict: true })) {
+        setFen(chess.fen())
+        setLastMove([from, to]) // TODO necessary?
+        setTurnColor(oppositeColor())
+      }
     }
   }
 
   function calcMovable() {
     const dests = new Map()
     SQUARES.forEach((s) => {
-      const ms = chess.moves({ square: s, verbose: true })
-      if (ms.length)
+      const legalMoves = chess.moves({ square: s, verbose: true })
+      if (legalMoves.length)
         dests.set(
           s,
-          ms.map((m) => m.to)
+          legalMoves.map((m) => m.to)
         )
     })
     return {
