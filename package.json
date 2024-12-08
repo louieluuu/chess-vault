@@ -25,7 +25,8 @@
     "better-sqlite3": "^11.6.0",
     "chess.js": "1.0.0-beta.8",
     "electron-updater": "^6.1.7",
-    "react-chessground": "^1.5.0"
+    "react-chessground": "^1.5.0",
+    "react-icons": "^5.4.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",

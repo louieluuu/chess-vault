@@ -7,6 +7,41 @@
   gap: 5rem;
 }
 
+.chessboard {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  z-index: 9;
+  pointer-events: none;
+
+  width: 10vw;
+  height: 10vw;
+
+  opacity: 97.5;
+
+  &--correct {
+    @extend .icon;
+    color: hsl(120, 50%, 40%);
+  }
+
+  &--incorrect {
+    @extend .icon;
+    color: hsl(0, 50%, 50%);
+  }
+
+  &--booked {
+    @extend .icon;
+    color: orange;
+  }
+}
+
 .menu {
   display: flex;
   flex-direction: column;

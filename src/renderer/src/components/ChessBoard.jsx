@@ -3,13 +3,17 @@
 // Chessground styles
 import 'react-chessground/dist/styles/chessground.css'
 
+import { FaCircleCheck } from 'react-icons/fa6'
+import { FaCircleXmark } from 'react-icons/fa6'
+import { GiOpenBook } from 'react-icons/gi'
+
 import React, { useState, useEffect } from 'react'
 import Chessground from 'react-chessground'
 import { SQUARES, DEFAULT_POSITION } from 'chess.js'
 
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 
-const DIMENSION = '50vw'
+const DIMENSION = '50dvh'
 
 function ChessBoard({ chess, orientation, setOrientation, variations, isStudying, setIsStudying }) {
   const [fen, setFen] = useState('')
@@ -19,6 +23,14 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   const [turnColor, setTurnColor] = useState('white')
   const [currVariation, setCurrVariation] = useState(0)
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
+
+  const [result, setResult] = useState('')
+
+  useEffect(() => {
+    setTimeout(() => {
+      setResult('')
+    }, 1000)
+  }, [result])
 
   // Flips the orientation of the board
   function flipBoard() {
@@ -77,7 +89,6 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     }
     const { pgn, orientation } = variations[currVariation]
     const pgnMoves = pgnToMovesArray(pgn)
-    console.log(pgnMoves)
     setOrientation(orientation)
     setPgn(pgnMoves)
     autoMove(pgnMoves, orientation)
@@ -92,6 +103,19 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     chess.undo()
     setLastMove([to, from])
     setFen(chess.fen())
+  }
+
+  function showResult(result) {
+    switch (result) {
+      case 'correct':
+        return <FaCircleCheck className="icon--correct" />
+      case 'incorrect':
+        return <FaCircleXmark className="icon--incorrect" />
+      case 'booked':
+        return <GiOpenBook className="icon--booked" />
+      default:
+        return null
+    }
   }
 
   function onMove(from, to) {
@@ -112,7 +136,8 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       if (!isCorrectMove(moveAttempt.san)) {
         setTimeout(() => {
           undoMove(to, from)
-        }, 1000)
+          setResult('incorrect')
+        }, 500)
         return
       }
 
@@ -124,10 +149,12 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
         const nextVariation = currVariation + 1
         // All variations finished
         if (nextVariation >= variations.length) {
+          setResult('booked')
           console.log("You're all booked up!")
           setIsStudying(false)
           return
         }
+        setResult('correct')
         setCurrVariation(nextVariation)
         setCurrCorrectMove(0)
         return
@@ -144,7 +171,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     else {
       if (chess.move({ from, to, promotion: 'x' }, { strict: true })) {
         setFen(chess.fen())
-        setLastMove([from, to]) // TODO necessary?
+        setLastMove([from, to])
         setTurnColor(oppositeColor())
       }
     }
@@ -168,16 +195,19 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   }
 
   return (
-    <Chessground
-      width={DIMENSION}
-      height={DIMENSION}
-      fen={fen}
-      lastMove={lastMove}
-      orientation={orientation}
-      turnColor={turnColor}
-      movable={calcMovable()}
-      onMove={onMove}
-    />
+    <div className="chessboard">
+      <Chessground
+        width={DIMENSION}
+        height={DIMENSION}
+        fen={fen}
+        lastMove={lastMove}
+        orientation={orientation}
+        turnColor={turnColor}
+        movable={calcMovable()}
+        onMove={onMove}
+      />
+      <div className="icon">{showResult(result)}</div>
+    </div>
   )
 }
 

@@ -11,7 +11,7 @@ const DB_PATH = 'repertoire.db'
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 720,
+    width: 1080,
     height: 1080,
     show: false,
     autoHideMenuBar: true,
