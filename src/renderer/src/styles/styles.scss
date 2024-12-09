@@ -5,6 +5,10 @@
   align-items: center;
 }
 
+body {
+  font-family: 'Courier New', Courier, monospace !important;
+}
+
 .container {
   @include flex(row);
 
@@ -49,26 +53,33 @@
 .menu {
   @include flex(column);
 
-  background-image: url('../assets/mountains.jpg');
-  background-position: center;
-
   height: 75dvh;
   width: 32.5vw;
-  background-color: black;
+  background-color: hsla(204, 7%, 14%, 97.5%);
 
   gap: 5rem;
 }
 
 .btn {
   color: white;
-  background-color: black;
+  background-color: hsl(207, 7%, 32%);
+  cursor: pointer;
+  font-family: 'Segoe UI';
+
+  &:hover {
+    background-color: hsl(207, 7%, 37%);
+  }
 }
 
 .btn-submit {
   @extend .btn;
-  height: 2.5rem;
-  width: 10rem;
-  border-radius: 0.5rem;
+  width: 100%;
+
+  height: 3rem;
+
+  border-radius: 0.35rem;
+
+  font-size: 1rem;
 }
 
 .btn-study {
@@ -76,7 +87,7 @@
 }
 
 .status {
-  color: black;
+  color: hsl(50, 100%, 50%);
   font-weight: bold;
 }
 

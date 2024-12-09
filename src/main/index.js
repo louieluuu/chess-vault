@@ -91,7 +91,11 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('db-retrieve', () => {
-    const query = `SELECT id, pgn, orientation, next_study FROM Repertoire WHERE next_study <= ?`
+    const query = `SELECT id, pgn, orientation, next_study 
+                   FROM Repertoire 
+                   WHERE next_study <= ? 
+                   ORDER BY next_study ASC
+                  `
     return db.prepare(query).all(new Date().toISOString())
   })
 
