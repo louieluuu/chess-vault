@@ -44,6 +44,11 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
 
   useEffect(() => {
     function handleKeyDown(e) {
+      // Disable keyboard shortcuts when studying
+      if (isStudying) {
+        return
+      }
+
       switch (e.key.toLowerCase()) {
         case 'f':
           flipBoard()
@@ -51,13 +56,10 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
         case 'r':
           resetBoard()
           break
-        case 'arrowleft': // TODO
-          if (!isStudying) {
-          }
+        // TODO arrowkeys
+        case 'arrowleft':
           break
         case 'arrowright':
-          if (!isStudying) {
-          }
           break
       }
     }
@@ -67,7 +69,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [isStudying])
 
   // Resets the board to its initial state
   function resetBoard() {

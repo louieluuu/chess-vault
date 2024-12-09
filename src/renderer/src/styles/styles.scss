@@ -69,6 +69,10 @@ body {
   &:hover {
     background-color: hsl(207, 7%, 37%);
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .btn-submit {
