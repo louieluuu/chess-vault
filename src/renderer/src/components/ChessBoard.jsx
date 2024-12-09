@@ -44,8 +44,21 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
 
   useEffect(() => {
     function handleKeyDown(e) {
-      if (e.key === 'f' || e.key === 'F') {
-        flipBoard()
+      switch (e.key.toLowerCase()) {
+        case 'f':
+          flipBoard()
+          break
+        case 'r':
+          resetBoard()
+          break
+        case 'arrowleft': // TODO
+          if (!isStudying) {
+          }
+          break
+        case 'arrowright':
+          if (!isStudying) {
+          }
+          break
       }
     }
 
