@@ -8,6 +8,7 @@ function App() {
   const [orientation, setOrientation] = useState('white')
   const [variations, setVariations] = useState([])
   const [isStudying, setIsStudying] = useState(false)
+  const [isGrading, setIsGrading] = useState(false)
 
   return (
     <div className="container">
@@ -16,6 +17,7 @@ function App() {
         orientation={orientation}
         isStudying={isStudying}
         setIsStudying={setIsStudying}
+        setIsGrading={setIsGrading}
         setOrientation={setOrientation}
         variations={variations}
       />

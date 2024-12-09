@@ -3,13 +3,15 @@
 // Chessground styles
 import 'react-chessground/dist/styles/chessground.css'
 
+import GradingMenu from './GradingMenu'
+
 import { FaCircleCheck } from 'react-icons/fa6'
 import { FaCircleXmark } from 'react-icons/fa6'
 import { GiOpenBook } from 'react-icons/gi'
 
 import React, { useState, useEffect } from 'react'
 import Chessground from 'react-chessground'
-import { SQUARES, DEFAULT_POSITION } from 'chess.js'
+import { SQUARES } from 'chess.js'
 
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 
@@ -27,6 +29,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
 
   const [result, setResult] = useState('')
+  const [isGrading, setIsGrading] = useState(false)
 
   useEffect(() => {
     setTimeout(() => {
@@ -148,6 +151,8 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
 
       // If current variation is finished...
       if (nextCurrCorrectMove >= pgn.length) {
+        setIsGrading(true)
+
         // Update db with the new info
         const { next_study, id } = variations[currVariation]
         window.db.update({
@@ -216,6 +221,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
         onMove={onMove}
       />
       <div className="icon">{showResult(result)}</div>
+      {isGrading && <GradingMenu setIsGrading={setIsGrading} />}
     </div>
   )
 }
