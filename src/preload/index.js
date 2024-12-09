@@ -18,6 +18,9 @@ if (process.contextIsolated) {
       retrieve: () => {
         return ipcRenderer.invoke('db-retrieve')
       },
+      update: (update) => {
+        ipcRenderer.invoke('db-update', update)
+      },
       save: (variation) => {
         ipcRenderer.invoke('db-save', variation)
       }

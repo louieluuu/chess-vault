@@ -13,6 +13,8 @@ import { SQUARES, DEFAULT_POSITION } from 'chess.js'
 
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 
+import { add } from 'date-fns'
+
 const DIMENSION = '50dvh'
 
 function ChessBoard({ chess, orientation, setOrientation, variations, isStudying, setIsStudying }) {
@@ -144,8 +146,15 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       // Correct
       const nextCurrCorrectMove = currCorrectMove + 1
 
-      // Current variation is finished; move onto next
+      // If current variation is finished...
       if (nextCurrCorrectMove >= pgn.length) {
+        // Update db with the new info
+        const { next_study, id } = variations[currVariation]
+        window.db.update({
+          next_study: add(new Date(next_study), { days: 10 }).toISOString(),
+          id: id
+        })
+
         const nextVariation = currVariation + 1
         // All variations finished
         if (nextVariation >= variations.length) {

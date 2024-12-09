@@ -65,8 +65,7 @@ app.whenReady().then(() => {
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
         pgn           TEXT NOT NULL,
         orientation   TEXT NOT NULL,
-        last_study    TEXT,
-        next_study    TEXT NOT NULL
+        next_study    TEXT
       )
     `,
     (err) => {
@@ -85,20 +84,27 @@ app.whenReady().then(() => {
   })
 
   // Socket.on functions
-  ipcMain.handle('db-checkDuplicate', (event, variation) => {
+  ipcMain.handle('db-checkDuplicate', (_, variation) => {
     const query = `SELECT pgn, orientation FROM Repertoire WHERE pgn = ? AND orientation = ?`
     const result = db.prepare(query).get(variation.pgn, variation.orientation)
     return result ? true : false
   })
 
-  ipcMain.handle('db-retrieve', (event) => {
-    const query = `SELECT pgn, orientation FROM Repertoire`
-    return db.prepare(query).all()
+  ipcMain.handle('db-retrieve', () => {
+    const query = `SELECT id, pgn, orientation, next_study FROM Repertoire WHERE next_study <= ?`
+    return db.prepare(query).all(new Date().toISOString())
   })
 
-  ipcMain.handle('db-save', (event, variation) => {
-    const query = `INSERT INTO Repertoire (pgn, orientation, last_study, next_study) VALUES (?, ?, ?, ?)`
-    db.prepare(query).run(variation.pgn, variation.orientation, null, new Date().toLocaleString())
+  ipcMain.handle('db-save', (_, variation) => {
+    const query = `INSERT INTO Repertoire (pgn, orientation, next_study) VALUES (?, ?, ?)`
+    db.prepare(query).run(variation.pgn, variation.orientation, new Date().toISOString())
+  })
+
+  ipcMain.handle('db-update', (_, update) => {
+    console.log('Updating db...')
+    console.log(update)
+    const query = `UPDATE Repertoire SET next_study = ? WHERE id = ?`
+    db.prepare(query).run(update.next_study, update.id)
   })
 
   createWindow()

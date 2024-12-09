@@ -65,7 +65,7 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     const variations = await window.db.retrieve()
     console.log(`All variations: ${JSON.stringify(variations, null, 2)}`)
     if (variations.length === 0) {
-      setStatus('You have no variations my dude')
+      setStatus('0 variations retrieved!')
       return
     }
     setVariations(variations)
