@@ -1,12 +1,19 @@
 import Grade from './Grade'
 
-function GradingMenu({ setIsGrading }) {
+function GradingMenu({ grades, variations, currVariation, setCurrVariation, setIsGrading }) {
   return (
     <div className="grade-menu">
-      <Grade time={'< 1 min'} desc={'Again'} setIsGrading={setIsGrading} />
-      <Grade time={'10 mins'} desc={'Hard'} setIsGrading={setIsGrading} />
-      <Grade time={'4 days'} desc={'Good'} setIsGrading={setIsGrading} />
-      <Grade time={'7 days'} desc={'Easy'} setIsGrading={setIsGrading} />
+      {grades.map((grade) => (
+        <Grade
+          key={grade.desc}
+          desc={grade.desc}
+          interval={grade.interval}
+          variations={variations}
+          currVariation={currVariation}
+          setCurrVariation={setCurrVariation}
+          setIsGrading={setIsGrading}
+        />
+      ))}
     </div>
   )
 }
