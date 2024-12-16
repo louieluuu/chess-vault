@@ -19,7 +19,7 @@ function Grade({ desc, interval, variations, currVariation, setCurrVariation, se
   return (
     <div className="grade">
       <div className="grade-interval">{interval}</div>
-      <button className="grade-button" onClick={handleClick}>
+      <button className={`grade-button--${desc}`} onClick={handleClick}>
         {desc}
       </button>
     </div>

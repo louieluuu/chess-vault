@@ -123,4 +123,25 @@ body {
 .grade-button {
   width: 7.5vw;
   height: 2.5dvh;
+  color: black;
+
+  &--again {
+    @extend .grade-button;
+    background-color: hsl(5, 81%, 73%);
+  }
+
+  &--hard {
+    @extend .grade-button;
+    background-color: hsl(30, 89%, 79%);
+  }
+
+  &--good {
+    @extend .grade-button;
+    background-color: hsl(49, 100%, 88%);
+  }
+
+  &--easy {
+    @extend .grade-button;
+    background-color: hsl(118, 45%, 84%);
+  }
 }

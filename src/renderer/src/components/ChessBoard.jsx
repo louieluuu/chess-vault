@@ -29,10 +29,10 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   const [result, setResult] = useState('')
   const [isGrading, setIsGrading] = useState(false)
   const [grades, setGrades] = useState([
-    { desc: 'Again', interval: 0 },
-    { desc: 'Hard', interval: 0 },
-    { desc: 'Good', interval: 0 },
-    { desc: 'Easy', interval: 0 }
+    { desc: 'again', interval: 0 },
+    { desc: 'hard', interval: 0 },
+    { desc: 'good', interval: 0 },
+    { desc: 'easy', interval: 0 }
   ])
 
   useEffect(() => {
