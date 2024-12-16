@@ -3,7 +3,7 @@
 // Chessground styles
 import 'react-chessground/dist/styles/chessground.css'
 
-import GradingMenu from './GradingMenu'
+import GradeMenu from './GradeMenu'
 
 import { FaCircleCheck } from 'react-icons/fa6'
 import { FaCircleXmark } from 'react-icons/fa6'
@@ -133,13 +133,14 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   }
 
   function showResult(result) {
+    const className = `chessboard__result--${result}`
     switch (result) {
       case 'correct':
-        return <FaCircleCheck className="icon--correct" />
+        return <FaCircleCheck className={className} />
       case 'incorrect':
-        return <FaCircleXmark className="icon--incorrect" />
+        return <FaCircleXmark className={className} />
       case 'booked':
-        return <GiOpenBook className="icon--booked" />
+        return <GiOpenBook className={className} />
       default:
         return null
     }
@@ -230,9 +231,9 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
         movable={calcMovable()}
         onMove={onMove}
       />
-      <div className="icon">{showResult(result)}</div>
+      <div className="chessboard__result">{showResult(result)}</div>
       {isGrading && (
-        <GradingMenu
+        <GradeMenu
           grades={grades}
           variations={variations}
           currVariation={currVariation}

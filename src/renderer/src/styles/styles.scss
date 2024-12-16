@@ -19,7 +19,7 @@ body {
   position: relative;
 }
 
-.icon {
+.chessboard__result {
   position: absolute;
 
   top: 50%;
@@ -35,17 +35,17 @@ body {
   opacity: 97.5;
 
   &--correct {
-    @extend .icon;
+    @extend .chessboard__result;
     color: hsl(120, 50%, 40%);
   }
 
   &--incorrect {
-    @extend .icon;
+    @extend .chessboard__result;
     color: hsl(0, 50%, 50%);
   }
 
   &--booked {
-    @extend .icon;
+    @extend .chessboard__result;
     color: orange;
   }
 }
@@ -60,11 +60,16 @@ body {
   gap: 5rem;
 }
 
-.btn {
+.menu__btn {
   color: white;
   background-color: hsl(207, 7%, 32%);
   cursor: pointer;
   font-family: 'Segoe UI';
+
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.35rem;
+  font-size: 1rem;
 
   &:hover {
     background-color: hsl(207, 7%, 37%);
@@ -73,24 +78,17 @@ body {
   &:focus {
     outline: none;
   }
+
+  &--submit {
+    @extend .menu__btn;
+  }
+
+  &--study {
+    @extend .menu__btn;
+  }
 }
 
-.btn-submit {
-  @extend .btn;
-  width: 100%;
-
-  height: 3rem;
-
-  border-radius: 0.35rem;
-
-  font-size: 1rem;
-}
-
-.btn-study {
-  @extend .btn-submit;
-}
-
-.status {
+.menu__status {
   color: hsl(50, 100%, 50%);
   font-weight: bold;
 }
@@ -120,28 +118,52 @@ body {
   @include flex(column);
 }
 
-.grade-button {
+.grade__button {
   width: 7.5vw;
   height: 2.5dvh;
   color: black;
 
+  cursor: pointer;
+
+  transition: transform 0.1s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
   &--again {
-    @extend .grade-button;
+    @extend .grade__button;
     background-color: hsl(5, 81%, 73%);
+
+    &:hover {
+      background-color: hsl(5, 81%, 70%);
+    }
   }
 
   &--hard {
-    @extend .grade-button;
+    @extend .grade__button;
     background-color: hsl(30, 89%, 79%);
+
+    &:hover {
+      background-color: hsl(30, 89%, 72%);
+    }
   }
 
   &--good {
-    @extend .grade-button;
+    @extend .grade__button;
     background-color: hsl(49, 100%, 88%);
+
+    &:hover {
+      background-color: hsl(49, 100%, 78%);
+    }
   }
 
   &--easy {
-    @extend .grade-button;
+    @extend .grade__button;
     background-color: hsl(118, 45%, 84%);
+
+    &:hover {
+      background-color: hsl(118, 45%, 74%);
+    }
   }
 }

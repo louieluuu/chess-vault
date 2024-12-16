@@ -74,13 +74,13 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
 
   return (
     <div className="menu">
-      <div className="status">{status}</div>
+      <div className="menu__status">{status}</div>
 
-      <button className="btn-submit" onClick={saveVariation}>
+      <button className="menu__btn--submit" onClick={saveVariation}>
         Save Variation
       </button>
 
-      <button className="btn-study" onClick={study}>
+      <button className="menu__btn--study" onClick={study}>
         Study Variations
       </button>
     </div>
