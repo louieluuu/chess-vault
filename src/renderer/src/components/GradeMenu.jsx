@@ -1,13 +1,12 @@
 import Grade from './Grade'
 
-function GradeMenu({ grades, variations, currVariation, setCurrVariation, setIsGrading }) {
+function GradeMenu({ options, variations, currVariation, setCurrVariation, setIsGrading }) {
   return (
     <div className="grade-menu">
-      {grades.map((grade) => (
+      {options.map((option) => (
         <Grade
-          key={grade.desc}
-          desc={grade.desc}
-          interval={grade.interval}
+          key={option.desc}
+          option={option}
           variations={variations}
           currVariation={currVariation}
           setCurrVariation={setCurrVariation}

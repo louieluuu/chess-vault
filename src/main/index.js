@@ -65,7 +65,12 @@ app.whenReady().then(() => {
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
         pgn           TEXT NOT NULL,
         orientation   TEXT NOT NULL,
-        next_study    TEXT
+        next_study    TEXT NOT NULL,
+
+        status        TEXT DEFAULT 'learning' NOT NULL,
+        interval      INTEGER DEFAULT 60 NOT NULL,
+        ease          INTEGER DEFAULT 2.5 NOT NULL,
+        step          INTEGER DEFAULT 0 NOT NULL
       )
     `,
     (err) => {
@@ -91,9 +96,9 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('db-retrieve', () => {
-    const query = `SELECT id, pgn, orientation, next_study 
+    const query = `SELECT *
                    FROM Repertoire 
-                   WHERE next_study <= ? 
+                   WHERE next_study <= ?
                    ORDER BY next_study ASC
                   `
     return db.prepare(query).all(new Date().toISOString())
@@ -107,8 +112,17 @@ app.whenReady().then(() => {
   ipcMain.handle('db-update', (_, update) => {
     console.log('Updating db...')
     console.log(update)
-    const query = `UPDATE Repertoire SET next_study = ? WHERE id = ?`
-    db.prepare(query).run(update.next_study, update.id)
+    const query = `UPDATE Repertoire
+                   SET next_study = ?, status = ?, interval = ?, ease = ?, step = ?
+                   WHERE id = ?`
+    db.prepare(query).run(
+      update.next_study,
+      update.status,
+      update.interval,
+      update.ease,
+      update.step,
+      update.id
+    )
   })
 
   createWindow()

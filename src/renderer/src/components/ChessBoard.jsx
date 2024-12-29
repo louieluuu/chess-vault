@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react'
 import Chessground from 'react-chessground'
 import { SQUARES } from 'chess.js'
 
-import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
+import { Card, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE, pgnToMovesArray } from '../utils/chess'
 
 const DIMENSION = '50dvh'
 
@@ -28,12 +28,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
 
   const [result, setResult] = useState('')
   const [isGrading, setIsGrading] = useState(false)
-  const [grades, setGrades] = useState([
-    { desc: 'again', interval: 0 },
-    { desc: 'hard', interval: 0 },
-    { desc: 'good', interval: 0 },
-    { desc: 'easy', interval: 0 }
-  ])
+  const [options, setOptions] = useState([])
 
   useEffect(() => {
     setTimeout(() => {
@@ -174,13 +169,20 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
 
       // If current variation is finished...
       if (nextCurrCorrectMove >= pgn.length) {
-        // TODO calculate these intervals based on db information
-        const nextIntervals = [1, 10, 5760, 14400] // 1 minute, 10 minutes, 4 days, 10 days
-        setGrades((prev) => prev.map((grade, i) => ({ ...grade, interval: nextIntervals[i] })))
+        const curr = variations[currVariation]
+
+        const options = new Card(
+          curr.status,
+          curr.interval,
+          curr.ease,
+          curr.step
+        ).calculateOptions()
+
+        setOptions(options)
         setIsGrading(true)
 
         setResult('correct')
-        setCurrCorrectMove(0)
+        setCurrCorrectMove(0) // TODO this should probably belong with setCurrVariation in Grade.jsx
 
         return
       }
@@ -234,7 +236,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       <div className="chessboard__result">{showResult(result)}</div>
       {isGrading && (
         <GradeMenu
-          grades={grades}
+          options={options}
           variations={variations}
           currVariation={currVariation}
           setCurrVariation={setCurrVariation}

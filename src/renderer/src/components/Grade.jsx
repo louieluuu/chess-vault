@@ -1,6 +1,8 @@
 import { add, formatDistanceToNowStrict } from 'date-fns'
 
-function Grade({ desc, interval, variations, currVariation, setCurrVariation, setIsGrading }) {
+function Grade({ option, variations, currVariation, setCurrVariation, setIsGrading }) {
+  const { desc, card } = option
+
   function abbreviate(date) {
     const abbreviations = {
       minute: 'm',
@@ -24,19 +26,23 @@ function Grade({ desc, interval, variations, currVariation, setCurrVariation, se
   }
 
   function formatInterval() {
-    return abbreviate(formatDistanceToNowStrict(add(new Date(), { minutes: interval })))
+    return abbreviate(formatDistanceToNowStrict(add(new Date(), { minutes: card.interval })))
   }
 
   function handleClick() {
     // Update db with the new info
-    const { next_study, id } = variations[currVariation]
+    const { id } = variations[currVariation]
 
     window.db.update({
-      next_study: add(new Date(next_study), { minutes: interval }).toISOString(),
+      next_study: add(new Date(), { minutes: card.interval }).toISOString(),
+
+      status: card.status,
+      interval: card.interval,
+      ease: card.ease,
+      step: card.step,
+
       id: id
     })
-
-    console.log(`You clicked ${desc}`)
 
     setCurrVariation((prev) => prev + 1)
     setIsGrading(false)
@@ -44,7 +50,7 @@ function Grade({ desc, interval, variations, currVariation, setCurrVariation, se
 
   return (
     <div className="grade">
-      <div className="grade__interval">{formatInterval(interval)}</div>
+      <div className="grade__interval">{formatInterval(card.interval)}</div>
       <button className={`grade__button--${desc}`} onClick={handleClick}>
         {desc}
       </button>
