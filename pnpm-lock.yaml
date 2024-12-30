@@ -29,6 +29,9 @@ dependencies:
   electron-updater:
     specifier: ^6.1.7
     version: 6.3.9
+  howler:
+    specifier: ^2.2.4
+    version: 2.2.4
   react-chessground:
     specifier: ^1.5.0
     version: 1.5.0(eslint@8.57.1)(react@18.3.1)(sass@1.81.0)(typescript@5.7.2)
@@ -8038,6 +8041,10 @@ packages:
     dependencies:
       lru-cache: 6.0.0
     dev: true
+
+  /howler@2.2.4:
+    resolution: {integrity: sha512-iARIBPgcQrwtEr+tALF+rapJ8qSc+Set2GJQl7xT1MQzWaVkFebdJhR3alVlSiUf5U7nAANKuj3aWpwerocD5w==}
+    dev: false
 
   /hpack.js@2.1.6:
     resolution: {integrity: sha512-zJxVehUdMGIKsRaNt7apO2Gqp0BdqW5yaiGHXXmbpvxgBYVZnAql+BJb4RO5ad2MgpbZKn5G6nMnegrH1FcNYQ==}

@@ -20,6 +20,11 @@ export class Card {
   /**
    * Calculate options
    *
+   * References:
+   * https://docs.ankiweb.net/deck-options.html#learning-steps
+   * https://faqs.ankiweb.net/what-spaced-repetition-algorithm.html
+   * https://github.com/vlopezferrando/simple-spaced-repetition/blob/main/simple_spaced_repetition.py
+   *
    * @returns - Object of Cards representing the intervals for "Again", "Hard", "Good", and "Easy"
    */
   calculateOptions() {

@@ -3,6 +3,7 @@
 // Chessground styles
 import 'react-chessground/dist/styles/chessground.css'
 
+// Components
 import GradeMenu from './GradeMenu'
 
 import { FaCircleCheck } from 'react-icons/fa6'
@@ -14,6 +15,15 @@ import Chessground from 'react-chessground'
 import { SQUARES } from 'chess.js'
 
 import { Card, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE, pgnToMovesArray } from '../utils/chess'
+
+// Audio
+import { Howl } from 'howler'
+
+import capture from '../assets/sound/capture.mp3'
+import move from '../assets/sound/move.mp3'
+
+const soundCapture = new Howl({ src: [capture] })
+const soundMove = new Howl({ src: [move] })
 
 const DIMENSION = '50dvh'
 
@@ -35,6 +45,10 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       setResult('')
     }, 1000)
   }, [result])
+
+  function playSound(howlObject) {
+    howlObject.play()
+  }
 
   // Flips the orientation of the board
   function flipBoard() {
@@ -116,9 +130,9 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     autoMove(pgnMoves, orientation)
   }, [isStudying, currVariation])
 
-  function isCorrectMove(moveAttempt) {
-    console.log(`moveAttempt: ${moveAttempt}, correct move: ${pgn[currCorrectMove]}`)
-    return moveAttempt === pgn[currCorrectMove]
+  function isCorrectMove(move) {
+    console.log(`move: ${move}, correct move: ${pgn[currCorrectMove]}`)
+    return move === pgn[currCorrectMove]
   }
 
   function undoMove(to, from) {
@@ -142,21 +156,22 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   }
 
   function onMove(from, to) {
+    // TODO: What is the purpose of this?
     const legalMoves = chess.moves({ verbose: true })
     for (let i = 0, len = legalMoves.length; i < len; i++) {
-      /* eslint-disable-line */
       if (legalMoves[i].flags.indexOf('p') !== -1 && legalMoves[i].from === from) {
         setPendingMove([from, to])
         setSelectVisible(true)
         return
       }
     }
+
+    const move = chess.move({ from, to, promotion: 'x' }, { strict: true })
+
     // When studying, moves require an extra validation against the current variation
     if (isStudying) {
-      const moveAttempt = chess.move({ from, to, promotion: 'x' }, { strict: true })
-
-      // Incorrect
-      if (!isCorrectMove(moveAttempt.san)) {
+      // Incorrect move
+      if (!isCorrectMove(move.san)) {
         setTimeout(() => {
           undoMove(to, from)
           setResult('incorrect')
@@ -164,7 +179,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
         return
       }
 
-      // Correct
+      // Correct move
       const nextCurrCorrectMove = currCorrectMove + 1
 
       // If current variation is finished...
@@ -194,16 +209,18 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       setTurnColor(oppositeColor())
       setCurrCorrectMove(nextCurrCorrectMove + 1) // TODO will bug out if ends on the wrong side
     }
+
     // When not studying, any legal moves are passable
     else {
-      if (chess.move({ from, to, promotion: 'x' }, { strict: true })) {
-        setFen(chess.fen())
-        setLastMove([from, to])
-        setTurnColor(oppositeColor())
-      }
+      setFen(chess.fen())
+      setLastMove([from, to])
+      setTurnColor(oppositeColor())
     }
+
+    playSound(move.captured ? soundCapture : soundMove)
   }
 
+  // Calculates the movable squares for the current turn
   function calcMovable() {
     const dests = new Map()
     SQUARES.forEach((s) => {
