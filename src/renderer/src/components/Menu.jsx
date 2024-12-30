@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
+import { playSound, sounds } from '../utils/sound'
 
 function Menu({ chess, orientation, setIsStudying, setVariations }) {
   const [status, setStatus] = useState('')
@@ -54,11 +55,7 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     }
 
     window.db.save(variation)
-
-    // TODO Reset the board
-    // chess.reset()
-    // setFen(chess.fen())
-    // setLastMove(null)
+    playSound(sounds.saveVariation)
   }
 
   async function study() {

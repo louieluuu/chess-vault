@@ -16,16 +16,9 @@ import { SQUARES } from 'chess.js'
 
 import { Card, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE, pgnToMovesArray } from '../utils/chess'
 
-// Audio
-import { Howl } from 'howler'
+import { playSound, playSoundMove, sounds } from '../utils/sound'
 
-import capture from '../assets/sound/capture.mp3'
-import move from '../assets/sound/move.mp3'
-
-const soundCapture = new Howl({ src: [capture] })
-const soundMove = new Howl({ src: [move] })
-
-const DIMENSION = '50dvh'
+const BOARD_DIMENSION = '50dvh'
 
 function ChessBoard({ chess, orientation, setOrientation, variations, isStudying, setIsStudying }) {
   const [fen, setFen] = useState('')
@@ -40,15 +33,12 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   const [isGrading, setIsGrading] = useState(false)
   const [options, setOptions] = useState([])
 
+  // Hide result after 1s
   useEffect(() => {
     setTimeout(() => {
       setResult('')
     }, 1000)
   }, [result])
-
-  function playSound(howlObject) {
-    howlObject.play()
-  }
 
   // Flips the orientation of the board
   function flipBoard() {
@@ -102,6 +92,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
         setFen(chess.fen())
         setTurnColor(oppositeColor())
         setCurrCorrectMove((prev) => prev + 1)
+        playSoundMove(move)
       }, i * 500)
     }
   }
@@ -115,12 +106,18 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     if (!isStudying) {
       return
     }
+
     // All variations finished
     if (currVariation >= variations.length) {
       setResult('booked')
-      console.log("You're all booked up!")
+      playSound(sounds.booked)
       setIsStudying(false)
       return
+    }
+
+    // First variation
+    if (currVariation === 0) {
+      playSound(sounds.startStudy)
     }
 
     const { pgn, orientation } = variations[currVariation]
@@ -172,42 +169,49 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     if (isStudying) {
       // Incorrect move
       if (!isCorrectMove(move.san)) {
+        playSound(sounds.incorrect)
+
         setTimeout(() => {
           undoMove(to, from)
-          setResult('incorrect')
         }, 500)
         return
       }
+      playSoundMove(move)
 
-      // Correct move
-      const nextCurrCorrectMove = currCorrectMove + 1
+      setTimeout(() => {
+        // Correct move
+        const nextCurrCorrectMove = currCorrectMove + 1
 
-      // If current variation is finished...
-      if (nextCurrCorrectMove >= pgn.length) {
-        const curr = variations[currVariation]
+        // If current variation is finished...
+        if (nextCurrCorrectMove >= pgn.length) {
+          const curr = variations[currVariation]
 
-        const options = new Card(
-          curr.status,
-          curr.interval,
-          curr.ease,
-          curr.step
-        ).calculateOptions()
+          const options = new Card(
+            curr.status,
+            curr.interval,
+            curr.ease,
+            curr.step
+          ).calculateOptions()
 
-        setOptions(options)
-        setIsGrading(true)
+          setOptions(options)
+          setIsGrading(true)
 
-        setResult('correct')
-        setCurrCorrectMove(0) // TODO this should probably belong with setCurrVariation in Grade.jsx
+          setResult('correct')
+          setCurrCorrectMove(0) // TODO this should probably belong with setCurrVariation in Grade.jsx
+          playSound(sounds.correct)
 
-        return
-      }
+          return
+        }
 
-      // Current variation is ongoing
-      chess.move(pgn[nextCurrCorrectMove])
-      setFen(chess.fen())
-      setLastMove([from, to])
-      setTurnColor(oppositeColor())
-      setCurrCorrectMove(nextCurrCorrectMove + 1) // TODO will bug out if ends on the wrong side
+        // Current variation is ongoing
+        const response = chess.move(pgn[nextCurrCorrectMove])
+        playSoundMove(response)
+
+        setFen(chess.fen())
+        setLastMove([from, to])
+        setTurnColor(oppositeColor())
+        setCurrCorrectMove(nextCurrCorrectMove + 1) // TODO will bug out if ends on the wrong side
+      }, 500)
     }
 
     // When not studying, any legal moves are passable
@@ -215,9 +219,8 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       setFen(chess.fen())
       setLastMove([from, to])
       setTurnColor(oppositeColor())
+      playSoundMove(move)
     }
-
-    playSound(move.captured ? soundCapture : soundMove)
   }
 
   // Calculates the movable squares for the current turn
@@ -241,8 +244,8 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   return (
     <div className="chessboard">
       <Chessground
-        width={DIMENSION}
-        height={DIMENSION}
+        width={BOARD_DIMENSION}
+        height={BOARD_DIMENSION}
         fen={fen}
         lastMove={lastMove}
         orientation={orientation}
