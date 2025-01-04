@@ -53,6 +53,8 @@ body {
 .menu {
   @include flex(column);
 
+  position: relative;
+
   height: 75dvh;
   width: 32.5vw;
   background-color: hsla(204, 7%, 14%, 97.5%);
@@ -89,6 +91,9 @@ body {
 }
 
 .menu__status {
+  position: absolute;
+  top: 33%;
+
   color: hsl(50, 100%, 50%);
   font-weight: bold;
 }

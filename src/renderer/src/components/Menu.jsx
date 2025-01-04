@@ -1,9 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 import { playSound, sounds } from '../utils/sound'
 
 function Menu({ chess, orientation, setIsStudying, setVariations }) {
   const [status, setStatus] = useState('')
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setStatus('')
+    }, 2500)
+
+    return () => clearTimeout(timeout)
+  }, [status])
 
   /********************
    * Helper functions *
@@ -11,7 +19,8 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
   async function isValidVariation(variation) {
     // Empty variation
     if (variation.pgn === '') {
-      setStatus('Empty variation')
+      setStatus('Empty variation!')
+      playSound(sounds.incorrect)
       return false
     }
 
@@ -19,12 +28,14 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     const pgnMoves = pgnToMovesArray(variation.pgn)
     if (variation.orientation === 'white') {
       if (pgnMoves.length < NUM_AUTO_MOVES_WHITE + 1) {
-        setStatus('Variation is too short')
+        setStatus('Variation is too short!')
+        playSound(sounds.incorrect)
         return false
       }
     } else if (variation.orientation === 'black') {
       if (pgnMoves.length < NUM_AUTO_MOVES_BLACK + 1) {
-        setStatus('Variation is too short')
+        setStatus('Variation is too short!')
+        playSound(sounds.incorrect)
         return false
       }
     }
@@ -32,11 +43,12 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     // Duplicate variation
     const isDuplicate = await window.db.checkDuplicate(variation)
     if (isDuplicate) {
-      setStatus('Duplicate variation')
+      setStatus('Duplicate variation!')
+      playSound(sounds.incorrect)
       return false
     }
 
-    setStatus('Valid variation. Saving...')
+    setStatus('Variation saved.')
     return true
   }
 

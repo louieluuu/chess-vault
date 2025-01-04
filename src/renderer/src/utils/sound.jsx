@@ -43,11 +43,11 @@ function playSound(howl) {
 
 function playSoundMove(move) {
   if (move.captured) {
-    playSound(soundCapture)
+    playSound(sounds.capture)
     return
   }
 
-  playSound(move.color === 'w' ? soundMoveWhite : soundMoveBlack)
+  playSound(move.color === 'w' ? sounds.moveWhite : sounds.moveBlack)
 }
 
 export { playSound, playSoundMove, sounds }

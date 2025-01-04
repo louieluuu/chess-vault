@@ -35,9 +35,11 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
 
   // Hide result after 1s
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setResult('')
     }, 1000)
+
+    return () => clearTimeout(timeout)
   }, [result])
 
   // Flips the orientation of the board

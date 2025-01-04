@@ -13,6 +13,8 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1080,
     height: 1080,
+    x: 0,
+    y: 1440 - 1140,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -39,9 +41,10 @@ function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
-  // TODO only open in dev environment (not for users lol!)
   // Open dev console
-  mainWindow.webContents.openDevTools()
+  if (process.env.NODE_ENV !== 'production') {
+    mainWindow.webContents.openDevTools({ mode: 'detach' })
+  }
 }
 
 // This method will be called when Electron has finished
