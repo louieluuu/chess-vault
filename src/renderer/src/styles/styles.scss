@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace !important;
+  font-family: 'Courier New';
 }
 
 .container {
@@ -29,14 +29,14 @@ body {
   z-index: 9;
   pointer-events: none;
 
-  width: 10vw;
-  height: 10vw;
+  width: 9dvh;
+  height: 9dvh;
 
   opacity: 97.5;
 
   &--correct {
     @extend .chessboard__result;
-    color: hsl(120, 50%, 40%);
+    color: hsl(123, 51%, 45%);
   }
 
   &--incorrect {
@@ -99,20 +99,19 @@ body {
 }
 
 .grade-menu {
+  @include flex(row);
+
   position: absolute;
 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
   z-index: 8;
 
-  gap: 5vw;
+  width: 55dvh;
+
+  gap: 3rem;
 
   padding: 2rem;
   background-color: hsl(240, 7%, 11%);
@@ -124,13 +123,14 @@ body {
 }
 
 .grade__button {
-  width: 7.5vw;
+  width: calc(55 / 6 * 1dvh);
   height: 2.5dvh;
-  color: black;
 
   cursor: pointer;
 
   transition: transform 0.1s ease;
+
+  color: black;
 
   &:active {
     transform: scale(0.95);
@@ -165,7 +165,7 @@ body {
 
   &--easy {
     @extend .grade__button;
-    background-color: hsl(118, 45%, 84%);
+    background-color: hsl(118, 46%, 84%);
 
     &:hover {
       background-color: hsl(118, 45%, 74%);
