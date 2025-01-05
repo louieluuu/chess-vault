@@ -47,6 +47,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
   }
 
+  // Keyboard shortcuts
   useEffect(() => {
     function handleKeyDown(e) {
       // Disable keyboard shortcuts when studying
@@ -70,6 +71,38 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [isStudying, lastMove])
+
+  // Reset the board and set the PGN to the current variation
+  useEffect(() => {
+    resetBoard()
+    if (variations.length === 0) {
+      return
+    }
+    if (!isStudying) {
+      return
+    }
+
+    // All variations finished
+    if (currVariation >= variations.length) {
+      setCurrVariation(0)
+      setResult('booked')
+      playSound(sounds.booked)
+      setIsStudying(false)
+      return
+    }
+
+    // First variation
+    if (currVariation === 0) {
+      playSound(sounds.startStudy)
+    }
+
+    const { pgn, orientation } = variations[currVariation]
+    const pgnMoves = pgnToMovesArray(pgn)
+    setOrientation(orientation)
+    setPgn(pgnMoves)
+    autoMove(pgnMoves, orientation)
+    playSound(sounds.nextVariation)
+  }, [isStudying, currVariation])
 
   // Reset the board to its initial state
   function resetBoard() {
@@ -98,37 +131,6 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       }, i * 500)
     }
   }
-
-  // Reset the board and set the PGN to the current variation
-  useEffect(() => {
-    resetBoard()
-    if (variations.length === 0) {
-      return
-    }
-    if (!isStudying) {
-      return
-    }
-
-    // All variations finished
-    if (currVariation >= variations.length) {
-      setResult('booked')
-      playSound(sounds.booked)
-      setIsStudying(false)
-      return
-    }
-
-    // First variation
-    if (currVariation === 0) {
-      playSound(sounds.startStudy)
-    }
-
-    const { pgn, orientation } = variations[currVariation]
-    const pgnMoves = pgnToMovesArray(pgn)
-    setOrientation(orientation)
-    setPgn(pgnMoves)
-    autoMove(pgnMoves, orientation)
-    playSound(sounds.nextVariation)
-  }, [isStudying, currVariation])
 
   function isCorrectMove(move) {
     console.log(`move: ${move}, correct move: ${pgn[currCorrectMove]}`)
