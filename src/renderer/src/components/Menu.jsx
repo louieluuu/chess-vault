@@ -74,10 +74,13 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     playSound(sounds.saveVariation)
 
     // Shine effect
-    const element = document.querySelector('.menu__btn--save')
-    element.classList.add('shine')
+    const saveButton = document.querySelector('.menu__btn--save')
+    const saveIcon = document.querySelector('.menu__icon--save')
+    saveButton.classList.add('shine')
+    saveIcon.classList.add('shine')
     setTimeout(() => {
-      element.classList.remove('shine')
+      saveButton.classList.remove('shine')
+      saveIcon.classList.remove('shine')
     }, 750)
   }
 
@@ -97,12 +100,12 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
       <div className="menu__status">{status}</div>
 
       <button className="menu__btn--save" onClick={saveVariation}>
-        <IoIosSave className="menu__icon" />
+        <IoIosSave className="menu__icon--save" />
         Save Variation
       </button>
 
       <button className="menu__btn--study" onClick={study}>
-        <GiOpenBook className="menu__icon" />
+        <GiOpenBook className="menu__icon--study" />
         Study Variations
       </button>
     </div>

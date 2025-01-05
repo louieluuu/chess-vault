@@ -116,7 +116,7 @@ body {
           opacity: 1;
           left: -100%;
         }
-        25% {
+        40% {
           opacity: 1;
           left: -85%;
         }
@@ -138,6 +138,21 @@ body {
   height: 2rem;
 
   color: hsl(50, 60%, 50%);
+
+  transition: all 0.1s ease-out 0.25s;
+
+  &--save {
+    @extend .menu__icon;
+
+    &.shine {
+      transform: scale(1.6);
+      color: hsl(50, 85%, 50%);
+    }
+  }
+
+  &--study {
+    @extend .menu__icon;
+  }
 }
 
 .menu__status {
