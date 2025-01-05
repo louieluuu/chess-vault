@@ -37,12 +37,12 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
   useEffect(() => {
     const timeout = setTimeout(() => {
       setResult('')
-    }, 1000)
+    }, 2500)
 
     return () => clearTimeout(timeout)
   }, [result])
 
-  // Flips the orientation of the board
+  // Flip the orientation of the board
   function flipBoard() {
     setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
   }
@@ -71,7 +71,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     }
   }, [isStudying, lastMove])
 
-  // Resets the board to its initial state
+  // Reset the board to its initial state
   function resetBoard() {
     chess.reset()
     setFen(chess.fen())
@@ -79,7 +79,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     setTurnColor('white')
   }
 
-  // Returns the opposite color of the current turn
+  // Return the opposite color of the current turn
   function oppositeColor() {
     return chess.turn() === 'w' ? 'white' : 'black'
   }
@@ -127,6 +127,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     setOrientation(orientation)
     setPgn(pgnMoves)
     autoMove(pgnMoves, orientation)
+    playSound(sounds.nextVariation)
   }, [isStudying, currVariation])
 
   function isCorrectMove(move) {
@@ -178,10 +179,11 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
         }, 500)
         return
       }
+
+      // Correct move
       playSoundMove(move)
 
       setTimeout(() => {
-        // Correct move
         const nextCurrCorrectMove = currCorrectMove + 1
 
         // If current variation is finished...
@@ -201,18 +203,19 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
           setResult('correct')
           setCurrCorrectMove(0) // TODO this should probably belong with setCurrVariation in Grade.jsx
           playSound(sounds.correct)
-
-          return
+          resetBoard()
         }
 
-        // Current variation is ongoing
-        const response = chess.move(pgn[nextCurrCorrectMove])
-        playSoundMove(response)
-
+        // Else current variation is ongoing
+        else {
+          const response = chess.move(pgn[nextCurrCorrectMove])
+          playSoundMove(response)
+          setCurrCorrectMove(nextCurrCorrectMove + 1) // TODO will bug out if ends on the wrong side
+        }
+        // TODO repeated logic
         setFen(chess.fen())
         setLastMove([from, to])
         setTurnColor(oppositeColor())
-        setCurrCorrectMove(nextCurrCorrectMove + 1) // TODO will bug out if ends on the wrong side
       }, 500)
     }
 
@@ -225,7 +228,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
     }
   }
 
-  // Calculates the movable squares for the current turn
+  // Calculate the movable squares for the current turn
   function calcMovable() {
     const dests = new Map()
     SQUARES.forEach((s) => {
