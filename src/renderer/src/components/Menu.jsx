@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react'
+
+import { GiOpenBook } from 'react-icons/gi'
+import { IoIosSave } from 'react-icons/io'
+
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 import { playSound, sounds } from '../utils/sound'
 
@@ -19,7 +23,7 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
   async function isValidVariation(variation) {
     // Empty variation
     if (variation.pgn === '') {
-      setStatus('Empty variation!')
+      setStatus('Empty variation.')
       playSound(sounds.incorrect)
       return false
     }
@@ -28,13 +32,13 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     const pgnMoves = pgnToMovesArray(variation.pgn)
     if (variation.orientation === 'white') {
       if (pgnMoves.length < NUM_AUTO_MOVES_WHITE + 1) {
-        setStatus('Variation is too short!')
+        setStatus('Variation is too short.')
         playSound(sounds.incorrect)
         return false
       }
     } else if (variation.orientation === 'black') {
       if (pgnMoves.length < NUM_AUTO_MOVES_BLACK + 1) {
-        setStatus('Variation is too short!')
+        setStatus('Variation is too short.')
         playSound(sounds.incorrect)
         return false
       }
@@ -43,12 +47,12 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     // Duplicate variation
     const isDuplicate = await window.db.checkDuplicate(variation)
     if (isDuplicate) {
-      setStatus('Duplicate variation!')
+      setStatus('Duplicate variation.')
       playSound(sounds.incorrect)
       return false
     }
 
-    setStatus('Variation saved.')
+    setStatus('Variation saved!')
     return true
   }
 
@@ -68,6 +72,13 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
 
     window.db.save(variation)
     playSound(sounds.saveVariation)
+
+    // Shine effect
+    const element = document.querySelector('.menu__btn--save')
+    element.classList.add('shine')
+    setTimeout(() => {
+      element.classList.remove('shine')
+    }, 750)
   }
 
   async function study() {
@@ -85,11 +96,13 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
     <div className="menu">
       <div className="menu__status">{status}</div>
 
-      <button className="menu__btn--submit" onClick={saveVariation}>
+      <button className="menu__btn--save" onClick={saveVariation}>
+        <IoIosSave className="menu__icon" />
         Save Variation
       </button>
 
       <button className="menu__btn--study" onClick={study}>
+        <GiOpenBook className="menu__icon" />
         Study Variations
       </button>
     </div>

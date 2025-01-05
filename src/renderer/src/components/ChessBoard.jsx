@@ -6,9 +6,10 @@ import 'react-chessground/dist/styles/chessground.css'
 // Components
 import GradeMenu from './GradeMenu'
 
+// React icons
 import { FaCircleCheck } from 'react-icons/fa6'
 import { FaCircleXmark } from 'react-icons/fa6'
-import { GiOpenBook } from 'react-icons/gi'
+import { FaBook } from 'react-icons/fa'
 
 import React, { useState, useEffect } from 'react'
 import Chessground from 'react-chessground'
@@ -151,7 +152,7 @@ function ChessBoard({ chess, orientation, setOrientation, variations, isStudying
       case 'incorrect':
         return <FaCircleXmark className={className} />
       case 'booked':
-        return <GiOpenBook className={className} />
+        return <FaBook className={className} />
       default:
         return null
     }
