@@ -15,8 +15,11 @@ if (process.contextIsolated) {
       checkDuplicate: (variation) => {
         return ipcRenderer.invoke('db-checkDuplicate', variation)
       },
-      retrieve: () => {
-        return ipcRenderer.invoke('db-retrieve')
+      getRepertoire: () => {
+        return ipcRenderer.invoke('db-getRepertoire')
+      },
+      getVariations: () => {
+        return ipcRenderer.invoke('db-getVariations')
       },
       update: (update) => {
         ipcRenderer.invoke('db-update', update)

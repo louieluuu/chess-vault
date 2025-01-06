@@ -32,7 +32,7 @@ body {
   width: 9dvh;
   height: 9dvh;
 
-  opacity: 97.5;
+  opacity: 0.975;
 
   &--correct {
     @extend .chessboard__result;
@@ -58,16 +58,10 @@ body {
   height: 75dvh;
   width: 32.5vw;
   background-color: hsla(204, 7%, 14%, 97.5%);
-
-  gap: 5rem;
 }
 
 .menu__btn {
   @include flex(row);
-
-  // For shine effect
-  position: relative;
-  overflow: hidden;
 
   color: white;
   background-color: hsl(207, 7%, 32%);
@@ -91,6 +85,12 @@ body {
 
   &--save {
     @extend .menu__btn;
+
+    margin-bottom: 5rem;
+
+    // For shine effect
+    position: relative;
+    overflow: hidden;
 
     &.shine {
       &::before {
@@ -130,28 +130,76 @@ body {
 
   &--study {
     @extend .menu__btn;
+
+    &--booked {
+      @extend .menu__btn--study;
+      opacity: 0.5;
+    }
   }
 }
 
 .menu__icon {
-  width: 2rem;
-  height: 2rem;
+  cursor: pointer;
 
+  font-size: 2rem;
+
+  background: transparent;
   color: hsl(50, 60%, 50%);
 
-  transition: all 0.1s ease-out 0.25s;
+  &--repertoire {
+    @extend .menu__icon;
+
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    &:hover {
+      color: hsl(50, 60%, 60%);
+    }
+  }
 
   &--save {
     @extend .menu__icon;
 
     &.shine {
-      transform: scale(1.6);
+      animation: pop 0.5s ease-out;
       color: hsl(50, 85%, 50%);
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(0.8);
+      }
+      70% {
+        transform: scale(2);
+      }
     }
   }
 
   &--study {
     @extend .menu__icon;
+
+    font-size: 1.75rem;
+  }
+}
+
+.menu__label {
+  color: hsl(50, 100%, 50%);
+
+  &--count {
+    @extend .menu__label;
+
+    font-weight: bold;
+  }
+
+  &--booked {
+    @extend .menu__label;
+
+    color: white;
+    opacity: 0.5;
   }
 }
 

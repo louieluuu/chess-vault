@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ChessBoard from './components/ChessBoard'
 import Menu from './components/Menu'
 import { Chess } from 'chess.js'
@@ -8,6 +8,14 @@ function App() {
   const [orientation, setOrientation] = useState('white')
   const [variations, setVariations] = useState([])
   const [isStudying, setIsStudying] = useState(false)
+
+  // Upon app load, get variations that are due to be studied
+  useEffect(() => {
+    async function getVariations() {
+      setVariations(await window.db.getVariations())
+    }
+    getVariations()
+  }, [])
 
   return (
     <div className="container">
@@ -24,6 +32,7 @@ function App() {
         orientation={orientation}
         setIsStudying={setIsStudying}
         setVariations={setVariations}
+        variations={variations}
       />
     </div>
   )

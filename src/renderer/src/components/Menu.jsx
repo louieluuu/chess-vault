@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 
+import { FaBook } from 'react-icons/fa'
+import { FaCirclePlay } from 'react-icons/fa6'
 import { GiOpenBook } from 'react-icons/gi'
 import { IoIosSave } from 'react-icons/io'
 
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 import { playSound, sounds } from '../utils/sound'
 
-function Menu({ chess, orientation, setIsStudying, setVariations }) {
+function Menu({ chess, orientation, setIsStudying, setVariations, variations }) {
   const [status, setStatus] = useState('')
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -20,6 +23,10 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
   /********************
    * Helper functions *
    ********************/
+  function showRepertoireIcon() {
+    return showModal ? <GiOpenBook /> : <FaBook />
+  }
+
   async function isValidVariation(variation) {
     // Empty variation
     if (variation.pgn === '') {
@@ -59,6 +66,12 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
   /********************
    *  Main functions  *
    ********************/
+  async function showRepertoire() {
+    setShowModal((prev) => !prev)
+    const repertoire = await window.db.getRepertoire()
+    console.log(`Repertoire: ${JSON.stringify(repertoire, null, 2)}`)
+  }
+
   async function saveVariation() {
     const variation = {
       pgn: chess.pgn(),
@@ -85,27 +98,40 @@ function Menu({ chess, orientation, setIsStudying, setVariations }) {
   }
 
   async function study() {
-    const variations = await window.db.retrieve()
-    console.log(`All variations: ${JSON.stringify(variations, null, 2)}`)
+    console.log(`Study variations: ${JSON.stringify(variations, null, 2)}`)
     if (variations.length === 0) {
-      setStatus('0 variations retrieved!')
+      setStatus("You're booked beyond belief!")
       return
     }
-    setVariations(variations)
     setIsStudying(true)
   }
 
   return (
     <div className="menu">
+      <button className="menu__icon--repertoire" onClick={showRepertoire}>
+        {showRepertoireIcon()}
+      </button>
+
       <div className="menu__status">{status}</div>
 
       <button className="menu__btn--save" onClick={saveVariation}>
         <IoIosSave className="menu__icon--save" />
         Save Variation
       </button>
-
-      <button className="menu__btn--study" onClick={study}>
-        <GiOpenBook className="menu__icon--study" />
+      <span className={`menu__label${variations.length === 0 ? '--booked' : ''}`}>
+        [
+        <span
+          className={`${variations.length === 0 ? 'menu__label--booked' : 'menu__label--count'}`}
+        >
+          {variations.length}
+        </span>
+        &nbsp;remaining]
+      </span>
+      <button
+        className={`menu__btn--study${variations.length === 0 ? '--booked' : ''}`}
+        onClick={study}
+      >
+        <FaCirclePlay className="menu__icon--study" />
         Study Variations
       </button>
     </div>

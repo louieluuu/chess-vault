@@ -98,7 +98,14 @@ app.whenReady().then(() => {
     return result ? true : false
   })
 
-  ipcMain.handle('db-retrieve', () => {
+  ipcMain.handle('db-getRepertoire', () => {
+    const query = `SELECT *
+                   FROM Repertoire 
+                  `
+    return db.prepare(query).all()
+  })
+
+  ipcMain.handle('db-getVariations', () => {
     const query = `SELECT *
                    FROM Repertoire 
                    WHERE next_study <= ?
