@@ -7,5 +7,6 @@ out
 .DS_Store
 *.log*
 
+workspace.code-workspace
 repertoire.db
 

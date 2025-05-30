@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import icon from '../renderer/src/assets/img/icon.png?asset'
 
 import Database from 'better-sqlite3'
 import fs from 'fs'

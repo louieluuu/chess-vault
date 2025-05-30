@@ -9,7 +9,7 @@ body {
   background-size: cover;
   user-select: none;
 
-  background-image: url('../assets/digital.jpg');
+  background-image: url('../assets/img/digital.jpg');
   background-blend-mode: hard-light;
 }
 
