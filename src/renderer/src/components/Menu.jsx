@@ -70,7 +70,6 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
       return false
     }
 
-    setStatus('Variation saved!')
     return true
   }
 
@@ -113,7 +112,19 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
       return
     }
 
-    // await deleteRedundantVariation(variation)
+    // _Older_ variation is redundant and should be overwritten, ex:
+    // You are saving:  "1. e4 e5 2. c3 d5 3. d4"
+    // db has:          "1. e4 e5 2. c3"
+    const result = await window.db.deleteRedundantVariation(variation)
+    if (result) {
+      // db deletion done; update local variations array as well
+      setVariations((prev) =>
+        prev.filter((v) => !(v.pgn === result.pgn && v.orientation === result.orientation))
+      )
+      setStatus('[OVERWROTE] Variation saved!')
+    } else {
+      setStatus('Variation saved!')
+    }
 
     window.db.save(variation)
     setVariations((prev) => [...prev, variation])

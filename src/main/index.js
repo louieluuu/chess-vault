@@ -110,6 +110,23 @@ app.whenReady().then(() => {
     return result ? true : false
   })
 
+  ipcMain.handle('db-deleteRedundantVariation', (_, variation) => {
+    const query = `SELECT id, pgn, orientation
+                   FROM Repertoire
+                   WHERE ? LIKE concat(pgn, '%')
+                  `
+    const result = db.prepare(query).get(variation.pgn)
+
+    if (result) {
+      db.prepare(`DELETE FROM Repertoire WHERE id = ?`).run(result.id)
+      console.log(`Deleted redundant variation: ${JSON.stringify(result)}`)
+    } else {
+      console.log('No redundant variations here bruther!')
+    }
+
+    return result
+  })
+
   ipcMain.handle('db-getRepertoire', () => {
     const query = `SELECT *
                    FROM Repertoire 
