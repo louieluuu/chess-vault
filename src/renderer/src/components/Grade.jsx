@@ -1,6 +1,6 @@
 import { add, formatDistanceToNowStrict } from 'date-fns'
 
-function Grade({ option, variations, currVariation, setCurrVariation, setIsGrading }) {
+function Grade({ option, variations, setVariations, setIsGrading }) {
   const { desc, card } = option
 
   function abbreviate(date) {
@@ -31,7 +31,7 @@ function Grade({ option, variations, currVariation, setCurrVariation, setIsGradi
 
   function handleClick() {
     // Update db with the new info
-    const { id } = variations[currVariation]
+    const { id } = variations[0]
 
     window.db.update({
       next_study: add(new Date(), { minutes: card.interval }).toISOString(),
@@ -44,7 +44,7 @@ function Grade({ option, variations, currVariation, setCurrVariation, setIsGradi
       id: id
     })
 
-    setCurrVariation((prev) => prev + 1)
+    setVariations((prev) => prev.slice(1))
     setIsGrading(false)
   }
 

@@ -26,6 +26,7 @@ function App() {
         setIsStudying={setIsStudying}
         setOrientation={setOrientation}
         variations={variations}
+        setVariations={setVariations}
       />
       <Menu
         chess={chess}
