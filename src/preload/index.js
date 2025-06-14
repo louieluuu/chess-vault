@@ -10,10 +10,11 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
 
     contextBridge.exposeInMainWorld('db', {
-      ping: () => ipcRenderer.invoke('ping').then((result) => console.log(result)),
-
       checkDuplicate: (variation) => {
         return ipcRenderer.invoke('db-checkDuplicate', variation)
+      },
+      checkRedundant: (variation) => {
+        return ipcRenderer.invoke('db-checkRedundant', variation)
       },
       getRepertoire: () => {
         return ipcRenderer.invoke('db-getRepertoire')

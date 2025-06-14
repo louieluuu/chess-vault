@@ -32,7 +32,6 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
     // Empty variation
     if (variation.pgn === '') {
       setStatus('Empty variation.')
-      playSound(sounds.incorrect)
       return false
     }
 
@@ -43,7 +42,6 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
       (variation.orientation === 'black' && pgnArray.length < NUM_AUTO_MOVES_BLACK + 1)
     ) {
       setStatus('Variation is too short.')
-      playSound(sounds.incorrect)
       return false
     }
 
@@ -53,7 +51,6 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
       (variation.orientation === 'black' && pgnArray.length % 2 !== 0)
     ) {
       setStatus('Variation must end on your move.')
-      playSound(sounds.incorrect)
       return false
     }
 
@@ -61,7 +58,15 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
     const isDuplicate = await window.db.checkDuplicate(variation)
     if (isDuplicate) {
       setStatus('Duplicate variation.')
-      playSound(sounds.incorrect)
+      return false
+    }
+
+    // _Your_ variation is redundant, ex:
+    // db already has:    "1. e4 e5 2. c3 d5 3. d4"
+    // You try to save:   "1. e4 e5 2. c3"
+    const isRedundant = await window.db.checkRedundant(variation)
+    if (isRedundant) {
+      setStatus('Redundant variation.')
       return false
     }
 
@@ -104,8 +109,11 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
 
     const isValid = await isValidVariation(variation)
     if (!isValid) {
+      playSound(sounds.incorrect)
       return
     }
+
+    // await deleteRedundantVariation(variation)
 
     window.db.save(variation)
     setVariations((prev) => [...prev, variation])

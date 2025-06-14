@@ -93,8 +93,20 @@ app.whenReady().then(() => {
 
   // Socket.on functions
   ipcMain.handle('db-checkDuplicate', (_, variation) => {
-    const query = `SELECT pgn, orientation FROM Repertoire WHERE pgn = ? AND orientation = ?`
+    const query = `SELECT pgn, orientation 
+                   FROM Repertoire 
+                   WHERE pgn = ? AND orientation = ?
+                  `
     const result = db.prepare(query).get(variation.pgn, variation.orientation)
+    return result ? true : false
+  })
+
+  ipcMain.handle('db-checkRedundant', (_, variation) => {
+    const query = `SELECT id
+                   FROM Repertoire
+                   WHERE pgn LIKE concat(?, '%')
+                  `
+    const result = db.prepare(query).get(variation.pgn)
     return result ? true : false
   })
 
