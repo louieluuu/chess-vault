@@ -37,19 +37,24 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
     }
 
     // Variation is too short
-    const pgnMoves = pgnToMovesArray(variation.pgn)
-    if (variation.orientation === 'white') {
-      if (pgnMoves.length < NUM_AUTO_MOVES_WHITE + 1) {
-        setStatus('Variation is too short.')
-        playSound(sounds.incorrect)
-        return false
-      }
-    } else if (variation.orientation === 'black') {
-      if (pgnMoves.length < NUM_AUTO_MOVES_BLACK + 1) {
-        setStatus('Variation is too short.')
-        playSound(sounds.incorrect)
-        return false
-      }
+    const pgnArray = pgnToMovesArray(variation.pgn)
+    if (
+      (variation.orientation === 'white' && pgnArray.length < NUM_AUTO_MOVES_WHITE + 1) ||
+      (variation.orientation === 'black' && pgnArray.length < NUM_AUTO_MOVES_BLACK + 1)
+    ) {
+      setStatus('Variation is too short.')
+      playSound(sounds.incorrect)
+      return false
+    }
+
+    // Variation does not end on the player's move
+    if (
+      (variation.orientation === 'white' && pgnArray.length % 2 === 0) ||
+      (variation.orientation === 'black' && pgnArray.length % 2 !== 0)
+    ) {
+      setStatus('Variation must end on your move.')
+      playSound(sounds.incorrect)
+      return false
     }
 
     // Duplicate variation
@@ -87,6 +92,7 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
   }
 
   async function saveVariation() {
+    // Disable Save button when studying
     if (isStudying) {
       return
     }

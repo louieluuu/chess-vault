@@ -80,7 +80,7 @@ function ChessBoard({
     }
   }, [isStudying, lastMove])
 
-  // While studying: when a variation is completed, reset the board and set the PGN to the next variation
+  // While studying: variation end logic
   useEffect(() => {
     if (!isStudying) {
       return
@@ -208,7 +208,7 @@ function ChessBoard({
         else {
           const response = chess.move(pgn[nextCurrCorrectMove])
           playSoundMove(response)
-          setCurrCorrectMove(nextCurrCorrectMove + 1) // TODO will bug out if ends on the wrong side
+          setCurrCorrectMove(nextCurrCorrectMove + 1)
         }
         // TODO repeated logic
         setFen(chess.fen())
