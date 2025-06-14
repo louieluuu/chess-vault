@@ -8,7 +8,6 @@ import GradeMenu from './GradeMenu'
 
 // React icons
 import { FaCircleCheck } from 'react-icons/fa6'
-import { FaCircleXmark } from 'react-icons/fa6'
 import { FaBook } from 'react-icons/fa'
 
 import React, { useState, useEffect } from 'react'
@@ -34,6 +33,7 @@ function ChessBoard({
   const [pgn, setPgn] = useState('')
   const [lastMove, setLastMove] = useState([])
   const [pendingMove, setPendingMove] = useState()
+  const [selectVisible, setSelectVisible] = useState(false)
   const [turnColor, setTurnColor] = useState('white')
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
 
@@ -41,7 +41,11 @@ function ChessBoard({
   const [isGrading, setIsGrading] = useState(false)
   const [options, setOptions] = useState([])
 
-  // Hide result after 1s
+  /********************
+   *    useEffects    *
+   ********************/
+
+  // Hide result icon after some time
   useEffect(() => {
     const timeout = setTimeout(() => {
       setResult('')
@@ -49,11 +53,6 @@ function ChessBoard({
 
     return () => clearTimeout(timeout)
   }, [result])
-
-  // Flip the orientation of the board
-  function flipBoard() {
-    setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
-  }
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -82,9 +81,6 @@ function ChessBoard({
 
   // While studying: reset the board and set the PGN to the next variation
   useEffect(() => {
-    // if (variations.length === 0) {
-    //   return
-    // }
     if (!isStudying) {
       return
     }
@@ -107,12 +103,21 @@ function ChessBoard({
     playSound(sounds.nextVariation)
   }, [isStudying, variations])
 
-  // Reset the board to its initial state
+  /********************
+   * Helper functions *
+   ********************/
+
+  // Reset board to its initial state
   function resetBoard() {
     chess.reset()
     setFen(chess.fen())
     setLastMove(null)
     setTurnColor('white')
+  }
+
+  // Flip the orientation of the board
+  function flipBoard() {
+    setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
   }
 
   // Return the opposite color of the current turn
@@ -151,8 +156,6 @@ function ChessBoard({
     switch (result) {
       case 'correct':
         return <FaCircleCheck className={className} />
-      case 'incorrect':
-        return <FaCircleXmark className={className} />
       case 'booked':
         return <FaBook className={className} />
       default:
@@ -161,16 +164,6 @@ function ChessBoard({
   }
 
   function onMove(from, to) {
-    // TODO: What is the purpose of this?
-    const legalMoves = chess.moves({ verbose: true })
-    for (let i = 0, len = legalMoves.length; i < len; i++) {
-      if (legalMoves[i].flags.indexOf('p') !== -1 && legalMoves[i].from === from) {
-        setPendingMove([from, to])
-        setSelectVisible(true)
-        return
-      }
-    }
-
     const move = chess.move({ from, to, promotion: 'x' }, { strict: true })
 
     // When studying, moves require an extra validation against the current variation

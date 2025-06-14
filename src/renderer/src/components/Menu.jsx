@@ -23,6 +23,7 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
   /********************
    * Helper functions *
    ********************/
+
   function showRepertoireIcon() {
     return showModal ? <GiOpenBook /> : <FaBook />
   }
@@ -78,6 +79,7 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
   /********************
    *  Main functions  *
    ********************/
+
   async function showRepertoire() {
     setShowModal((prev) => !prev)
     const repertoire = await window.db.getRepertoire()
