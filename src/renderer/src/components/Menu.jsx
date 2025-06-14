@@ -29,14 +29,15 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
   }
 
   async function isValidVariation(variation) {
+    const pgnArray = pgnToMovesArray(variation.pgn)
+
     // Empty variation
-    if (variation.pgn === '') {
+    if (pgnArray.length === 0) {
       setStatus('Empty variation.')
       return false
     }
 
     // Variation is too short
-    const pgnArray = pgnToMovesArray(variation.pgn)
     if (
       (variation.orientation === 'white' && pgnArray.length < NUM_AUTO_MOVES_WHITE + 1) ||
       (variation.orientation === 'black' && pgnArray.length < NUM_AUTO_MOVES_BLACK + 1)

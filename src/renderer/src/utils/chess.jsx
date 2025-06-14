@@ -69,13 +69,5 @@ export class Card {
  * @returns - ["e4", "e5", "d4", "d5", ...]
  */
 export function pgnToMovesArray(pgn) {
-  const pgnMoves = []
-  const parts = pgn.split(' ')
-  parts.forEach((part) => {
-    if (part.includes('.')) {
-      return
-    }
-    pgnMoves.push(part)
-  })
-  return pgnMoves
+  return pgn.split(' ').filter((part) => part && !part.includes('.'))
 }
