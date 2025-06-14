@@ -19,6 +19,7 @@ import { Card, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE, pgnToMovesArray } fro
 import { playSound, playSoundMove, sounds } from '../utils/sound'
 
 const BOARD_DIMENSION = '50dvh'
+const PAUSE_MS = 500
 
 function ChessBoard({
   chess,
@@ -30,7 +31,7 @@ function ChessBoard({
   setIsStudying
 }) {
   const [fen, setFen] = useState('')
-  const [pgn, setPgn] = useState('')
+  const [pgn, setPgn] = useState([])
   const [lastMove, setLastMove] = useState([])
   const [pendingMove, setPendingMove] = useState()
   const [selectVisible, setSelectVisible] = useState(false)
@@ -79,7 +80,7 @@ function ChessBoard({
     }
   }, [isStudying, lastMove])
 
-  // While studying: reset the board and set the PGN to the next variation
+  // While studying: when a variation is completed, reset the board and set the PGN to the next variation
   useEffect(() => {
     if (!isStudying) {
       return
@@ -113,6 +114,7 @@ function ChessBoard({
     setFen(chess.fen())
     setLastMove(null)
     setTurnColor('white')
+    setCurrCorrectMove(0)
   }
 
   // Flip the orientation of the board
@@ -136,7 +138,7 @@ function ChessBoard({
         setTurnColor(oppositeColor())
         setCurrCorrectMove((prev) => prev + 1)
         playSoundMove(move)
-      }, i * 500)
+      }, i * PAUSE_MS)
     }
   }
 
@@ -174,7 +176,7 @@ function ChessBoard({
 
         setTimeout(() => {
           undoMove(to, from)
-        }, 500)
+        }, PAUSE_MS)
         return
       }
 
@@ -186,6 +188,9 @@ function ChessBoard({
 
         // If current variation is finished...
         if (nextCurrCorrectMove >= pgn.length) {
+          setResult('correct')
+          playSound(sounds.correct)
+
           const curr = variations[0]
 
           const options = new Card(
@@ -197,11 +202,6 @@ function ChessBoard({
 
           setOptions(options)
           setIsGrading(true)
-
-          setResult('correct')
-          setCurrCorrectMove(0) // TODO this should probably belong with setCurrVariation in Grade.jsx
-          playSound(sounds.correct)
-          resetBoard()
         }
 
         // Else current variation is ongoing
@@ -214,7 +214,7 @@ function ChessBoard({
         setFen(chess.fen())
         setLastMove([from, to])
         setTurnColor(oppositeColor())
-      }, 500)
+      }, PAUSE_MS)
     }
 
     // When not studying, any legal moves are passable
