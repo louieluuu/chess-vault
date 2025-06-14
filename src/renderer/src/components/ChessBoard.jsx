@@ -70,6 +70,12 @@ function ChessBoard({
         case 'r':
           resetBoard()
           break
+        case 'arrowleft':
+          // TODO
+          break
+        case 'arrowright':
+          // TODO
+          break
       }
     }
 
