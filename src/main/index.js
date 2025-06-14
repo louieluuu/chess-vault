@@ -104,7 +104,7 @@ app.whenReady().then(() => {
   ipcMain.handle('db-checkRedundant', (_, variation) => {
     const query = `SELECT id
                    FROM Repertoire
-                   WHERE pgn LIKE concat(?, '%')
+                   WHERE pgn LIKE CONCAT(?, '%')
                   `
     const result = db.prepare(query).get(variation.pgn)
     return result ? true : false
@@ -113,7 +113,7 @@ app.whenReady().then(() => {
   ipcMain.handle('db-deleteRedundantVariation', (_, variation) => {
     const query = `SELECT id, pgn, orientation
                    FROM Repertoire
-                   WHERE ? LIKE concat(pgn, '%')
+                   WHERE ? LIKE CONCAT(pgn, '%')
                   `
     const result = db.prepare(query).get(variation.pgn)
 
