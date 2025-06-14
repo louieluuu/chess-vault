@@ -61,6 +61,18 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
 
     setStatus('Variation saved!')
     return true
+
+    function showSaveAnimation() {
+      // Shine effect
+      const saveButton = document.querySelector('.menu__btn--save')
+      const saveIcon = document.querySelector('.menu__icon--save')
+      saveButton.classList.add('shine')
+      saveIcon.classList.add('shine')
+      setTimeout(() => {
+        saveButton.classList.remove('shine')
+        saveIcon.classList.remove('shine')
+      }, 750)
+    }
   }
 
   /********************
@@ -88,17 +100,9 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
     }
 
     window.db.save(variation)
-    playSound(sounds.saveVariation)
 
-    // Shine effect
-    const saveButton = document.querySelector('.menu__btn--save')
-    const saveIcon = document.querySelector('.menu__icon--save')
-    saveButton.classList.add('shine')
-    saveIcon.classList.add('shine')
-    setTimeout(() => {
-      saveButton.classList.remove('shine')
-      saveIcon.classList.remove('shine')
-    }, 750)
+    showSaveAnimation()
+    playSound(sounds.saveVariation)
   }
 
   async function study() {
