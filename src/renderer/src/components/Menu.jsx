@@ -8,7 +8,7 @@ import { IoIosSave } from 'react-icons/io'
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 import { playSound, sounds } from '../utils/sound'
 
-function Menu({ chess, orientation, setIsStudying, setVariations, variations }) {
+function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, variations }) {
   const [status, setStatus] = useState('')
   const [showModal, setShowModal] = useState(false)
 
@@ -73,6 +73,10 @@ function Menu({ chess, orientation, setIsStudying, setVariations, variations }) 
   }
 
   async function saveVariation() {
+    if (isStudying) {
+      return
+    }
+
     const variation = {
       pgn: chess.pgn(),
       orientation: orientation
@@ -114,21 +118,22 @@ function Menu({ chess, orientation, setIsStudying, setVariations, variations }) 
 
       <div className="menu__status">{status}</div>
 
-      <button className="menu__btn--save" onClick={saveVariation}>
-        <IoIosSave className="menu__icon--save" />
+      <button
+        className={`menu__btn--save${isStudying ? '--disabled' : ''}`}
+        onClick={saveVariation}
+      >
+        <IoIosSave className={`menu__icon--save${isStudying ? '--disabled' : ''}`} />
         Save Variation
       </button>
-      <span className={`menu__label${variations.length === 0 ? '--booked' : ''}`}>
+      <span className={`menu__label${variations.length === 0 ? '--disabled' : ''}`}>
         [
-        <span
-          className={`${variations.length === 0 ? 'menu__label--booked' : 'menu__label--count'}`}
-        >
+        <span className={`menu__label${variations.length === 0 ? '--disabled' : '--count'}`}>
           {variations.length}
         </span>
         &nbsp;remaining]
       </span>
       <button
-        className={`menu__btn--study${variations.length === 0 ? '--booked' : ''}`}
+        className={`menu__btn--study${variations.length === 0 ? '--disabled' : ''}`}
         onClick={study}
       >
         <FaCirclePlay className="menu__icon--study" />

@@ -30,6 +30,7 @@ function App() {
       <Menu
         chess={chess}
         orientation={orientation}
+        isStudying={isStudying}
         setIsStudying={setIsStudying}
         setVariations={setVariations}
         variations={variations}

@@ -92,6 +92,17 @@ body {
     position: relative;
     overflow: hidden;
 
+    &--disabled {
+      @extend .menu__btn--save;
+
+      cursor: default;
+      opacity: 0.5;
+
+      &:hover {
+        background-color: hsl(207, 7%, 32%);
+      }
+    }
+
     &.shine {
       &::before {
         content: '';
@@ -131,7 +142,7 @@ body {
   &--study {
     @extend .menu__btn;
 
-    &--booked {
+    &--disabled {
       @extend .menu__btn--study;
       opacity: 0.5;
     }
@@ -160,6 +171,11 @@ body {
 
   &--save {
     @extend .menu__icon;
+
+    &--disabled {
+      @extend .menu__icon--save;
+      cursor: default;
+    }
 
     &.shine {
       animation: pop 0.5s ease-out;
@@ -195,7 +211,7 @@ body {
     font-weight: bold;
   }
 
-  &--booked {
+  &--disabled {
     @extend .menu__label;
 
     color: white;
