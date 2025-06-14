@@ -125,9 +125,9 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
         <IoIosSave className={`menu__icon--save${isStudying ? '--disabled' : ''}`} />
         Save Variation
       </button>
-      <span className={`menu__label${variations.length === 0 ? '--disabled' : ''}`}>
+      <span className={`menu__label${variations.length === 0 ? '--booked' : ''}`}>
         [
-        <span className={`menu__label${variations.length === 0 ? '--disabled' : '--count'}`}>
+        <span className={`menu__label${variations.length === 0 ? '--booked' : '--count'}`}>
           {variations.length}
         </span>
         &nbsp;remaining]

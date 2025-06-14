@@ -211,7 +211,7 @@ body {
     font-weight: bold;
   }
 
-  &--disabled {
+  &--booked {
     @extend .menu__label;
 
     color: white;
