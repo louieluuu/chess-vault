@@ -100,12 +100,15 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
     }
 
     window.db.save(variation)
+    setVariations((prev) => [...prev, variation])
 
     showSaveAnimation()
     playSound(sounds.saveVariation)
   }
 
   async function study() {
+    setVariations(await window.db.getVariations())
+
     console.log(`Study variations: ${JSON.stringify(variations, null, 2)}`)
     if (variations.length === 0) {
       setStatus("You're booked beyond belief!")

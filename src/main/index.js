@@ -53,8 +53,8 @@ function createWindow() {
 app.whenReady().then(() => {
   // TODO just for testing
   // Delete the existing database
-  if (fs.existsSync(DB_PATH)) {
-    // fs.unlinkSync(DB_PATH)
+  if (fs.existsSync(DB_PATH) && process.argv.includes('-d')) {
+    fs.unlinkSync(DB_PATH)
     console.log('Deleted existing repertoire.db')
   }
 
