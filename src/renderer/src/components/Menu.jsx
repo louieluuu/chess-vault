@@ -104,8 +104,11 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
 
     const variation = {
       pgn: chess.pgn(),
+      fen: chess.fen(),
       orientation: orientation
     }
+
+    console.log(`${JSON.stringify(variation)}`)
 
     const isValid = await isValidVariation(variation)
     if (!isValid) {

@@ -67,6 +67,7 @@ app.whenReady().then(() => {
       CREATE TABLE IF NOT EXISTS Repertoire (
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
         pgn           TEXT NOT NULL,
+        fen           TEXT NOT NULL,
         orientation   TEXT NOT NULL,
         next_study    TEXT NOT NULL,
 
@@ -144,8 +145,13 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('db-save', (_, variation) => {
-    const query = `INSERT INTO Repertoire (pgn, orientation, next_study) VALUES (?, ?, ?)`
-    db.prepare(query).run(variation.pgn, variation.orientation, new Date().toISOString())
+    const query = `INSERT INTO Repertoire (pgn, fen, orientation, next_study) VALUES (?, ?, ?, ?)`
+    db.prepare(query).run(
+      variation.pgn,
+      variation.fen,
+      variation.orientation,
+      new Date().toISOString()
+    )
   })
 
   ipcMain.handle('db-update', (_, update) => {
