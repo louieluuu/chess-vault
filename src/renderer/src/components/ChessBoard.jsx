@@ -36,6 +36,8 @@ function ChessBoard({
   const [pendingMove, setPendingMove] = useState()
   const [selectVisible, setSelectVisible] = useState(false)
   const [turnColor, setTurnColor] = useState('white')
+  const [selected, setSelected] = useState('')
+
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
 
   const [result, setResult] = useState('')
@@ -102,11 +104,17 @@ function ChessBoard({
       return
     }
 
+    // Else, next variation
+    // Set chessboard states
     const { pgn, orientation } = variations[0]
     const pgnMoves = pgnToMovesArray(pgn)
-    setOrientation(orientation)
     setPgn(pgnMoves)
+    setOrientation(orientation)
     autoMove(pgnMoves, orientation)
+
+    // Reset other states
+    setCurrCorrectMove(0)
+
     playSound(sounds.nextVariation)
   }, [isStudying, variations])
 
@@ -120,7 +128,6 @@ function ChessBoard({
     setFen(chess.fen())
     setLastMove(null)
     setTurnColor('white')
-    setCurrCorrectMove(0)
   }
 
   // Flip the orientation of the board
@@ -149,13 +156,12 @@ function ChessBoard({
   }
 
   function isCorrectMove(move) {
-    console.log(`move: ${move}, correct move: ${pgn[currCorrectMove]}`)
     return move === pgn[currCorrectMove]
   }
 
-  function undoMove(to, from) {
+  function undoMove() {
     chess.undo()
-    setLastMove([to, from])
+    setLastMove([...lastMove])
     setFen(chess.fen())
   }
 
@@ -174,62 +180,64 @@ function ChessBoard({
   function onMove(from, to) {
     const move = chess.move({ from, to, promotion: 'x' }, { strict: true })
 
-    // When studying, moves require an extra validation against the current variation
-    if (isStudying) {
-      // Incorrect move
-      if (!isCorrectMove(move.san)) {
-        playSound(sounds.incorrect)
-
-        setTimeout(() => {
-          undoMove(to, from)
-        }, PAUSE_MS)
-        return
-      }
-
-      // Correct move
-      playSoundMove(move)
-
-      setTimeout(() => {
-        const nextCurrCorrectMove = currCorrectMove + 1
-
-        // If current variation is finished...
-        if (nextCurrCorrectMove >= pgn.length) {
-          setResult('correct')
-          playSound(sounds.correct)
-
-          const curr = variations[0]
-
-          const options = new Card(
-            curr.status,
-            curr.interval,
-            curr.ease,
-            curr.step
-          ).calculateOptions()
-
-          setOptions(options)
-          setIsGrading(true)
-        }
-
-        // Else current variation is ongoing
-        else {
-          const response = chess.move(pgn[nextCurrCorrectMove])
-          playSoundMove(response)
-          setCurrCorrectMove(nextCurrCorrectMove + 1)
-        }
-        // TODO repeated logic
-        setFen(chess.fen())
-        setLastMove([from, to])
-        setTurnColor(oppositeColor())
-      }, PAUSE_MS)
-    }
-
-    // When not studying, any legal moves are passable
-    else {
-      setFen(chess.fen())
+    // When not studying, any legal move is passable. Legality is already checked by the `movable` prop, so we just have to update states.
+    if (!isStudying) {
       setLastMove([from, to])
+      setFen(chess.fen())
       setTurnColor(oppositeColor())
       playSoundMove(move)
+
+      return
     }
+
+    // When studying, a move must be checked against the variation
+
+    // Incorrect move
+    if (!isCorrectMove(move.san)) {
+      playSound(sounds.incorrect)
+
+      setTimeout(() => {
+        undoMove()
+      }, PAUSE_MS)
+
+      return
+    }
+
+    // Correct move
+    playSoundMove(move)
+
+    setTimeout(() => {
+      const nextCurrCorrectMove = currCorrectMove + 1
+
+      // If current variation is finished...
+      if (nextCurrCorrectMove >= pgn.length) {
+        setResult('correct')
+        playSound(sounds.correct)
+
+        const curr = variations[0]
+
+        const options = new Card(
+          curr.status,
+          curr.interval,
+          curr.ease,
+          curr.step
+        ).calculateOptions()
+
+        setOptions(options)
+        setIsGrading(true)
+      }
+
+      // Else variation is ongoing, computer plays the response
+      else {
+        const response = chess.move(pgn[nextCurrCorrectMove])
+        setLastMove([response.from, response.to])
+        playSoundMove(response)
+        setCurrCorrectMove(nextCurrCorrectMove + 1)
+      }
+      // TODO this is repeated logic: stuff that has to happen every time a move is made on the chessboard. should be extracted
+      setFen(chess.fen())
+      setTurnColor(oppositeColor())
+    }, PAUSE_MS)
   }
 
   // Calculate the movable squares for the current turn
@@ -256,9 +264,9 @@ function ChessBoard({
         width={BOARD_DIMENSION}
         height={BOARD_DIMENSION}
         fen={fen}
-        lastMove={lastMove}
         orientation={orientation}
         turnColor={turnColor}
+        lastMove={lastMove}
         movable={calcMovable()}
         onMove={onMove}
       />
