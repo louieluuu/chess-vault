@@ -161,7 +161,7 @@ function ChessBoard({
 
   function undoMove() {
     chess.undo()
-    setLastMove([...lastMove])
+    setLastMove((prev) => [...prev]) // force re-render
     setFen(chess.fen())
   }
 
