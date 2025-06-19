@@ -50,14 +50,13 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  // TODO just for testing
   // Delete the existing database
-  if (fs.existsSync(DB_PATH) && process.argv.includes('--d')) {
+  if (isDevMode && fs.existsSync(DB_PATH) && process.argv.includes('--d')) {
     fs.unlinkSync(DB_PATH)
     console.log('Deleted existing repertoire.db')
   }
 
-  // Create the database
+  // Create the database instance
   const db = new Database(DB_PATH)
 
   // Create a table if it doesn't exist already
