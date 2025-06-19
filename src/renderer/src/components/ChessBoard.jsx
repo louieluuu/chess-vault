@@ -232,6 +232,7 @@ function ChessBoard({
 
       // If current variation is finished...
       if (nextCurrCorrectMove >= pgn.length) {
+        setLastMove(move.from, move.to)
         setResult('correct')
         playSound(sounds.correct)
 
