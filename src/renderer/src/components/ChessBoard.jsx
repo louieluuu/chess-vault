@@ -37,7 +37,6 @@ function ChessBoard({
   const [lastMove, setLastMove] = useState([])
   const [pendingMove, setPendingMove] = useState()
   const [selectVisible, setSelectVisible] = useState(false)
-  const [turnColor, setTurnColor] = useState('white')
   const [selected, setSelected] = useState('')
 
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
@@ -131,7 +130,6 @@ function ChessBoard({
     chess.reset()
     setFen(chess.fen())
     setLastMove(null)
-    setTurnColor('white')
   }
 
   // Flip the orientation of the board
@@ -152,7 +150,6 @@ function ChessBoard({
         const move = chess.move(pgnMoves[i])
         setLastMove([move.from, move.to])
         setFen(chess.fen())
-        setTurnColor(oppositeColor())
         setCurrCorrectMove((prev) => prev + 1)
         playSoundMove(move)
       }, i * PAUSE_MS)
@@ -199,7 +196,6 @@ function ChessBoard({
     if (!isStudying) {
       setLastMove([from, to])
       setFen(chess.fen())
-      setTurnColor(oppositeColor())
       playSoundMove(move)
 
       return
@@ -259,10 +255,7 @@ function ChessBoard({
 
       // Reset
       setCountIncorrect(0)
-
-      // TODO this is repeated logic: stuff that has to happen every time a move is made on the chessboard. should be extracted
       setFen(chess.fen())
-      setTurnColor(oppositeColor())
     }, PAUSE_MS)
   }
 
@@ -277,8 +270,9 @@ function ChessBoard({
           legalMoves.map((m) => m.to)
         )
     })
+
     return {
-      color: turnColor,
+      color: chess.turn() === 'w' ? 'white' : 'black',
       dests,
       free: false
     }
@@ -291,7 +285,7 @@ function ChessBoard({
         height={BOARD_DIMENSION}
         fen={fen}
         orientation={orientation}
-        turnColor={turnColor}
+        turnColor={chess.turn() === 'w' ? 'white' : 'black'}
         lastMove={lastMove}
         selected={selected}
         movable={calcMovable()}
