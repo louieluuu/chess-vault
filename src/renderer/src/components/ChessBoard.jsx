@@ -137,11 +137,6 @@ function ChessBoard({
     setOrientation((prev) => (prev === 'white' ? 'black' : 'white'))
   }
 
-  // Return the opposite color of the current turn
-  function oppositeColor() {
-    return chess.turn() === 'w' ? 'white' : 'black'
-  }
-
   // Auto-move the first couple of moves so the player knows which variation is pulled up
   function autoMove(pgnMoves, orientation) {
     const numAutoMoves = orientation === 'white' ? NUM_AUTO_MOVES_WHITE : NUM_AUTO_MOVES_BLACK
