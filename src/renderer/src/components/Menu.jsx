@@ -138,6 +138,11 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
   }
 
   async function study() {
+    // Disable Study button when studying
+    if (isStudying) {
+      return
+    }
+
     setVariations(await window.db.getVariations())
     console.log(`Study variations: ${JSON.stringify(variations, null, 2)}`)
 
