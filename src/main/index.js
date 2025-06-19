@@ -1,11 +1,11 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../renderer/src/assets/img/icon.png?asset'
 
 import Database from 'better-sqlite3'
 import fs from 'fs'
 
+const isDevMode = !app.isPackaged
 const DB_PATH = 'repertoire.db'
 
 function createWindow() {
@@ -17,7 +17,6 @@ function createWindow() {
     y: 1440 - 1140,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -42,7 +41,7 @@ function createWindow() {
   }
 
   // Open dev console
-  if (process.env.NODE_ENV !== 'production') {
+  if (isDevMode) {
     mainWindow.webContents.openDevTools({ mode: 'detach' })
   }
 }
