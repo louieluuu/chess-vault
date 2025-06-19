@@ -20,6 +20,8 @@ import { playSound, playSoundMove, sounds } from '../utils/sound'
 
 const BOARD_DIMENSION = '50dvh'
 const PAUSE_MS = 500
+const RESULT_MS = 2500
+const INCORRECT_LIMIT = 2
 
 function ChessBoard({
   chess,
@@ -39,6 +41,7 @@ function ChessBoard({
   const [selected, setSelected] = useState('')
 
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
+  const [countIncorrect, setCountIncorrect] = useState(0)
 
   const [result, setResult] = useState('')
   const [isGrading, setIsGrading] = useState(false)
@@ -52,7 +55,7 @@ function ChessBoard({
   useEffect(() => {
     const timeout = setTimeout(() => {
       setResult('')
-    }, 2500)
+    }, RESULT_MS)
 
     return () => clearTimeout(timeout)
   }, [result])
@@ -114,6 +117,7 @@ function ChessBoard({
 
     // Reset other states
     setCurrCorrectMove(0)
+    setCountIncorrect(0)
 
     playSound(sounds.nextVariation)
   }, [isStudying, variations])
@@ -165,6 +169,18 @@ function ChessBoard({
     setFen(chess.fen())
   }
 
+  function highlightCorrectSquare() {
+    chess.move(pgn[currCorrectMove])
+    const history = chess.history({ verbose: true })
+    const correctSquare = history[currCorrectMove].from
+    setSelected(correctSquare)
+    chess.undo()
+
+    setTimeout(() => {
+      setSelected('')
+    }, PAUSE_MS * 2)
+  }
+
   function showResult(result) {
     const className = `chessboard__result--${result}`
     switch (result) {
@@ -198,6 +214,12 @@ function ChessBoard({
 
       setTimeout(() => {
         undoMove()
+
+        const newCountIncorrect = countIncorrect + 1
+        if (newCountIncorrect >= INCORRECT_LIMIT) {
+          highlightCorrectSquare()
+        }
+        setCountIncorrect(newCountIncorrect)
       }, PAUSE_MS)
 
       return
@@ -234,6 +256,10 @@ function ChessBoard({
         playSoundMove(response)
         setCurrCorrectMove(nextCurrCorrectMove + 1)
       }
+
+      // Reset
+      setCountIncorrect(0)
+
       // TODO this is repeated logic: stuff that has to happen every time a move is made on the chessboard. should be extracted
       setFen(chess.fen())
       setTurnColor(oppositeColor())
@@ -267,6 +293,7 @@ function ChessBoard({
         orientation={orientation}
         turnColor={turnColor}
         lastMove={lastMove}
+        selected={selected}
         movable={calcMovable()}
         onMove={onMove}
       />
