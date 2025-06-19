@@ -170,12 +170,11 @@ function ChessBoard({
   }
 
   function highlightCorrectSquare() {
-    chess.move(pgn[currCorrectMove])
-    const history = chess.history({ verbose: true })
-    const correctSquare = history[currCorrectMove].from
-    setSelected(correctSquare)
+    // "Fake move" the correct move so we can obtain the correct square, then immediately undo. No UI updates required.
+    const correctSquare = chess.move(pgn[currCorrectMove]).from
     chess.undo()
 
+    setSelected(correctSquare)
     setTimeout(() => {
       setSelected('')
     }, PAUSE_MS * 2)
