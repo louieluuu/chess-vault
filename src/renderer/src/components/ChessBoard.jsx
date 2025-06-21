@@ -74,6 +74,9 @@ function ChessBoard({
         case 'r':
           resetBoard()
           break
+        case 'arrowup':
+          resetBoard()
+          break
         case 'arrowleft':
           // TODO
           break
