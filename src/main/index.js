@@ -115,6 +115,18 @@ app.whenReady().then(() => {
     return result ? true : false
   })
 
+  ipcMain.handle('db-deleteVariation', (_, variation) => {
+    const query = `DELETE FROM Repertoire WHERE id = ?`
+
+    db.prepare(query).run(variation.id)
+  })
+
+  ipcMain.handle('db-deleteOpening', (_, opening) => {
+    const query = `DELETE FROM Repertoire WHERE opening = ?`
+
+    db.prepare(query).run(opening)
+  })
+
   ipcMain.handle('db-deleteRedundantVariation', (_, variation) => {
     const query = `SELECT id, pgn, orientation
                    FROM Repertoire

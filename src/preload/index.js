@@ -12,6 +12,12 @@ if (process.contextIsolated) {
       checkRedundant: (variation) => {
         return ipcRenderer.invoke('db-checkRedundant', variation)
       },
+      deleteVariation: (variation) => {
+        ipcRenderer.invoke('db-deleteVariation', variation)
+      },
+      deleteOpening: (opening) => {
+        ipcRenderer.invoke('db-deleteOpening', opening)
+      },
       deleteRedundantVariation: (variation) => {
         return ipcRenderer.invoke('db-deleteRedundantVariation', variation)
       },

@@ -316,4 +316,23 @@ body {
     box-shadow: 0 0 0 3px hsl(50, 75%, 50%);
     transform: translateY(-2px);
   }
+
+  &__options {
+    @include flex(row);
+
+    justify-content: flex-end;
+
+    gap: 0.5rem;
+
+    padding-bottom: 0.3rem;
+
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+
+  &__icon {
+    &:hover {
+      color: hsl(207, 7%, 75%);
+    }
+  }
 }
