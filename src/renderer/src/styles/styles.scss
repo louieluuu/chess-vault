@@ -291,6 +291,12 @@ body {
 
 // cg-container actually extends vertically past the cg-wrap
 
+.thumbnails-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3dvh;
+}
+
 .thumbnail {
   overflow: hidden; // Clip anything that extends beyond the actual chessboard
   opacity: 0.6;
