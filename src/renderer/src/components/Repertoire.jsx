@@ -1,7 +1,5 @@
 import Chessground from 'react-chessground'
 
-const THUMBNAIL_DIMENSION = '10dvh'
-
 function Repertoire({ chess, repertoire, setFen, setOrientation }) {
   function transferToMainBoard(fen, orientation, pgn) {
     chess.loadPgn(pgn)
@@ -14,12 +12,10 @@ function Repertoire({ chess, repertoire, setFen, setOrientation }) {
       {repertoire.map((r) => (
         <div
           key={r.id}
-          className="chessboard"
+          className="thumbnail"
           onClick={() => transferToMainBoard(r.fen, r.orientation, r.pgn)}
         >
           <Chessground
-            width={THUMBNAIL_DIMENSION}
-            height={THUMBNAIL_DIMENSION}
             fen={r.fen}
             orientation={r.orientation}
             coordinates={false}

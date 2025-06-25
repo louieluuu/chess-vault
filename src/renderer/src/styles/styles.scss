@@ -235,15 +235,76 @@ body {
 
   justify-content: flex-start;
   align-items: flex-start;
+  flex-wrap: wrap;
 
   height: 75dvh;
   width: 75dvh;
 
-  gap: 2.5dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  gap: 3dvh;
+  padding: 3dvh;
 
   border-radius: 2rem;
 
-  padding: 2.5dvh;
-
   background-color: hsla(204, 7%, 14%, 97.5%);
+
+  // TODO: This is all Gemini's styling, can audit/change later as needed
+  /* --- Scrollbar styling --- */
+
+  /* The scrollbar itself */
+  &::-webkit-scrollbar {
+    width: 8px; /* Width for vertical scrollbar */
+    height: 8px; /* Height for horizontal scrollbar (if any) */
+  }
+
+  /* The track (the background of the scrollbar) */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Light gray background */
+    border-radius: 10px; /* Rounded corners for the track */
+  }
+
+  /* The thumb (the draggable part of the scrollbar) */
+  &::-webkit-scrollbar-thumb {
+    background: #888; /* Darker gray for the thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+  }
+
+  /* On hover, make the thumb slightly darker */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Even darker on hover */
+  }
+
+  /* Optional: Styles for scrollbar corners (where vertical and horizontal meet) */
+  &::-webkit-scrollbar-corner {
+    background: transparent; /* Or a matching background color */
+  }
+}
+
+// Chessground DOM looks like this:
+// thumbnail
+//  cg-wrap
+//    cg-helper
+//      cg-container
+//        cg-board
+
+// cg-container actually extends vertically past the cg-wrap
+
+.thumbnail {
+  overflow: hidden; // Clip anything that extends beyond the actual chessboard
+  opacity: 0.6;
+
+  // Set chessboard size here instead of through Chessground props
+  // TODO: if the board gets "too small" then it starts taking up a massive vertical gap, not sure why...
+  .cg-wrap {
+    width: 25dvh;
+    height: 25dvh;
+  }
+
+  &:hover {
+    opacity: 1;
+    box-shadow: 0 0 0 3px hsl(50, 75%, 50%);
+    transform: translateY(-2px);
+  }
 }
