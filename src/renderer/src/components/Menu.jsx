@@ -12,7 +12,16 @@ import { playSound, sounds } from '../utils/sound'
 
 const MESSAGE_TIMEOUT_MS = 3005
 
-function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, variations }) {
+function Menu({
+  chess,
+  orientation,
+  opening,
+  eco,
+  isStudying,
+  setIsStudying,
+  variations,
+  setVariations
+}) {
   const [message, setMessage] = useState('')
 
   useEffect(() => {

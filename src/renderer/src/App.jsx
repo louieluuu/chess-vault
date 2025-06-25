@@ -11,6 +11,8 @@ function App() {
   const [fen, setFen] = useState('')
   const [orientation, setOrientation] = useState('white')
   const [pgn, setPgn] = useState([]) // TODO: this isn't necessary, can just obtain via currVariation.pgn. Refactor out at some point.
+  const [opening, setOpening] = useState('')
+  const [eco, setEco] = useState('')
   const [repertoire, setRepertoire] = useState([])
   const [variations, setVariations] = useState([])
   const [isStudying, setIsStudying] = useState(false)
@@ -33,10 +35,12 @@ function App() {
         <Menu
           chess={chess}
           orientation={orientation}
+          opening={opening}
+          eco={eco}
           isStudying={isStudying}
           setIsStudying={setIsStudying}
-          setVariations={setVariations}
           variations={variations}
+          setVariations={setVariations}
         />
         <ChessBoard
           chess={chess}
@@ -44,6 +48,10 @@ function App() {
           setFen={setFen}
           orientation={orientation}
           setOrientation={setOrientation}
+          opening={opening}
+          setOpening={setOpening}
+          eco={eco}
+          setEco={setEco}
           pgn={pgn}
           setPgn={setPgn}
           variations={variations}
