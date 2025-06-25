@@ -289,6 +289,7 @@ function ChessBoard({
         fen={fen}
         orientation={orientation}
         turnColor={chess.turn() === 'w' ? 'white' : 'black'}
+        check={chess.inCheck()}
         lastMove={lastMove}
         selected={selected}
         movable={calcMovable()}
