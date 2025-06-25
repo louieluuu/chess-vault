@@ -71,6 +71,8 @@ app.whenReady().then(() => {
         pgn           TEXT NOT NULL,
         fen           TEXT NOT NULL,
         orientation   TEXT NOT NULL,
+        opening       TEXT NOT NULL,
+        eco           TEXT NOT NULL,
         next_study    TEXT NOT NULL,
 
         status        TEXT DEFAULT 'learning' NOT NULL,

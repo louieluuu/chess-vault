@@ -9,6 +9,8 @@ import { Chess } from 'chess.js'
 function App() {
   const [chess, setChess] = useState(new Chess())
   const [orientation, setOrientation] = useState('white')
+  const [opening, setOpening] = useState('')
+  const [eco, setEco] = useState('')
   const [repertoire, setRepertoire] = useState([])
   const [variations, setVariations] = useState([])
   const [isStudying, setIsStudying] = useState(false)
@@ -31,17 +33,23 @@ function App() {
         <Menu
           chess={chess}
           orientation={orientation}
+          opening={opening}
+          eco={eco}
           isStudying={isStudying}
           setIsStudying={setIsStudying}
-          setVariations={setVariations}
           variations={variations}
+          setVariations={setVariations}
         />
         <ChessBoard
           chess={chess}
           orientation={orientation}
+          setOrientation={setOrientation}
+          opening={opening}
+          setOpening={setOpening}
+          eco={eco}
+          setEco={setEco}
           isStudying={isStudying}
           setIsStudying={setIsStudying}
-          setOrientation={setOrientation}
           variations={variations}
           setVariations={setVariations}
         />
