@@ -280,9 +280,28 @@ body {
   }
 }
 
+.opening-group {
+}
+
 .opening-group__name {
+  @include flex(row);
+
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 1rem;
+
   font-weight: bold;
-  margin-bottom: 1dvh;
+  margin-bottom: 1rem;
+}
+
+.opening-group__icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+
+  &:hover {
+    color: hsl(207, 7%, 75%);
+  }
 }
 
 // Chessground DOM looks like this:

@@ -1,6 +1,12 @@
 import Thumbnail from './Thumbnail'
 
+import { FaRegTrashAlt } from 'react-icons/fa'
+
 function Repertoire({ chess, repertoire, setFen, setOrientation }) {
+  function deleteOpening(openingName) {
+    window.db.deleteOpening(openingName)
+  }
+
   const groupedRepertoire = repertoire.reduce((acc, item) => {
     const openingName = item.opening
     if (!acc[openingName]) {
@@ -18,7 +24,13 @@ function Repertoire({ chess, repertoire, setFen, setOrientation }) {
     <div className="repertoire">
       {sortedOpeningNames.map((openingName) => (
         <div key={openingName} className="opening-group">
-          <h3 className="opening-group__name">{openingName}</h3>
+          <h3 className="opening-group__name">
+            {openingName}
+            <FaRegTrashAlt
+              className="opening-group__icon"
+              onClick={() => deleteOpening(openingName)}
+            />
+          </h3>
           <div className="thumbnails-container">
             {groupedRepertoire[openingName].map((v) => (
               <Thumbnail
