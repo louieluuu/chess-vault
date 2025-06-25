@@ -91,7 +91,9 @@ function ChessBoard({
           resetBoard()
           break
         case 'arrowleft':
-          // TODO
+          // TODO - no RAV support in chess.js as of now: https://github.com/jhlywa/chess.js/issues/522
+          // For now, left arrow will just undo the move. Refactor after RAV support?
+          undoMove()
           break
         case 'arrowright':
           // TODO
@@ -186,8 +188,15 @@ function ChessBoard({
 
   function undoMove() {
     chess.undo()
-    setLastMove((prev) => [...prev]) // force re-render
+    const currentHistory = chess.history({ verbose: true })
+    if (currentHistory.length > 0) {
+      const newLastMove = currentHistory[currentHistory.length - 1]
+      setLastMove([newLastMove.from, newLastMove.to])
+    } else {
+      setLastMove(null)
+    }
     setFen(chess.fen())
+    setOpeningAndEcoFromHistory(chess.history())
   }
 
   function highlightCorrectSquare() {
