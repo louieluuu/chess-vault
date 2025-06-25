@@ -280,6 +280,11 @@ body {
   }
 }
 
+.opening-group__name {
+  font-weight: bold;
+  margin-bottom: 1dvh;
+}
+
 // Chessground DOM looks like this:
 // thumbnail
 //  cg-wrap
