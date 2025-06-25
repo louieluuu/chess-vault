@@ -292,6 +292,7 @@ function ChessBoard({
         check={chess.inCheck()}
         lastMove={lastMove}
         selected={selected}
+        coordinates={true}
         movable={calcMovable()}
         onMove={onMove}
       />

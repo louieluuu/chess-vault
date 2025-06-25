@@ -233,10 +233,17 @@ body {
 .repertoire {
   @include flex(row);
 
+  justify-content: flex-start;
+  align-items: flex-start;
+
   height: 75dvh;
   width: 75dvh;
 
+  gap: 2.5dvh;
+
   border-radius: 2rem;
+
+  padding: 2.5dvh;
 
   background-color: hsla(204, 7%, 14%, 97.5%);
 }
