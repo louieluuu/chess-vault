@@ -231,11 +231,9 @@ body {
 }
 
 .repertoire {
-  @include flex(row);
-
+  @include flex(column);
   justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
 
   height: 75dvh;
   width: 75dvh;
