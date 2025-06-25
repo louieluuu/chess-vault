@@ -1,27 +1,16 @@
-import Chessground from 'react-chessground'
+import Thumbnail from './Thumbnail'
 
 function Repertoire({ chess, repertoire, setFen, setOrientation }) {
-  function transferToMainBoard(fen, orientation, pgn) {
-    chess.loadPgn(pgn)
-    setFen(fen)
-    setOrientation(orientation)
-  }
-
   return (
     <div className="repertoire">
-      {repertoire.map((r) => (
-        <div
-          key={r.id}
-          className="thumbnail"
-          onClick={() => transferToMainBoard(r.fen, r.orientation, r.pgn)}
-        >
-          <Chessground
-            fen={r.fen}
-            orientation={r.orientation}
-            coordinates={false}
-            viewOnly={true}
-          />
-        </div>
+      {repertoire.map((v) => (
+        <Thumbnail
+          key={v.id}
+          chess={chess}
+          variation={v}
+          setFen={setFen}
+          setOrientation={setOrientation}
+        />
       ))}
     </div>
   )
