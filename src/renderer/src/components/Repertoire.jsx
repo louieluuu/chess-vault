@@ -1,4 +1,4 @@
-function Repertoire() {
+function Repertoire({ repertoire }) {
   return <div className="repertoire"></div>
 }
 

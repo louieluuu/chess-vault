@@ -9,14 +9,19 @@ import { Chess } from 'chess.js'
 function App() {
   const [chess, setChess] = useState(new Chess())
   const [orientation, setOrientation] = useState('white')
+  const [repertoire, setRepertoire] = useState([])
   const [variations, setVariations] = useState([])
   const [isStudying, setIsStudying] = useState(false)
 
   // Upon app load, get variations that are due to be studied
   useEffect(() => {
+    async function getRepertoire() {
+      setRepertoire(await window.db.getRepertoire())
+    }
     async function getVariations() {
       setVariations(await window.db.getVariations())
     }
+    getRepertoire()
     getVariations()
   }, [])
 
@@ -41,7 +46,7 @@ function App() {
           setVariations={setVariations}
         />
       </div>
-      <Repertoire />
+      <Repertoire repertoire={repertoire} />
     </div>
   )
 }
