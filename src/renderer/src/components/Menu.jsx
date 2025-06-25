@@ -103,7 +103,9 @@ function Menu({
     const variation = {
       pgn: chess.pgn(),
       fen: chess.fen(),
-      orientation: orientation
+      orientation: orientation,
+      opening: opening,
+      eco: eco
     }
 
     console.log(`${JSON.stringify(variation)}`)

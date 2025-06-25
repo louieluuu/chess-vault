@@ -149,11 +149,13 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('db-save', (_, variation) => {
-    const query = `INSERT INTO Repertoire (pgn, fen, orientation, next_study) VALUES (?, ?, ?, ?)`
+    const query = `INSERT INTO Repertoire (pgn, fen, orientation, opening, eco, next_study) VALUES (?, ?, ?, ?, ?, ?)`
     db.prepare(query).run(
       variation.pgn,
       variation.fen,
       variation.orientation,
+      variation.opening,
+      variation.eco,
       new Date().toISOString()
     )
   })
