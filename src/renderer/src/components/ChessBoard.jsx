@@ -1,4 +1,9 @@
-// TODO check purpose of lastMove and pendingMove
+// TODO check purpose of pendingMove
+
+// Documentation:
+// https://github.com/ruilisi/react-chessground/blob/master/example/demo/src/App.js
+
+// Ctrl+P for "index.d.ts", "chessground.css"
 
 // Chessground styles
 import 'react-chessground/dist/styles/chessground.css'
