@@ -9,7 +9,7 @@
     "appId": "com.chessvault.app",
     "productName": "ChessVault",
     "win": {
-      "icon": "build/knight.ico"
+      "icon": "build/icon.ico"
     }
   },
   "scripts": {
