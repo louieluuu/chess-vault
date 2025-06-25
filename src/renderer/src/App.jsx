@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
+
 import ChessBoard from './components/ChessBoard'
 import Menu from './components/Menu'
+import Repertoire from './components/Repertoire'
+
 import { Chess } from 'chess.js'
 
 function App() {
@@ -19,23 +22,26 @@ function App() {
 
   return (
     <div className="container">
-      <ChessBoard
-        chess={chess}
-        orientation={orientation}
-        isStudying={isStudying}
-        setIsStudying={setIsStudying}
-        setOrientation={setOrientation}
-        variations={variations}
-        setVariations={setVariations}
-      />
-      <Menu
-        chess={chess}
-        orientation={orientation}
-        isStudying={isStudying}
-        setIsStudying={setIsStudying}
-        setVariations={setVariations}
-        variations={variations}
-      />
+      <div className="container__variations">
+        <Menu
+          chess={chess}
+          orientation={orientation}
+          isStudying={isStudying}
+          setIsStudying={setIsStudying}
+          setVariations={setVariations}
+          variations={variations}
+        />
+        <ChessBoard
+          chess={chess}
+          orientation={orientation}
+          isStudying={isStudying}
+          setIsStudying={setIsStudying}
+          setOrientation={setOrientation}
+          variations={variations}
+          setVariations={setVariations}
+        />
+      </div>
+      <Repertoire />
     </div>
   )
 }

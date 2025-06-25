@@ -1,39 +1,38 @@
 import { useState, useEffect } from 'react'
 
-import { FaBook } from 'react-icons/fa'
-import { FaCirclePlay } from 'react-icons/fa6'
-import { GiOpenBook } from 'react-icons/gi'
-import { IoIosSave } from 'react-icons/io'
+// Components
+import MenuButton from './MenuButton'
+
+// React icons
+import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6'
+import { FaUnlockAlt } from 'react-icons/fa'
 
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 import { playSound, sounds } from '../utils/sound'
 
+const MESSAGE_TIMEOUT_MS = 3005
+
 function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, variations }) {
-  const [status, setStatus] = useState('')
-  const [showModal, setShowModal] = useState(false)
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setStatus('')
-    }, 2500)
+      setMessage('')
+    }, MESSAGE_TIMEOUT_MS)
 
     return () => clearTimeout(timeout)
-  }, [status])
+  }, [message])
 
   /********************
    * Helper functions *
    ********************/
-
-  function showRepertoireIcon() {
-    return showModal ? <GiOpenBook /> : <FaBook />
-  }
 
   async function isValidVariation(variation) {
     const pgnArray = pgnToMovesArray(variation.pgn)
 
     // Empty variation
     if (pgnArray.length === 0) {
-      setStatus('Empty variation.')
+      setMessage('Empty variation.')
       return false
     }
 
@@ -42,7 +41,7 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
       (variation.orientation === 'white' && pgnArray.length < NUM_AUTO_MOVES_WHITE + 1) ||
       (variation.orientation === 'black' && pgnArray.length < NUM_AUTO_MOVES_BLACK + 1)
     ) {
-      setStatus('Variation is too short.')
+      setMessage('Variation is too short.')
       return false
     }
 
@@ -51,14 +50,14 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
       (variation.orientation === 'white' && pgnArray.length % 2 === 0) ||
       (variation.orientation === 'black' && pgnArray.length % 2 !== 0)
     ) {
-      setStatus('Variation must end on your move.')
+      setMessage('Variation must end on your move.')
       return false
     }
 
     // Duplicate variation
     const isDuplicate = await window.db.checkDuplicate(variation)
     if (isDuplicate) {
-      setStatus('Duplicate variation.')
+      setMessage('Duplicate variation.')
       return false
     }
 
@@ -67,13 +66,14 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
     // You try to save:   "1. e4 e5 2. c3"
     const isRedundant = await window.db.checkRedundant(variation)
     if (isRedundant) {
-      setStatus('Redundant variation.')
+      setMessage('Redundant variation.')
       return false
     }
 
     return true
   }
 
+  // TODO: currently not applying; going to redo anyways dw
   function showSaveAnimation() {
     // Shine effect
     const saveButton = document.querySelector('.menu__btn--save')
@@ -90,18 +90,7 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
    *  Main functions  *
    ********************/
 
-  async function showRepertoire() {
-    setShowModal((prev) => !prev)
-    const repertoire = await window.db.getRepertoire()
-    console.log(`Repertoire: ${JSON.stringify(repertoire, null, 2)}`)
-  }
-
   async function saveVariation() {
-    // Disable Save button when studying
-    if (isStudying) {
-      return
-    }
-
     const variation = {
       pgn: chess.pgn(),
       fen: chess.fen(),
@@ -125,65 +114,56 @@ function Menu({ chess, orientation, isStudying, setIsStudying, setVariations, va
       setVariations((prev) =>
         prev.filter((v) => !(v.pgn === result.pgn && v.orientation === result.orientation))
       )
-      setStatus('[OVERWROTE] Variation saved!')
+      setMessage('[OVERWROTE] Variation saved!')
     } else {
-      setStatus('Variation saved!')
+      setMessage('Variation saved!')
     }
 
     window.db.save(variation)
     setVariations((prev) => [...prev, variation])
 
-    showSaveAnimation()
     playSound(sounds.saveVariation)
+    showSaveAnimation()
   }
 
   async function study() {
-    // Disable Study button when studying
-    if (isStudying) {
-      return
-    }
-
     setVariations(await window.db.getVariations())
     console.log(`Study variations: ${JSON.stringify(variations, null, 2)}`)
-
-    if (variations.length === 0) {
-      setStatus("You're booked beyond belief!")
-      return
-    }
 
     playSound(sounds.startStudy)
     setIsStudying(true)
   }
 
+  function stopStudy() {
+    setIsStudying(false)
+  }
+
   return (
     <div className="menu">
-      <button className="menu__icon--repertoire" onClick={showRepertoire}>
-        {showRepertoireIcon()}
-      </button>
-
-      <div className="menu__status">{status}</div>
-
-      <button
-        className={`menu__btn--save${isStudying ? '--disabled' : ''}`}
-        onClick={saveVariation}
-      >
-        <IoIosSave className={`menu__icon--save${isStudying ? '--disabled' : ''}`} />
-        Save Variation
-      </button>
-      <span className={`menu__label${variations.length === 0 ? '--booked' : ''}`}>
-        [
-        <span className={`menu__label${variations.length === 0 ? '--booked' : '--count'}`}>
-          {variations.length}
-        </span>
-        &nbsp;remaining]
-      </span>
-      <button
-        className={`menu__btn--study${variations.length === 0 ? '--disabled' : ''}`}
-        onClick={study}
-      >
-        <FaCirclePlay className="menu__icon--study" />
-        Study Variations
-      </button>
+      <div className="menu__message">{message}</div>
+      <div className="menu__container--buttons">
+        <MenuButton
+          icon={<FaUnlockAlt />}
+          label="Save Variation"
+          onClick={saveVariation}
+          isDisabled={isStudying}
+        />
+        {isStudying ? (
+          <MenuButton
+            icon={<FaCirclePause />}
+            label={`Stop [${variations.length} due]`}
+            onClick={stopStudy}
+            isDisabled={variations.length === 0}
+          />
+        ) : (
+          <MenuButton
+            icon={<FaCirclePlay />}
+            label={`Study [${variations.length} due]`}
+            onClick={study}
+            isDisabled={variations.length === 0}
+          />
+        )}
+      </div>
     </div>
   )
 }

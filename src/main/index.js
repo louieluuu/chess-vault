@@ -11,10 +11,13 @@ const DB_PATH = 'repertoire.db'
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1080,
+    // Size
+    width: 1777,
     height: 1080,
+    // Offsets (starting location on window open)
     x: 0,
     y: 1440 - 1140,
+
     show: false,
     autoHideMenuBar: true,
     icon: join(__dirname, '../../build/icon.ico'),

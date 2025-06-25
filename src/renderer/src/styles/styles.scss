@@ -15,6 +15,12 @@ body {
   gap: 5rem;
 }
 
+.container__variations {
+  @include flex(column);
+
+  gap: 2rem;
+}
+
 .chessboard {
   position: relative;
 }
@@ -36,7 +42,7 @@ body {
 
   &--correct {
     @extend .chessboard__result;
-    color: hsl(123, 51%, 45%);
+    color: hsl(123, 50%, 45%);
   }
 
   &--incorrect {
@@ -55,9 +61,21 @@ body {
 
   position: relative;
 
-  height: 75dvh;
-  width: 32.5vw;
+  height: auto;
+  width: 50dvh;
+
+  padding-top: 3rem;
+
   background-color: hsla(204, 7%, 14%, 97.5%);
+}
+
+.menu__container--buttons {
+  @include flex(row);
+
+  width: 100%;
+  justify-content: space-between;
+
+  gap: 4rem;
 }
 
 .menu__btn {
@@ -68,11 +86,13 @@ body {
   cursor: pointer;
   font-family: 'Segoe UI';
 
+  height: 3rem;
+
   gap: 1rem;
 
-  width: 100%;
-  height: 3rem;
-  border-radius: 0.35rem;
+  padding: 1.5rem 2rem;
+
+  border-radius: 0.5rem;
   font-size: 1rem;
 
   &:hover {
@@ -83,68 +103,14 @@ body {
     outline: none;
   }
 
-  &--save {
+  &--disabled {
     @extend .menu__btn;
 
-    margin-bottom: 5rem;
+    cursor: default;
+    opacity: 0.5;
 
-    // For shine effect
-    position: relative;
-    overflow: hidden;
-
-    &--disabled {
-      @extend .menu__btn--save;
-
-      cursor: default;
-      opacity: 0.5;
-
-      &:hover {
-        background-color: hsl(207, 7%, 32%);
-      }
-    }
-
-    &.shine {
-      &::before {
-        content: '';
-        position: absolute;
-        height: 200%;
-        width: 200%;
-        background: linear-gradient(
-          transparent 0%,
-          hsla(0, 0%, 100%, 0.1) 35%,
-          hsla(50, 100%, 80%, 0.75) 50%,
-          hsla(0, 0%, 100%, 0.1) 65%,
-          transparent 100%
-        );
-        transform: rotate(-40deg);
-        transition: all 2s;
-        animation: shine 0.65s;
-        opacity: 0;
-      }
-
-      @keyframes shine {
-        0% {
-          opacity: 1;
-          left: -100%;
-        }
-        40% {
-          opacity: 1;
-          left: -85%;
-        }
-        100% {
-          opacity: 0;
-          left: 150%;
-        }
-      }
-    }
-  }
-
-  &--study {
-    @extend .menu__btn;
-
-    &--disabled {
-      @extend .menu__btn--study;
-      opacity: 0.5;
+    &:hover {
+      background-color: hsl(207, 7%, 32%);
     }
   }
 }
@@ -157,48 +123,9 @@ body {
   background: transparent;
   color: hsl(50, 60%, 50%);
 
-  &--repertoire {
+  &--disabled {
     @extend .menu__icon;
-
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-
-    &:hover {
-      color: hsl(50, 60%, 60%);
-    }
-  }
-
-  &--save {
-    @extend .menu__icon;
-
-    &--disabled {
-      @extend .menu__icon--save;
-      cursor: default;
-    }
-
-    &.shine {
-      animation: pop 0.5s ease-out;
-      color: hsl(50, 85%, 50%);
-    }
-
-    @keyframes pop {
-      0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(0.8);
-      }
-      70% {
-        transform: scale(2);
-      }
-    }
-  }
-
-  &--study {
-    @extend .menu__icon;
-
-    font-size: 1.75rem;
+    cursor: default;
   }
 }
 
@@ -219,9 +146,10 @@ body {
   }
 }
 
-.menu__status {
+.menu__message {
+  // TODO: this shouldn't be absolute anymore but I forget how to hide text and still have it take up space, fix later
   position: absolute;
-  top: 33%;
+  top: 15%;
 
   color: hsl(50, 100%, 50%);
   font-weight: bold;
@@ -300,4 +228,15 @@ body {
       background-color: hsl(118, 45%, 74%);
     }
   }
+}
+
+.repertoire {
+  @include flex(row);
+
+  height: 75dvh;
+  width: 75dvh;
+
+  border-radius: 2rem;
+
+  background-color: hsla(204, 7%, 14%, 97.5%);
 }
