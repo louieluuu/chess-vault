@@ -21,6 +21,8 @@ import { SQUARES } from 'chess.js'
 
 import { Card, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE, pgnToMovesArray } from '../utils/chess'
 
+import { STARTING_POSITION, classifyOpening } from '../utils/openingClassifier'
+
 import { playSound, playSoundMove, sounds } from '../utils/sound'
 
 const BOARD_DIMENSION = '50dvh'
@@ -36,10 +38,14 @@ function ChessBoard({
   setOrientation,
   pgn,
   setPgn,
-  variations,
-  setVariations,
+  opening,
+  setOpening,
+  eco,
+  setEco,
   isStudying,
-  setIsStudying
+  setIsStudying,
+  variations,
+  setVariations
 }) {
   const [lastMove, setLastMove] = useState([])
   const [pendingMove, setPendingMove] = useState()
@@ -140,6 +146,7 @@ function ChessBoard({
     chess.reset()
     setFen(chess.fen())
     setLastMove(null)
+    setOpeningAndEcoFromHistory(chess.history())
   }
 
   // Flip the orientation of the board
@@ -153,12 +160,24 @@ function ChessBoard({
     for (let i = 0; i < numAutoMoves; ++i) {
       setTimeout(() => {
         const move = chess.move(pgnMoves[i])
-        setLastMove([move.from, move.to])
-        setFen(chess.fen())
+        makeMove(move)
         setCurrCorrectMove((prev) => prev + 1)
         playSoundMove(move)
       }, i * PAUSE_MS)
     }
+  }
+
+  // All states that need to get updated when a move is made
+  function makeMove(move) {
+    setLastMove([move.from, move.to])
+    setFen(chess.fen())
+    setOpeningAndEcoFromHistory(chess.history())
+  }
+
+  function setOpeningAndEcoFromHistory(history) {
+    const { name, eco } = classifyOpening(history)
+    setOpening(name)
+    setEco(eco)
   }
 
   function isCorrectMove(move) {
@@ -199,8 +218,7 @@ function ChessBoard({
 
     // When not studying, any legal move is passable. Legality is already checked by the `movable` prop, so we just have to update states.
     if (!isStudying) {
-      setLastMove([from, to])
-      setFen(chess.fen())
+      makeMove(move)
       playSoundMove(move)
 
       return
@@ -233,7 +251,7 @@ function ChessBoard({
 
       // If current variation is finished...
       if (nextCurrCorrectMove >= pgn.length) {
-        setLastMove([move.from, move.to])
+        makeMove(move)
         setResult('correct')
         playSound(sounds.correct)
 
@@ -253,14 +271,13 @@ function ChessBoard({
       // Else variation is ongoing, computer plays the response
       else {
         const response = chess.move(pgn[nextCurrCorrectMove])
-        setLastMove([response.from, response.to])
+        makeMove(response)
         playSoundMove(response)
         setCurrCorrectMove(nextCurrCorrectMove + 1)
       }
 
       // Reset
       setCountIncorrect(0)
-      setFen(chess.fen())
     }, PAUSE_MS)
   }
 
