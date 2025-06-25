@@ -8,7 +8,9 @@ import { Chess } from 'chess.js'
 
 function App() {
   const [chess, setChess] = useState(new Chess())
+  const [fen, setFen] = useState('')
   const [orientation, setOrientation] = useState('white')
+  const [pgn, setPgn] = useState([]) // TODO: this isn't necessary, can just obtain via currVariation.pgn. Refactor out at some point.
   const [repertoire, setRepertoire] = useState([])
   const [variations, setVariations] = useState([])
   const [isStudying, setIsStudying] = useState(false)
@@ -38,15 +40,25 @@ function App() {
         />
         <ChessBoard
           chess={chess}
+          fen={fen}
+          setFen={setFen}
           orientation={orientation}
-          isStudying={isStudying}
-          setIsStudying={setIsStudying}
           setOrientation={setOrientation}
+          pgn={pgn}
+          setPgn={setPgn}
           variations={variations}
           setVariations={setVariations}
+          isStudying={isStudying}
+          setIsStudying={setIsStudying}
         />
       </div>
-      <Repertoire repertoire={repertoire} />
+      <Repertoire
+        chess={chess}
+        repertoire={repertoire}
+        setFen={setFen}
+        setOrientation={setOrientation}
+        setPgn={setPgn}
+      />
     </div>
   )
 }

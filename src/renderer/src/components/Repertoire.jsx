@@ -1,19 +1,27 @@
 import Chessground from 'react-chessground'
 
-const BOARD_DIMENSION = '10dvh'
+const THUMBNAIL_DIMENSION = '10dvh'
 
-function Repertoire({ repertoire }) {
-  console.log(repertoire)
+function Repertoire({ chess, repertoire, setFen, setOrientation }) {
+  function transferToMainBoard(fen, orientation, pgn) {
+    chess.loadPgn(pgn)
+    setFen(fen)
+    setOrientation(orientation)
+  }
 
   return (
     <div className="repertoire">
-      {repertoire.map((variation) => (
-        <div key={variation.id} className="chessboard">
+      {repertoire.map((r) => (
+        <div
+          key={r.id}
+          className="chessboard"
+          onClick={() => transferToMainBoard(r.fen, r.orientation, r.pgn)}
+        >
           <Chessground
-            width={BOARD_DIMENSION}
-            height={BOARD_DIMENSION}
-            fen={variation.fen}
-            orientation={variation.orientation}
+            width={THUMBNAIL_DIMENSION}
+            height={THUMBNAIL_DIMENSION}
+            fen={r.fen}
+            orientation={r.orientation}
             coordinates={false}
             viewOnly={true}
           />

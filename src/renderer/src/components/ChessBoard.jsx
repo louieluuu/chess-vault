@@ -30,15 +30,17 @@ const INCORRECT_LIMIT = 2
 
 function ChessBoard({
   chess,
+  fen,
+  setFen,
   orientation,
   setOrientation,
+  pgn,
+  setPgn,
   variations,
   setVariations,
   isStudying,
   setIsStudying
 }) {
-  const [fen, setFen] = useState('')
-  const [pgn, setPgn] = useState([])
   const [lastMove, setLastMove] = useState([])
   const [pendingMove, setPendingMove] = useState()
   const [selectVisible, setSelectVisible] = useState(false)
