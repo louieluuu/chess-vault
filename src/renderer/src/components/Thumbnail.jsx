@@ -3,7 +3,7 @@ import Chessground from 'react-chessground'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { FaArrowRightArrowLeft } from 'react-icons/fa6'
 
-function Thumbnail({ chess, variation, setFen, setOrientation }) {
+function Thumbnail({ chess, variation, setFen, setOrientation, setRepertoire }) {
   const { fen, orientation, pgn } = variation
 
   function transferToMainBoard(orientation, pgn) {
@@ -17,8 +17,9 @@ function Thumbnail({ chess, variation, setFen, setOrientation }) {
     // TODO
   }
 
-  function deleteVariation() {
+  async function deleteVariation() {
     window.db.deleteVariation(variation)
+    setRepertoire(await window.db.getRepertoire())
   }
 
   return (

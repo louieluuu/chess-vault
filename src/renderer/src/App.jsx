@@ -41,6 +41,7 @@ function App() {
           setIsStudying={setIsStudying}
           variations={variations}
           setVariations={setVariations}
+          setRepertoire={setRepertoire}
         />
         <ChessBoard
           chess={chess}
@@ -63,6 +64,7 @@ function App() {
       <Repertoire
         chess={chess}
         repertoire={repertoire}
+        setRepertoire={setRepertoire}
         setFen={setFen}
         setOrientation={setOrientation}
         setPgn={setPgn}

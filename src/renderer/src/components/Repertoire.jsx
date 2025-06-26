@@ -2,9 +2,10 @@ import Thumbnail from './Thumbnail'
 
 import { FaRegTrashAlt } from 'react-icons/fa'
 
-function Repertoire({ chess, repertoire, setFen, setOrientation }) {
-  function deleteOpening(openingName) {
-    window.db.deleteOpening(openingName)
+function Repertoire({ chess, repertoire, setFen, setOrientation, setRepertoire }) {
+  async function deleteOpening(openingName) {
+    await window.db.deleteOpening(openingName)
+    setRepertoire(await window.db.getRepertoire())
   }
 
   const groupedRepertoire = repertoire.reduce((acc, item) => {
@@ -39,6 +40,7 @@ function Repertoire({ chess, repertoire, setFen, setOrientation }) {
                 variation={v}
                 setFen={setFen}
                 setOrientation={setOrientation}
+                setRepertoire={setRepertoire}
               />
             ))}
           </div>
