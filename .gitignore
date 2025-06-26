@@ -7,6 +7,6 @@ out
 *.log*
 
 workspace.code-workspace
-repertoire.db
+vault.db
 
 pnpm-workspace.yaml

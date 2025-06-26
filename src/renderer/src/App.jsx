@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 import ChessBoard from './components/ChessBoard'
 import Menu from './components/Menu'
-import Repertoire from './components/Repertoire'
+import Vault from './components/Vault'
 
 import { Chess } from 'chess.js'
 
@@ -14,19 +14,19 @@ function App() {
   const [history, setHistory] = useState([])
   const [opening, setOpening] = useState('')
   const [eco, setEco] = useState('')
-  const [repertoire, setRepertoire] = useState([])
+  const [vault, setVault] = useState([])
   const [variations, setVariations] = useState([])
   const [isStudying, setIsStudying] = useState(false)
 
   // Upon app load, get variations that are due to be studied
   useEffect(() => {
-    async function getRepertoire() {
-      setRepertoire(await window.db.getRepertoire())
+    async function getVault() {
+      setVault(await window.db.getVault())
     }
     async function getVariations() {
       setVariations(await window.db.getVariations())
     }
-    getRepertoire()
+    getVault()
     getVariations()
   }, [])
 
@@ -42,7 +42,7 @@ function App() {
           setIsStudying={setIsStudying}
           variations={variations}
           setVariations={setVariations}
-          setRepertoire={setRepertoire}
+          setVault={setVault}
         />
         <ChessBoard
           chess={chess}
@@ -63,11 +63,11 @@ function App() {
           setIsStudying={setIsStudying}
         />
       </div>
-      <Repertoire
+      <Vault
         chess={chess}
         history={history}
-        repertoire={repertoire}
-        setRepertoire={setRepertoire}
+        vault={vault}
+        setVault={setVault}
         setFen={setFen}
         orientation={orientation}
         setOrientation={setOrientation}

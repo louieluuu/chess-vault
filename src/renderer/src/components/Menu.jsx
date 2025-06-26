@@ -21,7 +21,7 @@ function Menu({
   setIsStudying,
   variations,
   setVariations,
-  setRepertoire
+  setVault
 }) {
   const [message, setMessage] = useState('')
 
@@ -133,7 +133,7 @@ function Menu({
 
     await window.db.save(variation)
     setVariations(await window.db.getVariations())
-    setRepertoire(await window.db.getRepertoire())
+    setVault(await window.db.getVault())
 
     playSound(sounds.saveVariation)
     showSaveAnimation()

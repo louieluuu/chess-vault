@@ -6,7 +6,7 @@ import Database from 'better-sqlite3'
 import fs from 'fs'
 
 const isDevMode = !app.isPackaged
-const DB_PATH = 'repertoire.db'
+const DB_PATH = 'vault.db'
 
 function createWindow() {
   // Create the browser window.
@@ -57,7 +57,7 @@ app.whenReady().then(() => {
   // Delete the existing database
   if (isDevMode && fs.existsSync(DB_PATH) && process.argv.includes('--d')) {
     fs.unlinkSync(DB_PATH)
-    console.log('Deleted existing repertoire.db')
+    console.log('Deleted existing vault.db')
   }
 
   // Create the database instance
@@ -66,7 +66,7 @@ app.whenReady().then(() => {
   // Create a table if it doesn't exist already
   db.prepare(
     `
-      CREATE TABLE IF NOT EXISTS Repertoire (
+      CREATE TABLE IF NOT EXISTS Vault (
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
         pgn           TEXT NOT NULL,
         fen           TEXT NOT NULL,
@@ -99,7 +99,7 @@ app.whenReady().then(() => {
   // Socket.on functions
   ipcMain.handle('db-checkDuplicate', (_, variation) => {
     const query = `SELECT pgn, orientation 
-                   FROM Repertoire 
+                   FROM Vault 
                    WHERE pgn = ? AND orientation = ?
                   `
     const result = db.prepare(query).get(variation.pgn, variation.orientation)
@@ -108,7 +108,7 @@ app.whenReady().then(() => {
 
   ipcMain.handle('db-checkRedundant', (_, variation) => {
     const query = `SELECT id
-                   FROM Repertoire
+                   FROM Vault
                    WHERE pgn LIKE CONCAT(?, '%') AND orientation = ?
                   `
     const result = db.prepare(query).get(variation.pgn, variation.orientation)
@@ -116,26 +116,26 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('db-deleteVariation', (_, variation) => {
-    const query = `DELETE FROM Repertoire WHERE id = ?`
+    const query = `DELETE FROM Vault WHERE id = ?`
 
     db.prepare(query).run(variation.id)
   })
 
   ipcMain.handle('db-deleteOpening', (_, opening) => {
-    const query = `DELETE FROM Repertoire WHERE opening = ?`
+    const query = `DELETE FROM Vault WHERE opening = ?`
 
     db.prepare(query).run(opening)
   })
 
   ipcMain.handle('db-deleteRedundantVariation', (_, variation) => {
     const query = `SELECT id, pgn, orientation
-                   FROM Repertoire
+                   FROM Vault
                    WHERE ? LIKE CONCAT(pgn, '%') AND orientation = ?
                   `
     const result = db.prepare(query).get(variation.pgn, variation.orientation)
 
     if (result) {
-      db.prepare(`DELETE FROM Repertoire WHERE id = ?`).run(result.id)
+      db.prepare(`DELETE FROM Vault WHERE id = ?`).run(result.id)
       console.log(`Deleted redundant variation: ${JSON.stringify(result)}`)
     } else {
       console.log('No redundant variations here bruther!')
@@ -144,16 +144,16 @@ app.whenReady().then(() => {
     return result
   })
 
-  ipcMain.handle('db-getRepertoire', () => {
+  ipcMain.handle('db-getVault', () => {
     const query = `SELECT *
-                   FROM Repertoire 
+                   FROM Vault 
                   `
     return db.prepare(query).all()
   })
 
   ipcMain.handle('db-getVariations', () => {
     const query = `SELECT *
-                   FROM Repertoire 
+                   FROM Vault 
                    WHERE next_study <= ?
                    ORDER BY next_study ASC
                   `
@@ -161,7 +161,7 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('db-save', (_, variation) => {
-    const query = `INSERT INTO Repertoire (pgn, fen, orientation, opening, eco, next_study) VALUES (?, ?, ?, ?, ?, ?)`
+    const query = `INSERT INTO Vault (pgn, fen, orientation, opening, eco, next_study) VALUES (?, ?, ?, ?, ?, ?)`
     db.prepare(query).run(
       variation.pgn,
       variation.fen,
@@ -175,7 +175,7 @@ app.whenReady().then(() => {
   ipcMain.handle('db-update', (_, update) => {
     console.log('Updating db...')
     console.log(update)
-    const query = `UPDATE Repertoire
+    const query = `UPDATE Vault
                    SET next_study = ?, status = ?, interval = ?, ease = ?, step = ?
                    WHERE id = ?`
     db.prepare(query).run(

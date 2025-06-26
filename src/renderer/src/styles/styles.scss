@@ -229,7 +229,7 @@ body {
   }
 }
 
-.repertoire {
+.vault {
   @include flex(column);
   justify-content: flex-start;
   align-items: flex-start;
@@ -281,7 +281,7 @@ body {
   }
 }
 
-.repertoire__icon {
+.vault__icon {
   position: absolute;
   z-index: 9;
   top: 11%;
@@ -292,14 +292,14 @@ body {
   transition: transform 0.4s ease-out;
 
   &--white {
-    @extend .repertoire__icon;
+    @extend .vault__icon;
     color: white;
     filter: drop-shadow(0 0 1px rgba(0, 165, 255, 0.8)) drop-shadow(0 0 1px rgba(0, 165, 255, 0.6));
     transform: rotateY(0deg);
   }
 
   &--black {
-    @extend .repertoire__icon;
+    @extend .vault__icon;
     color: black;
     filter: drop-shadow(0 0 1px white) drop-shadow(0 0 1px white) drop-shadow(0 0 1px white)
       drop-shadow(0 0 1px white);

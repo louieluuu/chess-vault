@@ -5,27 +5,19 @@ import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
 
-function Repertoire({
-  chess,
-  history,
-  repertoire,
-  setFen,
-  orientation,
-  setOrientation,
-  setRepertoire
-}) {
+function Vault({ chess, history, vault, setFen, orientation, setOrientation, setVault }) {
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
-    setRepertoire(await window.db.getRepertoire())
+    setVault(await window.db.getVault())
   }
 
-  const filteredRepertoire = repertoire.filter((item) => {
+  const filteredVault = vault.filter((item) => {
     const historyString = history.join(' ')
     const variationString = pgnToMovesArray(item.pgn).join(' ')
     return item.orientation === orientation && variationString.startsWith(historyString)
   })
 
-  const groupedRepertoire = filteredRepertoire.reduce((acc, item) => {
+  const groupedVault = filteredVault.reduce((acc, item) => {
     const openingName = item.opening || 'Unknown'
     if (!acc[openingName]) {
       acc[openingName] = []
@@ -34,18 +26,16 @@ function Repertoire({
     return acc
   }, {})
 
-  const sortedOpeningNames = Object.keys(groupedRepertoire).sort((nameA, nameB) =>
+  const sortedOpeningNames = Object.keys(groupedVault).sort((nameA, nameB) =>
     nameA.localeCompare(nameB)
   )
 
   return (
     <>
-      {/* Placed _outside_ of repertoire, because repertoire is a scrollview which has overflow properties that cuts off children elements that hang outside */}
-      <SiChessdotcom
-        className={`repertoire__icon${orientation === 'white' ? '--white' : '--black'}`}
-      />
+      {/* Placed _outside_ of vault, because vault is a scrollview which has overflow properties that cuts off children elements that hang outside */}
+      <SiChessdotcom className={`vault__icon${orientation === 'white' ? '--white' : '--black'}`} />
 
-      <div className="repertoire">
+      <div className="vault">
         {sortedOpeningNames.map((openingName) => (
           <div key={openingName} className="opening-group">
             <h3 className="opening-group__name">
@@ -56,14 +46,14 @@ function Repertoire({
               />
             </h3>
             <div className="thumbnails-container">
-              {groupedRepertoire[openingName].map((v) => (
+              {groupedVault[openingName].map((v) => (
                 <Thumbnail
                   key={v.id}
                   chess={chess}
                   variation={v}
                   setFen={setFen}
                   setOrientation={setOrientation}
-                  setRepertoire={setRepertoire}
+                  setVault={setVault}
                 />
               ))}
             </div>
@@ -74,4 +64,4 @@ function Repertoire({
   )
 }
 
-export default Repertoire
+export default Vault
