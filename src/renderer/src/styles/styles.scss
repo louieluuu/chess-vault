@@ -289,10 +289,13 @@ body {
 
   font-size: 5dvh;
 
+  transition: transform 0.4s ease-out;
+
   &--white {
     @extend .repertoire__icon;
     color: white;
-    filter: drop-shadow(2px 2px 2px hsl(240, 7%, 11%));
+    filter: drop-shadow(0 0 1px rgba(0, 165, 255, 0.8)) drop-shadow(0 0 1px rgba(0, 165, 255, 0.6));
+    transform: rotateY(0deg);
   }
 
   &--black {
@@ -300,6 +303,7 @@ body {
     color: black;
     filter: drop-shadow(0 0 1px white) drop-shadow(0 0 1px white) drop-shadow(0 0 1px white)
       drop-shadow(0 0 1px white);
+    transform: rotateY(180deg);
   }
 }
 
