@@ -2,14 +2,26 @@ import Thumbnail from './Thumbnail'
 
 import { FaRegTrashAlt } from 'react-icons/fa'
 
-function Repertoire({ chess, repertoire, setFen, setOrientation, setRepertoire }) {
+import { pgnToMovesArray } from '../utils/chess'
+
+function Repertoire({ chess, history, repertoire, setFen, setOrientation, setRepertoire }) {
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
     setRepertoire(await window.db.getRepertoire())
   }
 
-  const groupedRepertoire = repertoire.reduce((acc, item) => {
-    const openingName = item.opening
+  const filteredRepertoire = repertoire.filter((item) => {
+    if (!history || history.length === 0) {
+      return true
+    }
+
+    const historyString = history.join(' ')
+    const variationString = pgnToMovesArray(item.pgn).join(' ')
+    return variationString.startsWith(historyString)
+  })
+
+  const groupedRepertoire = filteredRepertoire.reduce((acc, item) => {
+    const openingName = item.opening || 'Unknown'
     if (!acc[openingName]) {
       acc[openingName] = []
     }
