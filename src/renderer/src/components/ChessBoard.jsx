@@ -147,10 +147,8 @@ function ChessBoard({
   // Reset board to its initial state
   function resetBoard() {
     chess.reset()
-    setFen(chess.fen())
-    setHistory(chess.history())
+    updateChessStates()
     setLastMove(null)
-    setOpeningAndEcoFromHistory(chess.history())
   }
 
   // Flip the orientation of the board
@@ -174,6 +172,10 @@ function ChessBoard({
   // All states that need to get updated when a move is made
   function makeMove(move) {
     setLastMove([move.from, move.to])
+    updateChessStates()
+  }
+
+  function updateChessStates() {
     setFen(chess.fen())
     setHistory(chess.history())
     setOpeningAndEcoFromHistory(chess.history())
@@ -198,9 +200,7 @@ function ChessBoard({
     } else {
       setLastMove(null)
     }
-    setFen(chess.fen())
-    setHistory(chess.history())
-    setOpeningAndEcoFromHistory(chess.history())
+    updateChessStates()
   }
 
   function highlightCorrectSquare() {
