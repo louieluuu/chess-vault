@@ -1,6 +1,7 @@
 import Thumbnail from './Thumbnail'
 
 import { FaRegTrashAlt } from 'react-icons/fa'
+import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
 
@@ -38,31 +39,38 @@ function Repertoire({
   )
 
   return (
-    <div className="repertoire">
-      {sortedOpeningNames.map((openingName) => (
-        <div key={openingName} className="opening-group">
-          <h3 className="opening-group__name">
-            {openingName}
-            <FaRegTrashAlt
-              className="opening-group__icon"
-              onClick={() => deleteOpening(openingName)}
-            />
-          </h3>
-          <div className="thumbnails-container">
-            {groupedRepertoire[openingName].map((v) => (
-              <Thumbnail
-                key={v.id}
-                chess={chess}
-                variation={v}
-                setFen={setFen}
-                setOrientation={setOrientation}
-                setRepertoire={setRepertoire}
+    <>
+      {/* Placed _outside_ of repertoire, because repertoire is a scrollview which has overflow properties that cuts off children elements that hang outside */}
+      <SiChessdotcom
+        className={`repertoire__icon${orientation === 'white' ? '--white' : '--black'}`}
+      />
+
+      <div className="repertoire">
+        {sortedOpeningNames.map((openingName) => (
+          <div key={openingName} className="opening-group">
+            <h3 className="opening-group__name">
+              {openingName}
+              <FaRegTrashAlt
+                className="opening-group__icon"
+                onClick={() => deleteOpening(openingName)}
               />
-            ))}
+            </h3>
+            <div className="thumbnails-container">
+              {groupedRepertoire[openingName].map((v) => (
+                <Thumbnail
+                  key={v.id}
+                  chess={chess}
+                  variation={v}
+                  setFen={setFen}
+                  setOrientation={setOrientation}
+                  setRepertoire={setRepertoire}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   )
 }
 
