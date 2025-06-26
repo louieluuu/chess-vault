@@ -234,6 +234,8 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
 
+  position: relative;
+
   height: 75dvh;
   width: 75dvh;
 
@@ -276,6 +278,28 @@ body {
   /* Optional: Styles for scrollbar corners (where vertical and horizontal meet) */
   &::-webkit-scrollbar-corner {
     background: transparent; /* Or a matching background color */
+  }
+}
+
+.repertoire__icon {
+  position: absolute;
+  z-index: 9;
+  top: 11%;
+  left: 43.5%;
+
+  font-size: 5dvh;
+
+  &--white {
+    @extend .repertoire__icon;
+    color: white;
+    filter: drop-shadow(2px 2px 2px hsl(240, 7%, 11%));
+  }
+
+  &--black {
+    @extend .repertoire__icon;
+    color: black;
+    filter: drop-shadow(0 0 1px white) drop-shadow(0 0 1px white) drop-shadow(0 0 1px white)
+      drop-shadow(0 0 1px white);
   }
 }
 
