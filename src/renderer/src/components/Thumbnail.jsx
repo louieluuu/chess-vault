@@ -3,13 +3,14 @@ import Chessground from 'react-chessground'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { FaArrowRightArrowLeft } from 'react-icons/fa6'
 
-function Thumbnail({ chess, variation, setFen, setOrientation, setVault }) {
+function Thumbnail({ chess, variation, setFen, setOrientation, setVault, setHistory }) {
   const { fen, orientation, pgn } = variation
 
   function transferToMainBoard(orientation, pgn) {
     chess.loadPgn(pgn)
     setFen(chess.fen())
     setOrientation(orientation)
+    setHistory(chess.history())
     // TODO: setLastMove here to avoid visual bug where you make a move on main board and then press a thumbnail
   }
 

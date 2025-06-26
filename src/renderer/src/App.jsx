@@ -66,6 +66,7 @@ function App() {
       <Vault
         chess={chess}
         history={history}
+        setHistory={setHistory}
         vault={vault}
         setVault={setVault}
         setFen={setFen}

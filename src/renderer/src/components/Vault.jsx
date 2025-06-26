@@ -5,7 +5,16 @@ import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
 
-function Vault({ chess, history, vault, setFen, orientation, setOrientation, setVault }) {
+function Vault({
+  chess,
+  history,
+  setHistory,
+  vault,
+  setFen,
+  orientation,
+  setOrientation,
+  setVault
+}) {
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
     setVault(await window.db.getVault())
@@ -54,6 +63,7 @@ function Vault({ chess, history, vault, setFen, orientation, setOrientation, set
                   setFen={setFen}
                   setOrientation={setOrientation}
                   setVault={setVault}
+                  setHistory={setHistory}
                 />
               ))}
             </div>
