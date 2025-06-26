@@ -22,17 +22,18 @@ function Thumbnail({
     // TODO: setLastMove here to avoid visual bug where you make a move on main board and then press a thumbnail
   }
 
-  function handleClick() {
+  async function handleClick() {
     const { id } = variation.id
     if (isRepertoireMode) {
-      window.db.archiveVariation({
+      await window.db.archiveVariation({
         id: variation.id
       })
     } else {
-      window.db.activateVariation({
+      await window.db.activateVariation({
         id: variation.id
       })
     }
+    setVault(await window.db.getVault())
   }
 
   async function deleteVariation() {
