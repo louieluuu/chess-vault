@@ -307,6 +307,15 @@ body {
   }
 }
 
+.vault__icon-mode-toggle {
+  position: absolute;
+  z-index: 9;
+  top: 1%;
+  right: 5%;
+
+  font-size: 2dvh;
+}
+
 .opening-group {
 }
 

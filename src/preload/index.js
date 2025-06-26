@@ -27,6 +27,12 @@ if (process.contextIsolated) {
       getVariations: () => {
         return ipcRenderer.invoke('db-getVariations')
       },
+      archiveVariation: (archiveVariation) => {
+        ipcRenderer.invoke('db-archiveVariation', archiveVariation)
+      },
+      activateVariation: (activateVariation) => {
+        ipcRenderer.invoke('db-activateVariation', activateVariation)
+      },
       update: (update) => {
         ipcRenderer.invoke('db-update', update)
       },

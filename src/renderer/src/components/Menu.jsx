@@ -106,7 +106,8 @@ function Menu({
       fen: chess.fen(),
       orientation: orientation,
       opening: opening,
-      eco: eco
+      eco: eco,
+      active: 1
     }
 
     console.log(`${JSON.stringify(variation)}`)

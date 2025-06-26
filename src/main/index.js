@@ -73,8 +73,9 @@ app.whenReady().then(() => {
         orientation   TEXT NOT NULL,
         opening       TEXT NOT NULL,
         eco           TEXT NOT NULL,
-        next_study    TEXT NOT NULL,
+        active        INTEGER DEFAULT 1 NOT NULL,
 
+        next_study    TEXT NOT NULL,
         status        TEXT DEFAULT 'learning' NOT NULL,
         interval      INTEGER DEFAULT 60 NOT NULL,
         ease          INTEGER DEFAULT 2.5 NOT NULL,
@@ -154,22 +155,41 @@ app.whenReady().then(() => {
   ipcMain.handle('db-getVariations', () => {
     const query = `SELECT *
                    FROM Vault 
-                   WHERE next_study <= ?
+                   WHERE next_study <= ? AND active = 1
                    ORDER BY next_study ASC
                   `
     return db.prepare(query).all(new Date().toISOString())
   })
 
   ipcMain.handle('db-save', (_, variation) => {
-    const query = `INSERT INTO Vault (pgn, fen, orientation, opening, eco, next_study) VALUES (?, ?, ?, ?, ?, ?)`
+    const query = `INSERT INTO Vault (pgn, fen, orientation, opening, eco, active, next_study) VALUES (?, ?, ?, ?, ?, ?, ?)`
     db.prepare(query).run(
       variation.pgn,
       variation.fen,
       variation.orientation,
       variation.opening,
       variation.eco,
+      variation.active,
       new Date().toISOString()
     )
+  })
+
+  ipcMain.handle('db-archiveVariation', (_, update) => {
+    console.log('Updating db...')
+    console.log(update)
+    const query = `UPDATE Vault
+                   SET active = 0
+                   WHERE id = ?`
+    db.prepare(query).run(update.id)
+  })
+
+  ipcMain.handle('db-activateVariation', (_, update) => {
+    console.log('Updating db...')
+    console.log(update)
+    const query = `UPDATE Vault
+                   SET active = 1
+                   WHERE id = ?`
+    db.prepare(query).run(update.id)
   })
 
   ipcMain.handle('db-update', (_, update) => {

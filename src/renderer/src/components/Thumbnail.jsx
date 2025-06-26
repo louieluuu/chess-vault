@@ -3,7 +3,15 @@ import Chessground from 'react-chessground'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { FaArrowRightArrowLeft } from 'react-icons/fa6'
 
-function Thumbnail({ chess, variation, setFen, setOrientation, setVault, setHistory }) {
+function Thumbnail({
+  chess,
+  variation,
+  isRepertoireMode,
+  setFen,
+  setOrientation,
+  setVault,
+  setHistory
+}) {
   const { fen, orientation, pgn } = variation
 
   function transferToMainBoard(orientation, pgn) {
@@ -14,8 +22,20 @@ function Thumbnail({ chess, variation, setFen, setOrientation, setVault, setHist
     // TODO: setLastMove here to avoid visual bug where you make a move on main board and then press a thumbnail
   }
 
-  function archiveVariation() {
-    // TODO
+  function handleClick() {
+    console.log(variation)
+    const { id } = variation.id
+    if (isRepertoireMode) {
+      window.db.archiveVariation({
+        id: variation.id
+      })
+      console.log('archiving')
+    } else {
+      window.db.activateVariation({
+        id: variation.id
+      })
+      console.log('activating')
+    }
   }
 
   async function deleteVariation() {
@@ -26,7 +46,7 @@ function Thumbnail({ chess, variation, setFen, setOrientation, setVault, setHist
   return (
     <div className="thumbnail">
       <div className="thumbnail__options">
-        <FaArrowRightArrowLeft className="thumbnail__icon" onClick={archiveVariation} />
+        <FaArrowRightArrowLeft className="thumbnail__icon" onClick={handleClick} />
         <FaRegTrashAlt className="thumbnail__icon" onClick={deleteVariation} />
       </div>
       <div className="chessboard" onClick={() => transferToMainBoard(orientation, pgn)}>

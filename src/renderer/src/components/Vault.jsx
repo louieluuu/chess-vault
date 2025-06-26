@@ -1,6 +1,8 @@
+import React, { useState } from 'react'
+
 import Thumbnail from './Thumbnail'
 
-import { FaRegTrashAlt } from 'react-icons/fa'
+import { FaRegTrashAlt, FaArchive, FaRegListAlt } from 'react-icons/fa'
 import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
@@ -15,6 +17,8 @@ function Vault({
   setOrientation,
   setVault
 }) {
+  const [isRepertoireMode, setIsRepertoireMode] = useState(true)
+
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
     setVault(await window.db.getVault())
@@ -23,7 +27,12 @@ function Vault({
   const filteredVault = vault.filter((item) => {
     const historyString = history.join(' ')
     const variationString = pgnToMovesArray(item.pgn).join(' ')
-    return item.orientation === orientation && variationString.startsWith(historyString)
+    const isVariationActive = item.active === 1 ? true : false
+    return (
+      item.orientation === orientation &&
+      isRepertoireMode === isVariationActive &&
+      variationString.startsWith(historyString)
+    )
   })
 
   const groupedVault = filteredVault.reduce((acc, item) => {
@@ -45,6 +54,12 @@ function Vault({
       <SiChessdotcom className={`vault__icon${orientation === 'white' ? '--white' : '--black'}`} />
 
       <div className="vault">
+        <button
+          className="vault__icon-mode-toggle"
+          onClick={() => setIsRepertoireMode(!isRepertoireMode)}
+        >
+          test
+        </button>
         {sortedOpeningNames.map((openingName) => (
           <div key={openingName} className="opening-group">
             <h3 className="opening-group__name">
@@ -60,6 +75,7 @@ function Vault({
                   key={v.id}
                   chess={chess}
                   variation={v}
+                  isRepertoireMode={isRepertoireMode}
                   setFen={setFen}
                   setOrientation={setOrientation}
                   setVault={setVault}
