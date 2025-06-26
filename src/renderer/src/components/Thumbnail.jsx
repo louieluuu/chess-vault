@@ -23,18 +23,15 @@ function Thumbnail({
   }
 
   function handleClick() {
-    console.log(variation)
     const { id } = variation.id
     if (isRepertoireMode) {
       window.db.archiveVariation({
         id: variation.id
       })
-      console.log('archiving')
     } else {
       window.db.activateVariation({
         id: variation.id
       })
-      console.log('activating')
     }
   }
 
