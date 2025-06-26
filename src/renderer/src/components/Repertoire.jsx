@@ -4,20 +4,24 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 
 import { pgnToMovesArray } from '../utils/chess'
 
-function Repertoire({ chess, history, repertoire, setFen, setOrientation, setRepertoire }) {
+function Repertoire({
+  chess,
+  history,
+  repertoire,
+  setFen,
+  orientation,
+  setOrientation,
+  setRepertoire
+}) {
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
     setRepertoire(await window.db.getRepertoire())
   }
 
   const filteredRepertoire = repertoire.filter((item) => {
-    if (!history || history.length === 0) {
-      return true
-    }
-
     const historyString = history.join(' ')
     const variationString = pgnToMovesArray(item.pgn).join(' ')
-    return variationString.startsWith(historyString)
+    return item.orientation === orientation && variationString.startsWith(historyString)
   })
 
   const groupedRepertoire = filteredRepertoire.reduce((acc, item) => {

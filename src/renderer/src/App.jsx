@@ -69,6 +69,7 @@ function App() {
         repertoire={repertoire}
         setRepertoire={setRepertoire}
         setFen={setFen}
+        orientation={orientation}
         setOrientation={setOrientation}
         setPgn={setPgn}
       />
