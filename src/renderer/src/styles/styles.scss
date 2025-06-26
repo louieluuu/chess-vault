@@ -63,10 +63,6 @@ body {
 
   height: auto;
   width: 50dvh;
-
-  padding-top: 3rem;
-
-  background-color: hsla(204, 7%, 14%, 97.5%);
 }
 
 .menu__container--buttons {
@@ -74,15 +70,14 @@ body {
 
   width: 100%;
   justify-content: space-between;
-
-  gap: 4rem;
 }
 
 .menu__btn {
   @include flex(row);
 
   color: white;
-  background-color: hsl(207, 7%, 32%);
+  background-color: hsl(207, 7%, 25%);
+
   cursor: pointer;
   font-family: 'Segoe UI';
 
@@ -96,7 +91,7 @@ body {
   font-size: 1rem;
 
   &:hover {
-    background-color: hsl(207, 7%, 37%);
+    background-color: hsl(207, 7%, 30%);
   }
 
   &:focus {
@@ -110,7 +105,7 @@ body {
     opacity: 0.5;
 
     &:hover {
-      background-color: hsl(207, 7%, 32%);
+      background-color: hsl(207, 7%, 25%);
     }
   }
 }
@@ -147,12 +142,16 @@ body {
 }
 
 .menu__message {
-  // TODO: this shouldn't be absolute anymore but I forget how to hide text and still have it take up space, fix later
   position: absolute;
-  top: 15%;
+  top: -75%;
 
   color: hsl(50, 100%, 50%);
   font-weight: bold;
+
+  &--hidden {
+    @extend .menu__message;
+    visibility: hidden;
+  }
 }
 
 .grade-menu {

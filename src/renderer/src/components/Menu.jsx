@@ -153,7 +153,7 @@ function Menu({
 
   return (
     <div className="menu">
-      <div className="menu__message">{message}</div>
+      <div className={`menu__message${!message ? '--hidden' : ''}`}>{message}</div>
       <div className="menu__container--buttons">
         <MenuButton
           icon={<FaUnlockAlt />}
