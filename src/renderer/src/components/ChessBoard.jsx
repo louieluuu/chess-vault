@@ -21,7 +21,7 @@ import { SQUARES } from 'chess.js'
 
 import { Card, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE, pgnToMovesArray } from '../utils/chess'
 
-import { STARTING_POSITION, classifyOpening } from '../utils/openingClassifier'
+import { classifyOpening } from '../utils/openingClassifier'
 
 import { playSound, playSoundMove, sounds } from '../utils/sound'
 
@@ -34,6 +34,7 @@ function ChessBoard({
   chess,
   fen,
   setFen,
+  setHistory,
   orientation,
   setOrientation,
   pgn,
@@ -147,6 +148,7 @@ function ChessBoard({
   function resetBoard() {
     chess.reset()
     setFen(chess.fen())
+    setHistory(chess.history())
     setLastMove(null)
     setOpeningAndEcoFromHistory(chess.history())
   }
@@ -173,6 +175,7 @@ function ChessBoard({
   function makeMove(move) {
     setLastMove([move.from, move.to])
     setFen(chess.fen())
+    setHistory(chess.history())
     setOpeningAndEcoFromHistory(chess.history())
   }
 
@@ -196,6 +199,7 @@ function ChessBoard({
       setLastMove(null)
     }
     setFen(chess.fen())
+    setHistory(chess.history())
     setOpeningAndEcoFromHistory(chess.history())
   }
 

@@ -11,6 +11,7 @@ function App() {
   const [fen, setFen] = useState('')
   const [orientation, setOrientation] = useState('white')
   const [pgn, setPgn] = useState([]) // TODO: this isn't necessary, can just obtain via currVariation.pgn. Refactor out at some point.
+  const [history, setHistory] = useState([])
   const [opening, setOpening] = useState('')
   const [eco, setEco] = useState('')
   const [repertoire, setRepertoire] = useState([])
@@ -47,6 +48,7 @@ function App() {
           chess={chess}
           fen={fen}
           setFen={setFen}
+          setHistory={setHistory}
           orientation={orientation}
           setOrientation={setOrientation}
           opening={opening}
@@ -63,6 +65,7 @@ function App() {
       </div>
       <Repertoire
         chess={chess}
+        history={history}
         repertoire={repertoire}
         setRepertoire={setRepertoire}
         setFen={setFen}
