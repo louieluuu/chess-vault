@@ -1,7 +1,7 @@
 import Chessground from 'react-chessground'
 
 import { FaRegTrashAlt } from 'react-icons/fa'
-import { FaArrowRightArrowLeft } from 'react-icons/fa6'
+import { LuFolderSymlink, LuFolderOutput } from 'react-icons/lu'
 
 function Thumbnail({
   chess,
@@ -44,7 +44,11 @@ function Thumbnail({
   return (
     <div className="thumbnail">
       <div className="thumbnail__options">
-        <FaArrowRightArrowLeft className="thumbnail__icon" onClick={handleClick} />
+        {isRepertoireMode ? (
+          <LuFolderSymlink className="thumbnail__icon" onClick={handleClick} />
+        ) : (
+          <LuFolderOutput className="thumbnail__icon" onClick={handleClick} />
+        )}
         <FaRegTrashAlt className="thumbnail__icon" onClick={deleteVariation} />
       </div>
       <div className="chessboard" onClick={() => transferToMainBoard(orientation, pgn)}>
