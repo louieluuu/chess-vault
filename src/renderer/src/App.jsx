@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 
 import ChessBoard from './components/ChessBoard'
 import Menu from './components/Menu'
+import PgnInput from './components/PgnInput'
 import Vault from './components/Vault'
 
 import { Chess } from 'chess.js'
 
 function App() {
-  const [chess, setChess] = useState(new Chess())
+  const [chess, setChess] = useState(new Chess()) // TODO should this be a state...?
   const [fen, setFen] = useState('')
   const [orientation, setOrientation] = useState('white')
   const [pgn, setPgn] = useState([]) // TODO: this isn't necessary, can just obtain via currVariation.pgn. Refactor out at some point.
@@ -61,6 +62,13 @@ function App() {
           setVariations={setVariations}
           isStudying={isStudying}
           setIsStudying={setIsStudying}
+        />
+        <PgnInput
+          chess={chess}
+          setEco={setEco}
+          setFen={setFen}
+          setHistory={setHistory}
+          setOpening={setOpening}
         />
       </div>
       <Vault
