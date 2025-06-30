@@ -72,13 +72,15 @@ function Vault({
         </button>
         {sortedFamilyNames.map((familyName) => (
           <div key={familyName} className="opening-family">
-            <h3 className="opening-family__name">
-              {familyName}
-              <FaRegTrashAlt
-                className="opening-family__icon"
-                onClick={() => deleteOpening(familyName)}
-              />
-            </h3>
+            <div className="opening-family__group">
+              <h3 className="opening-family__name">
+                {familyName}
+                <FaRegTrashAlt
+                  className="opening-family__icon"
+                  onClick={() => deleteOpening(familyName)}
+                />
+              </h3>
+            </div>
             <div className="opening-variations">
               {Object.keys(groupedVault[familyName])
                 .sort((a, b) => a.localeCompare(b))

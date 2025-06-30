@@ -243,7 +243,7 @@ body {
   overflow-y: auto;
 
   gap: 3dvh;
-  padding: 3dvh;
+  padding-inline: 3dvh;
 
   border-radius: 2rem;
 
@@ -319,6 +319,13 @@ body {
 .opening-family {
 }
 
+.opening-family__group {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: hsla(204, 7%, 14%, 97.5%);
+}
+
 .opening-family__name {
   @include flex(row);
 
@@ -328,12 +335,11 @@ body {
   gap: 1rem;
 
   font-weight: bold;
-  margin-bottom: 1rem;
 }
 
 .opening-family__icon {
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 0.8rem;
 
   &:hover {
     color: hsl(207, 7%, 75%);
