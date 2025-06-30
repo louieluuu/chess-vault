@@ -352,6 +352,13 @@ body {
   gap: 1rem;
 }
 
+.opening-variation__name {
+  position: sticky;
+  top: 2.5dvh;
+  z-index: 9;
+  background-color: hsla(204, 7%, 14%, 97.5%);
+}
+
 // Chessground DOM looks like this:
 // thumbnail
 //  cg-wrap
