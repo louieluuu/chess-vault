@@ -316,10 +316,10 @@ body {
   font-size: 2dvh;
 }
 
-.opening-group {
+.opening-family {
 }
 
-.opening-group__name {
+.opening-family__name {
   @include flex(row);
 
   align-items: center;
@@ -331,13 +331,19 @@ body {
   margin-bottom: 1rem;
 }
 
-.opening-group__icon {
+.opening-family__icon {
   cursor: pointer;
   font-size: 1.5rem;
 
   &:hover {
     color: hsl(207, 7%, 75%);
   }
+}
+
+.opening-variations {
+  @include flex(column);
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 // Chessground DOM looks like this:

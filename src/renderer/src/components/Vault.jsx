@@ -37,15 +37,24 @@ function Vault({
   })
 
   const groupedVault = filteredVault.reduce((acc, item) => {
-    const openingName = item.opening || 'Unknown'
-    if (!acc[openingName]) {
-      acc[openingName] = []
+    if (!item || !item.opening || typeof item.opening !== 'string') {
+      return acc
     }
-    acc[openingName].push(item)
+    const parts = item.opening.split(':')
+    const familyName = parts[0].trim()
+    const variationSuffix = parts.length > 1 ? parts.slice(1).join(':').trim() : ''
+
+    if (!acc[familyName]) {
+      acc[familyName] = {}
+    }
+    if (!acc[familyName][variationSuffix]) {
+      acc[familyName][variationSuffix] = []
+    }
+    acc[familyName][variationSuffix].push(item)
     return acc
   }, {})
 
-  const sortedOpeningNames = Object.keys(groupedVault).sort((nameA, nameB) =>
+  const sortedFamilyNames = Object.keys(groupedVault).sort((nameA, nameB) =>
     nameA.localeCompare(nameB)
   )
 
@@ -61,29 +70,38 @@ function Vault({
         >
           test
         </button>
-        {sortedOpeningNames.map((openingName) => (
-          <div key={openingName} className="opening-group">
-            <h3 className="opening-group__name">
-              {openingName}
+        {sortedFamilyNames.map((familyName) => (
+          <div key={familyName} className="opening-family">
+            <h3 className="opening-family__name">
+              {familyName}
               <FaRegTrashAlt
-                className="opening-group__icon"
-                onClick={() => deleteOpening(openingName)}
+                className="opening-family__icon"
+                onClick={() => deleteOpening(familyName)}
               />
             </h3>
-            <div className="thumbnails-container">
-              {groupedVault[openingName].map((v) => (
-                <Thumbnail
-                  key={v.id}
-                  chess={chess}
-                  variation={v}
-                  isRepertoireMode={isRepertoireMode}
-                  setFen={setFen}
-                  setOrientation={setOrientation}
-                  setVault={setVault}
-                  setHistory={setHistory}
-                  setVariations={setVariations}
-                />
-              ))}
+            <div className="opening-variations">
+              {Object.keys(groupedVault[familyName])
+                .sort((a, b) => a.localeCompare(b))
+                .map((variationSuffix) => (
+                  <div key={variationSuffix} className="opening-variation">
+                    <p className="opening-variation__name">{variationSuffix}</p>
+                    <div className="thumbnails-container">
+                      {groupedVault[familyName][variationSuffix].map((v) => (
+                        <Thumbnail
+                          key={v.id}
+                          chess={chess}
+                          variation={v}
+                          isRepertoireMode={isRepertoireMode}
+                          setFen={setFen}
+                          setOrientation={setOrientation}
+                          setVault={setVault}
+                          setHistory={setHistory}
+                          setVariations={setVariations}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         ))}
