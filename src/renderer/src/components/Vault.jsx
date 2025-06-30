@@ -15,7 +15,8 @@ function Vault({
   setFen,
   orientation,
   setOrientation,
-  setVault
+  setVault,
+  setVariations
 }) {
   const [isRepertoireMode, setIsRepertoireMode] = useState(true)
 
@@ -80,6 +81,7 @@ function Vault({
                   setOrientation={setOrientation}
                   setVault={setVault}
                   setHistory={setHistory}
+                  setVariations={setVariations}
                 />
               ))}
             </div>

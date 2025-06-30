@@ -73,6 +73,7 @@ function App() {
         orientation={orientation}
         setOrientation={setOrientation}
         setPgn={setPgn}
+        setVariations={setVariations}
       />
     </div>
   )

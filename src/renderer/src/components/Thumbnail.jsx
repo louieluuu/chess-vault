@@ -10,7 +10,8 @@ function Thumbnail({
   setFen,
   setOrientation,
   setVault,
-  setHistory
+  setHistory,
+  setVariations
 }) {
   const { fen, orientation, pgn } = variation
 
@@ -33,6 +34,7 @@ function Thumbnail({
         id: variation.id
       })
     }
+    setVariations(await window.db.getVariations())
     setVault(await window.db.getVault())
   }
 
