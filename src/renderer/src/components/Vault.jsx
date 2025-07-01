@@ -28,10 +28,10 @@ function Vault({
   const filteredVault = vault.filter((item) => {
     const historyString = history.join(' ')
     const variationString = pgnToMovesArray(item.pgn).join(' ')
-    const itemCategory = item.active === 1 ? 'repertoire' : 'archive'
+    const variationCategory = item.active === 1 ? 'repertoire' : 'archive'
     return (
       item.orientation === orientation &&
-      view === itemCategory &&
+      view === variationCategory &&
       variationString.startsWith(historyString)
     )
   })
