@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 
 import Thumbnail from './Thumbnail'
 
-import { FaRegTrashAlt, FaArchive, FaRegListAlt } from 'react-icons/fa'
+import { FaRegTrashAlt } from 'react-icons/fa'
+// TODO
+// import { FaBookBookmark, FaFolderOpen } from 'react-icons/fa6'
+// import { FaBook, FaBookOpen } from 'react-icons/fa6'
 import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
@@ -66,12 +69,22 @@ function Vault({
       <div className="vault">
         {/* Tabs */}
         <div className="tabs">
-          <button className="view-btn__repertoire" onClick={() => setView('repertoire')}>
-            Repertoire
-          </button>
-          <button className="view-btn__archive" onClick={() => setView('archive')}>
-            Archive
-          </button>
+          <div className="tab">
+            <button
+              className={`view-btn__repertoire${view === 'archive' ? '--inactive' : ''}`}
+              onClick={() => setView('repertoire')}
+            >
+              REPERTOIRE
+            </button>
+          </div>
+          <div className="tab">
+            <button
+              className={`view-btn__archive${view === 'repertoire' ? '--inactive' : ''}`}
+              onClick={() => setView('archive')}
+            >
+              ARCHIVE
+            </button>
+          </div>
         </div>
         {sortedFamilyNames.map((familyName) => (
           <div key={familyName} className="opening-family">

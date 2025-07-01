@@ -242,9 +242,10 @@ body {
   width: $VAULT_SIZE;
 
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 
   gap: 3dvh;
+  padding-top: 0dvh;
   padding-inline: 3dvh;
 
   border-radius: 2rem;
@@ -286,25 +287,67 @@ body {
 .tabs {
   @include flex(row);
   width: 100%;
+
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  background-color: hsla(204, 7%, 14%, 97.5%);
+}
+
+.tab {
+  @include flex(row);
+  width: 100%;
 }
 
 .view-btn {
   width: 100%;
 
-  padding: 1rem;
+  z-index: -1;
+
+  outline: none;
+  padding: 0.15rem 0;
+
+  font-family: 'Michroma';
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+
+  border: 1px solid black;
+
+  cursor: pointer;
 
   &__repertoire {
     @extend .view-btn;
+    background-color: hsl(200, 75%, 75%);
+
+    &--inactive {
+      @extend .view-btn__repertoire;
+      background-color: hsl(0, 0%, 80%);
+
+      &:hover {
+        background-color: hsl(0, 0%, 85%);
+      }
+    }
   }
 
   &__archive {
     @extend .view-btn;
+    background-color: hsl(50, 75%, 75%);
+
+    &--inactive {
+      @extend .view-btn__archive;
+      background-color: hsl(0, 0%, 80%);
+
+      &:hover {
+        background-color: hsl(0, 0%, 85%);
+      }
+    }
   }
 }
 
 .vault__icon {
   position: absolute;
-  z-index: 9;
+  z-index: 1;
   top: 11%;
   left: 43.5%;
 
@@ -333,8 +376,8 @@ body {
 
 .opening-family__group {
   position: sticky;
-  top: 0;
-  z-index: 10;
+  top: 1.8rem;
+  z-index: 8;
   background-color: hsla(204, 7%, 14%, 97.5%);
 }
 
@@ -346,6 +389,7 @@ body {
 
   gap: 1rem;
 
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
@@ -366,8 +410,8 @@ body {
 
 .opening-variation__name {
   position: sticky;
-  top: 2.5dvh;
-  z-index: 9;
+  top: 3.6rem;
+  z-index: 7;
   background-color: hsla(204, 7%, 14%, 97.5%);
 }
 
