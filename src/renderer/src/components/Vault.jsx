@@ -69,22 +69,18 @@ function Vault({
       <div className="vault">
         {/* Tabs */}
         <div className="tabs">
-          <div className="tab">
-            <button
-              className={`view-btn__repertoire${view === 'archive' ? '--inactive' : ''}`}
-              onClick={() => setView('repertoire')}
-            >
-              REPERTOIRE
-            </button>
-          </div>
-          <div className="tab">
-            <button
-              className={`view-btn__archive${view === 'repertoire' ? '--inactive' : ''}`}
-              onClick={() => setView('archive')}
-            >
-              ARCHIVE
-            </button>
-          </div>
+          <button
+            className={`view-btn__repertoire${view === 'archive' ? '--inactive' : ''}`}
+            onClick={() => setView('repertoire')}
+          >
+            REPERTOIRE
+          </button>
+          <button
+            className={`view-btn__archive${view === 'repertoire' ? '--inactive' : ''}`}
+            onClick={() => setView('archive')}
+          >
+            ARCHIVE
+          </button>
         </div>
         {sortedFamilyNames.map((familyName) => (
           <div key={familyName} className="opening-family">
