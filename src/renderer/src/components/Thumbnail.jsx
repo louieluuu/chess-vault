@@ -6,7 +6,7 @@ import { LuFolderSymlink, LuFolderOutput } from 'react-icons/lu'
 function Thumbnail({
   chess,
   variation,
-  isRepertoireMode,
+  view,
   setFen,
   setOrientation,
   setVault,
@@ -25,11 +25,11 @@ function Thumbnail({
 
   async function handleClick() {
     const { id } = variation.id
-    if (isRepertoireMode) {
+    if (view === 'repertoire') {
       await window.db.archiveVariation({
         id: variation.id
       })
-    } else {
+    } else if (view === 'archive') {
       await window.db.activateVariation({
         id: variation.id
       })
@@ -46,7 +46,7 @@ function Thumbnail({
   return (
     <div className="thumbnail">
       <div className="thumbnail__options">
-        {isRepertoireMode ? (
+        {view === 'repertoire' ? (
           <LuFolderSymlink className="thumbnail__icon" onClick={handleClick} />
         ) : (
           <LuFolderOutput className="thumbnail__icon" onClick={handleClick} />

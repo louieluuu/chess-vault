@@ -18,7 +18,7 @@ function Vault({
   setVault,
   setVariations
 }) {
-  const [isRepertoireMode, setIsRepertoireMode] = useState(true)
+  const [view, setView] = useState('repertoire')
 
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
@@ -28,10 +28,10 @@ function Vault({
   const filteredVault = vault.filter((item) => {
     const historyString = history.join(' ')
     const variationString = pgnToMovesArray(item.pgn).join(' ')
-    const isVariationActive = item.active === 1 ? true : false
+    const isVariationActive = item.active === 1 ? 'repertoire' : 'archive'
     return (
       item.orientation === orientation &&
-      isRepertoireMode === isVariationActive &&
+      view === isVariationActive &&
       variationString.startsWith(historyString)
     )
   })
@@ -64,12 +64,15 @@ function Vault({
       <SiChessdotcom className={`vault__icon${orientation === 'white' ? '--white' : '--black'}`} />
 
       <div className="vault">
-        <button
-          className="vault__icon-mode-toggle"
-          onClick={() => setIsRepertoireMode(!isRepertoireMode)}
-        >
-          test
-        </button>
+        {/* Tabs */}
+        <div className="tabs">
+          <button className="view-btn__repertoire" onClick={() => setView('repertoire')}>
+            Repertoire
+          </button>
+          <button className="view-btn__archive" onClick={() => setView('archive')}>
+            Archive
+          </button>
+        </div>
         {sortedFamilyNames.map((familyName) => (
           <div key={familyName} className="opening-family">
             <div className="opening-family__group">

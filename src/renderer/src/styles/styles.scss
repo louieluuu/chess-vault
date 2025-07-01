@@ -1,3 +1,5 @@
+$VAULT_SIZE: 75dvh;
+
 @mixin flex($direction) {
   display: flex;
   flex-direction: $direction;
@@ -236,8 +238,8 @@ body {
 
   position: relative;
 
-  height: 75dvh;
-  width: 75dvh;
+  height: $VAULT_SIZE;
+  width: $VAULT_SIZE;
 
   overflow-x: hidden;
   overflow-y: auto;
@@ -281,6 +283,25 @@ body {
   }
 }
 
+.tabs {
+  @include flex(row);
+  width: 100%;
+}
+
+.view-btn {
+  width: 100%;
+
+  padding: 1rem;
+
+  &__repertoire {
+    @extend .view-btn;
+  }
+
+  &__archive {
+    @extend .view-btn;
+  }
+}
+
 .vault__icon {
   position: absolute;
   z-index: 9;
@@ -307,16 +328,7 @@ body {
   }
 }
 
-.vault__icon-mode-toggle {
-  position: absolute;
-  z-index: 9;
-  top: 1%;
-  right: 5%;
-
-  font-size: 2dvh;
-}
-
-.opening-family {
+.opening-group {
 }
 
 .opening-family__group {
@@ -381,8 +393,8 @@ body {
   // Set chessboard size here instead of through Chessground props
   // TODO: if the board gets "too small" then it starts taking up a massive vertical gap, not sure why...
   .cg-wrap {
-    width: 25dvh;
-    height: 25dvh;
+    width: 20dvh;
+    height: 20dvh;
   }
 
   &:hover {
