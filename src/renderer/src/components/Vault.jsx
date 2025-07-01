@@ -96,7 +96,7 @@ function Vault({
                           key={v.id}
                           chess={chess}
                           variation={v}
-                          isRepertoireMode={isRepertoireMode}
+                          view={view}
                           setFen={setFen}
                           setOrientation={setOrientation}
                           setVault={setVault}
