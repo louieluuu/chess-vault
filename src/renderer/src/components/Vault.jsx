@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 
 import Thumbnail from './Thumbnail'
+import Tab from './Tab'
 
 import { FaRegTrashAlt } from 'react-icons/fa'
-// TODO
+// TODO tab icons?
 // import { FaBookBookmark, FaFolderOpen } from 'react-icons/fa6'
 // import { FaBook, FaBookOpen } from 'react-icons/fa6'
 import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
+
+const REPERTOIRE_COLOR = 'hsl(200, 75%, 75%)'
+const ARCHIVE_COLOR = 'hsl(50, 75%, 75%)'
 
 function Vault({
   chess,
@@ -22,6 +26,10 @@ function Vault({
   setVariations
 }) {
   const [view, setView] = useState('repertoire')
+
+  // Colors
+  const VAULT_COLOR =
+    view === 'repertoire' ? 'hsla(204, 7%, 14%, 97.5%)' : 'hsla(60, 15%, 15%, 97.5%)'
 
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
@@ -66,21 +74,22 @@ function Vault({
       {/* Placed _outside_ of vault, because vault is a scrollview which has overflow properties that cuts off children elements that hang outside */}
       <SiChessdotcom className={`vault__icon${orientation === 'white' ? '--white' : '--black'}`} />
 
-      <div className="vault">
+      <div className="vault" style={{ backgroundColor: VAULT_COLOR }}>
         {/* Tabs */}
         <div className="tabs">
-          <button
-            className={`view-btn__repertoire${view === 'archive' ? '--inactive' : ''}`}
+          <Tab
+            label="REPERTOIRE"
+            backgroundColor={REPERTOIRE_COLOR}
             onClick={() => setView('repertoire')}
-          >
-            REPERTOIRE
-          </button>
-          <button
-            className={`view-btn__archive${view === 'repertoire' ? '--inactive' : ''}`}
+            isActive={view === 'repertoire'}
+          />
+
+          <Tab
+            label="ARCHIVE"
+            backgroundColor={ARCHIVE_COLOR}
             onClick={() => setView('archive')}
-          >
-            ARCHIVE
-          </button>
+            isActive={view === 'archive'}
+          />
         </div>
         {sortedFamilyNames.map((familyName) => (
           <div key={familyName} className="opening-family">

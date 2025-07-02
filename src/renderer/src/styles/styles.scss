@@ -248,39 +248,22 @@ body {
   padding-top: 0dvh;
   padding-inline: 3dvh;
 
-  border-radius: 2rem;
+  border-radius: 2rem 0 0 2rem;
 
-  background-color: hsla(204, 7%, 14%, 97.5%);
-
-  // TODO: This is all Gemini's styling, can audit/change later as needed
-  /* --- Scrollbar styling --- */
-
-  /* The scrollbar itself */
   &::-webkit-scrollbar {
-    width: 8px; /* Width for vertical scrollbar */
-    height: 8px; /* Height for horizontal scrollbar (if any) */
+    width: 8px;
   }
 
-  /* The track (the background of the scrollbar) */
   &::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Light gray background */
-    border-radius: 10px; /* Rounded corners for the track */
+    background: hsl(0, 0%, 92.5%);
   }
 
-  /* The thumb (the draggable part of the scrollbar) */
   &::-webkit-scrollbar-thumb {
-    background: #888; /* Darker gray for the thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
+    background: hsl(0, 0%, 53%);
   }
 
-  /* On hover, make the thumb slightly darker */
   &::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Even darker on hover */
-  }
-
-  /* Optional: Styles for scrollbar corners (where vertical and horizontal meet) */
-  &::-webkit-scrollbar-corner {
-    background: transparent; /* Or a matching background color */
+    background: hsl(0, 0%, 33%);
   }
 }
 
@@ -288,61 +271,12 @@ body {
   @include flex(row);
   width: 100%;
 
+  gap: 0.5rem;
+
   position: sticky;
   top: 0;
   z-index: 9;
   background-color: hsla(204, 7%, 14%, 97.5%);
-}
-
-.tab {
-  @include flex(row);
-  width: 100%;
-}
-
-.view-btn {
-  width: 100%;
-
-  z-index: -1;
-
-  outline: none;
-  padding: 0.15rem 0;
-
-  font-family: 'Michroma';
-  font-size: 1rem;
-  font-weight: bold;
-  letter-spacing: 0.2rem;
-
-  border: 1px solid black;
-
-  cursor: pointer;
-
-  &__repertoire {
-    @extend .view-btn;
-    background-color: hsl(200, 75%, 75%);
-
-    &--inactive {
-      @extend .view-btn__repertoire;
-      background-color: hsl(0, 0%, 80%);
-
-      &:hover {
-        background-color: hsl(0, 0%, 85%);
-      }
-    }
-  }
-
-  &__archive {
-    @extend .view-btn;
-    background-color: hsl(50, 75%, 75%);
-
-    &--inactive {
-      @extend .view-btn__archive;
-      background-color: hsl(0, 0%, 80%);
-
-      &:hover {
-        background-color: hsl(0, 0%, 85%);
-      }
-    }
-  }
 }
 
 .vault__icon {
