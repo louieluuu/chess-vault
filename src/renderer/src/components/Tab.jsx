@@ -8,24 +8,24 @@ function Tab({ icon, label, backgroundColor, onClick, isActive }) {
       return backgroundColor
     }
     if (isHovered) {
-      return 'hsl(0, 0%, 85%)'
+      return 'hsl(0, 0%, 30%)'
     }
-    return 'hsl(0, 0%, 80%)'
+    return 'hsl(0, 0%, 25%)'
   }
 
   const tabStyles = {
+    height: isActive ? '1.8rem' : '1.5rem',
+    color: isActive ? 'black' : 'hsl(0, 0%, 50%)',
+    cursor: isActive ? 'default' : 'pointer',
+    backgroundColor: getBackgroundColor(),
+
     width: '100%',
-    zIndex: -1,
     outline: 'none',
-    paddingTop: '0.15rem',
-    paddingBottom: '0.5rem',
     fontFamily: 'Orbitron',
     fontSize: '1rem',
     fontWeight: 'bold',
     letterSpacing: '0.3rem',
-    backgroundColor: getBackgroundColor(),
-    borderRadius: '0.5rem 2rem 0 0',
-    cursor: 'pointer'
+    borderRadius: '0.5rem 2rem 0 0'
   }
 
   return (

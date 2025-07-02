@@ -85,9 +85,6 @@ function ChessBoard({
         case 'f':
           flipBoard()
           break
-        case 'r':
-          resetBoard()
-          break
         case 'arrowup':
           resetBoard()
           break
@@ -98,6 +95,8 @@ function ChessBoard({
           break
         case 'arrowright':
           // TODO
+          break
+        default:
           break
       }
     }
