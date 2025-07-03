@@ -27,7 +27,7 @@ import { playSound, playSoundMove, sounds } from '../utils/sound'
 
 const BOARD_DIMENSION = '50dvh'
 const PAUSE_MS = 500
-const RESULT_MS = 2500
+const RESULT_MS = 1000
 const STUDY_MODE_ANIMATION_MS = 1000
 const INCORRECT_LIMIT = 2
 
@@ -49,6 +49,7 @@ function ChessBoard({
   variations,
   setVariations
 }) {
+  const [renderKey, setRenderKey] = useState(false)
   const [lastMove, setLastMove] = useState([])
   const [pendingMove, setPendingMove] = useState()
   const [selectVisible, setSelectVisible] = useState(false)
@@ -109,6 +110,15 @@ function ChessBoard({
     }
   }, [isStudying])
 
+  // Force re-render of chessboard after Study Mode animation ends to keep chess piece locations up to date - otherwise the board will not be interactable
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setRenderKey((prev) => !prev)
+    }, STUDY_MODE_ANIMATION_MS + 750)
+
+    return () => clearTimeout(timeout)
+  }, [isStudying])
+
   // Studying logic
   useEffect(() => {
     if (!isStudying) {
@@ -118,7 +128,7 @@ function ChessBoard({
     resetBoard()
     playSound(sounds.nextVariation)
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       // All variations finished
       if (variations.length === 0) {
         setResult('booked')
@@ -139,6 +149,8 @@ function ChessBoard({
       setCurrCorrectMove(0)
       setCountIncorrect(0)
     }, STUDY_MODE_ANIMATION_MS)
+
+    return () => clearTimeout(timeout)
   }, [isStudying, variations])
 
   /********************
@@ -317,6 +329,7 @@ function ChessBoard({
   return (
     <div className="chessboard">
       <Chessground
+        key={renderKey}
         width={BOARD_DIMENSION}
         height={BOARD_DIMENSION}
         fen={fen}
