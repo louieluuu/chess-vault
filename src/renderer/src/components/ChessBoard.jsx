@@ -5,8 +5,7 @@
 
 // Ctrl+P for "index.d.ts", "chessground.css"
 
-// Chessground styles
-import 'react-chessground/dist/styles/chessground.css'
+import React, { useState, useEffect } from 'react'
 
 // Components
 import GradeMenu from './GradeMenu'
@@ -15,8 +14,9 @@ import GradeMenu from './GradeMenu'
 import { FaCircleCheck } from 'react-icons/fa6'
 import { FaBook } from 'react-icons/fa'
 
-import React, { useState, useEffect } from 'react'
 import Chessground from 'react-chessground'
+import 'react-chessground/dist/styles/chessground.css'
+
 import { SQUARES } from 'chess.js'
 
 import { Card, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE, pgnToMovesArray } from '../utils/chess'
@@ -28,6 +28,7 @@ import { playSound, playSoundMove, sounds } from '../utils/sound'
 const BOARD_DIMENSION = '50dvh'
 const PAUSE_MS = 500
 const RESULT_MS = 2500
+const STUDY_MODE_ANIMATION_MS = 1000
 const INCORRECT_LIMIT = 2
 
 function ChessBoard({
@@ -106,37 +107,38 @@ function ChessBoard({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isStudying, lastMove])
+  }, [isStudying])
 
-  // While studying: variation end logic
+  // Studying logic
   useEffect(() => {
     if (!isStudying) {
       return
     }
 
     resetBoard()
-
-    // All variations finished
-    if (variations.length === 0) {
-      setResult('booked')
-      playSound(sounds.booked)
-      setIsStudying(false)
-      return
-    }
-
-    // Else, next variation
-    // Set chessboard states
-    const { pgn, orientation } = variations[0]
-    const pgnMoves = pgnToMovesArray(pgn)
-    setPgn(pgnMoves)
-    setOrientation(orientation)
-    autoMove(pgnMoves, orientation)
-
-    // Reset other states
-    setCurrCorrectMove(0)
-    setCountIncorrect(0)
-
     playSound(sounds.nextVariation)
+
+    setTimeout(() => {
+      // All variations finished
+      if (variations.length === 0) {
+        setResult('booked')
+        playSound(sounds.booked)
+        setIsStudying(false)
+        return
+      }
+
+      // Else, next variation
+      // Set chessboard states
+      const { pgn, orientation } = variations[0]
+      const pgnMoves = pgnToMovesArray(pgn)
+      setPgn(pgnMoves)
+      setOrientation(orientation)
+      autoMove(pgnMoves, orientation)
+
+      // Reset other states
+      setCurrCorrectMove(0)
+      setCountIncorrect(0)
+    }, STUDY_MODE_ANIMATION_MS)
   }, [isStudying, variations])
 
   /********************

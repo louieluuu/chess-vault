@@ -17,19 +17,25 @@ const ARCHIVE_COLOR = 'hsl(50, 75%, 75%)'
 
 function Vault({
   chess,
+  setFen,
   history,
   setHistory,
-  vault,
-  setFen,
+  isStudying,
   orientation,
   setOrientation,
-  setVault,
-  setVariations
+  setVariations,
+  vault,
+  setVault
 }) {
   const [view, setView] = useState('repertoire')
 
   // Keyboard shortcuts
   useEffect(() => {
+    // Disable keyboard shortcuts when studying
+    if (isStudying) {
+      return
+    }
+
     function handleKeyDown(e) {
       switch (e.key.toLowerCase()) {
         case 'a':
@@ -48,7 +54,7 @@ function Vault({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  })
+  }, [isStudying])
 
   // Colors
   const VAULT_COLOR =
@@ -100,11 +106,7 @@ function Vault({
 
   return (
     <>
-      <div className="vault__container">
-        <SiChessdotcom
-          className={`vault__pawn${orientation === 'white' ? '--white' : '--black'}`}
-        />
-
+      <div className={`vault__container${isStudying ? '--studying' : ''}`}>
         {/* Tabs */}
         <div className="tabs" style={{ borderBottom: `4px solid ${TAB_COLOR}` }}>
           <Tab
@@ -122,44 +124,52 @@ function Vault({
           />
         </div>
 
+        {/* Pawn icon */}
+        <SiChessdotcom
+          className={`vault__pawn${orientation === 'white' ? '--white' : '--black'}`}
+        />
+
+        {/* Vault body */}
         <div className="vault" style={scrollViewStyles}>
-          {sortedFamilyNames.map((familyName) => (
-            <div key={familyName} className="opening-family">
-              <div className="opening-family__group">
-                <div className="opening-family__name">
-                  {familyName}
-                  <FaRegTrashAlt
-                    className="opening-family__icon"
-                    onClick={() => deleteOpening(familyName)}
-                  />
+          {/* Hide thumbnails during Study Mode animation */}
+          {!isStudying &&
+            sortedFamilyNames.map((familyName) => (
+              <div key={familyName} className="opening-family">
+                <div className="opening-family__group">
+                  <div className="opening-family__name">
+                    {familyName}
+                    <FaRegTrashAlt
+                      className="opening-family__icon"
+                      onClick={() => deleteOpening(familyName)}
+                    />
+                  </div>
+                </div>
+                <div className="opening-variations">
+                  {Object.keys(groupedVault[familyName])
+                    .sort((a, b) => a.localeCompare(b))
+                    .map((variationSuffix) => (
+                      <div key={variationSuffix} className="opening-variation">
+                        <p className="opening-variation__name">{variationSuffix}</p>
+                        <div className="thumbnails-container">
+                          {groupedVault[familyName][variationSuffix].map((v) => (
+                            <Thumbnail
+                              key={v.id}
+                              chess={chess}
+                              variation={v}
+                              view={view}
+                              setFen={setFen}
+                              setOrientation={setOrientation}
+                              setVault={setVault}
+                              setHistory={setHistory}
+                              setVariations={setVariations}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
-              <div className="opening-variations">
-                {Object.keys(groupedVault[familyName])
-                  .sort((a, b) => a.localeCompare(b))
-                  .map((variationSuffix) => (
-                    <div key={variationSuffix} className="opening-variation">
-                      <p className="opening-variation__name">{variationSuffix}</p>
-                      <div className="thumbnails-container">
-                        {groupedVault[familyName][variationSuffix].map((v) => (
-                          <Thumbnail
-                            key={v.id}
-                            chess={chess}
-                            variation={v}
-                            view={view}
-                            setFen={setFen}
-                            setOrientation={setOrientation}
-                            setVault={setVault}
-                            setHistory={setHistory}
-                            setVariations={setVariations}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </>

@@ -1,5 +1,6 @@
 $VAULT_SIZE: 75dvh;
 $STICKY: 0.5rem;
+$TRANSITION_DURATION_S: 1.3s;
 
 @mixin flex($direction) {
   display: flex;
@@ -12,19 +13,43 @@ body {
   font-family: 'Courier New';
 }
 
-.container {
+.app {
   @include flex(row);
-
+  width: 100%;
   gap: 5rem;
+  transition: all $TRANSITION_DURATION_S ease-in-out;
+
+  &--studying {
+    @extend .app;
+    gap: 0;
+  }
 }
 
-.container__variations {
+.variations__container {
   @include flex(column);
-
+  flex: 1;
   gap: 2rem;
 }
 
+.vault__container {
+  @include flex(column);
+  flex: 1;
+  position: relative;
+  width: 100%;
+
+  transition: all $TRANSITION_DURATION_S - 0.5s ease-in-out;
+
+  &--studying {
+    @extend .vault__container;
+    flex: 0;
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
 .chessboard {
+  // Note: height and width are not defined here. Passing them into Chessground as props ensures proper re-rendering natively.
   position: relative;
 }
 
@@ -48,11 +73,6 @@ body {
     color: hsl(123, 50%, 45%);
   }
 
-  &--incorrect {
-    @extend .chessboard__result;
-    color: hsl(0, 50%, 50%);
-  }
-
   &--booked {
     @extend .chessboard__result;
     color: hsl(50, 75%, 50%);
@@ -61,11 +81,9 @@ body {
 
 .menu {
   @include flex(column);
-
   position: relative;
-
-  height: auto;
   width: 50dvh;
+  height: auto;
 }
 
 .menu__container--buttons {
@@ -84,11 +102,10 @@ body {
   cursor: pointer;
   font-family: 'Segoe UI';
 
-  height: 3rem;
+  width: 21dvh;
+  height: 3.5rem;
 
   gap: 1rem;
-
-  padding: 1.5rem 2rem;
 
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -232,12 +249,6 @@ body {
   }
 }
 
-.vault__container {
-  @include flex(column);
-  position: relative;
-  width: 100%;
-}
-
 .vault {
   @include flex(column);
   justify-content: flex-start;
@@ -316,6 +327,7 @@ body {
   }
 }
 
+// TODO: opening names font-size should be based off dvh; too small on big screens
 .opening-family {
 }
 
@@ -372,21 +384,15 @@ body {
 // cg-container actually extends vertically past the cg-wrap
 
 .thumbnails-container {
-  display: flex;
+  @include flex(row);
   flex-wrap: wrap;
   gap: 3dvh;
 }
 
 .thumbnail {
+  // TODO: idk if this overflow hidden is necessary anymore? (scroll to bottom of vault and see...)
   overflow: hidden; // Clip anything that extends beyond the actual chessboard
   opacity: 0.6;
-
-  // Set chessboard size here instead of through Chessground props
-  // TODO: if the board gets "too small" then it starts taking up a massive vertical gap, not sure why...
-  .cg-wrap {
-    width: 20dvh;
-    height: 20dvh;
-  }
 
   &:hover {
     opacity: 1;
@@ -414,20 +420,16 @@ body {
   }
 }
 
-.pgn {
+.pgn__input {
   @include flex(row);
 
-  gap: 1rem;
-  margin: 1rem;
+  // Do not set this to 100%. Width should match the width of the ChessBoard to avoid stretching during Study Mode animation.
+  width: 50dvh;
 
-  width: 100%;
-}
-
-.pgn__input {
+  // Must be here in order to be clickable, i.e. above the extra vertical space being taken up by the bottom of the Chessground board.
   z-index: 9;
 
-  width: 100%;
-
+  margin-top: 1rem; // yes, this is necessary
   padding: 0.5rem 0.75rem;
   border: 3px solid transparent;
   border-radius: 0.375rem;

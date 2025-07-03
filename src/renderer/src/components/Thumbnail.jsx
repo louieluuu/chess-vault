@@ -3,6 +3,8 @@ import Chessground from 'react-chessground'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { LuFolderSymlink, LuFolderOutput } from 'react-icons/lu'
 
+const THUMBNAIL_DIMENSION = '20dvh'
+
 function Thumbnail({
   chess,
   variation,
@@ -53,8 +55,15 @@ function Thumbnail({
         )}
         <FaRegTrashAlt className="thumbnail__icon" onClick={deleteVariation} />
       </div>
-      <div className="chessboard" onClick={() => transferToMainBoard(orientation, pgn)}>
-        <Chessground fen={fen} orientation={orientation} coordinates={false} viewOnly={true} />
+      <div onClick={() => transferToMainBoard(orientation, pgn)}>
+        <Chessground
+          width={THUMBNAIL_DIMENSION}
+          height={THUMBNAIL_DIMENSION}
+          fen={fen}
+          orientation={orientation}
+          coordinates={false}
+          viewOnly={true}
+        />
       </div>
     </div>
   )

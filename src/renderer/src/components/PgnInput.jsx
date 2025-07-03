@@ -41,20 +41,19 @@ function PgnInput({ chess, setEco, setFen, setHistory, setOpening }) {
   }
 
   return (
-    <div className="pgn">
-      <input
-        readOnly
-        ref={inputRef}
-        className={`pgn__input${isFading ? '--fading' : ''}`}
-        type="text"
-        value={text}
-        placeholder="Paste PGN here..."
-        onPaste={handlePaste}
-      />
-    </div>
+    <input
+      readOnly
+      ref={inputRef}
+      className={`pgn__input${isFading ? '--fading' : ''}`}
+      type="text"
+      value={text}
+      placeholder="Paste PGN here..."
+      onPaste={handlePaste}
+    />
   )
 }
 
 export default PgnInput
 
+// TODO remove when you're done with it
 // 1. e4 c5 2. c3 d5 3. exd5 Qxd5 4. d4 cxd4 5. cxd4 Nc6 6. Nf3 Bg4 7. Be2 Bxf3 8. Bxf3 Nxd4 9. Qxd4 Qxd4 10. Be3

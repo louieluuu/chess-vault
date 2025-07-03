@@ -165,14 +165,14 @@ function Menu({
         {isStudying ? (
           <MenuButton
             icon={<FaCirclePause />}
-            label={`Stop [${variations.length} due]`}
+            label={`Stop\n[${variations.length} due]`}
             onClick={stopStudy}
             isDisabled={variations.length === 0}
           />
         ) : (
           <MenuButton
             icon={<FaCirclePlay />}
-            label={`Study [${variations.length} due]`}
+            label={`Study\n[${variations.length} due]`}
             onClick={study}
             isDisabled={variations.length === 0}
           />

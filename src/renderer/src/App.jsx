@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+// TODO remove
 // HeroUI styles
 import { HeroUIProvider } from '@heroui/system'
 
@@ -36,60 +37,58 @@ function App() {
   }, [])
 
   return (
-    <HeroUIProvider>
-      <div className="container">
-        <div className="container__variations">
-          <Menu
-            chess={chess}
-            orientation={orientation}
-            opening={opening}
-            eco={eco}
-            isStudying={isStudying}
-            setIsStudying={setIsStudying}
-            variations={variations}
-            setVariations={setVariations}
-            setVault={setVault}
-          />
-          <ChessBoard
-            chess={chess}
-            fen={fen}
-            setFen={setFen}
-            setHistory={setHistory}
-            orientation={orientation}
-            setOrientation={setOrientation}
-            opening={opening}
-            setOpening={setOpening}
-            eco={eco}
-            setEco={setEco}
-            pgn={pgn}
-            setPgn={setPgn}
-            variations={variations}
-            setVariations={setVariations}
-            isStudying={isStudying}
-            setIsStudying={setIsStudying}
-          />
-          <PgnInput
-            chess={chess}
-            setEco={setEco}
-            setFen={setFen}
-            setHistory={setHistory}
-            setOpening={setOpening}
-          />
-        </div>
-        <Vault
+    <div className={`app${isStudying ? '--studying' : ''}`}>
+      <div className={`variations__container`}>
+        <Menu
           chess={chess}
-          history={history}
-          setHistory={setHistory}
-          vault={vault}
+          orientation={orientation}
+          opening={opening}
+          eco={eco}
+          isStudying={isStudying}
+          setIsStudying={setIsStudying}
+          variations={variations}
+          setVariations={setVariations}
           setVault={setVault}
+        />
+        <ChessBoard
+          chess={chess}
+          fen={fen}
           setFen={setFen}
+          setHistory={setHistory}
           orientation={orientation}
           setOrientation={setOrientation}
+          opening={opening}
+          setOpening={setOpening}
+          eco={eco}
+          setEco={setEco}
+          pgn={pgn}
           setPgn={setPgn}
+          variations={variations}
           setVariations={setVariations}
+          isStudying={isStudying}
+          setIsStudying={setIsStudying}
+        />
+        <PgnInput
+          chess={chess}
+          setEco={setEco}
+          setFen={setFen}
+          setHistory={setHistory}
+          setOpening={setOpening}
         />
       </div>
-    </HeroUIProvider>
+      <Vault
+        chess={chess}
+        setFen={setFen}
+        history={history}
+        setHistory={setHistory}
+        isStudying={isStudying}
+        orientation={orientation}
+        setOrientation={setOrientation}
+        setVariations={setVariations}
+        vault={vault}
+        setVault={setVault}
+      />
+    </div>
   )
 }
 
