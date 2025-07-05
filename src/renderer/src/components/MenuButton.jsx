@@ -6,15 +6,15 @@
 function MenuButton({ icon, label, onClick, isDisabled }) {
   return (
     <button
-      className={`menu__btn${isDisabled ? '--disabled' : ''}`}
+      className="flex flex-row justify-center items-center gap-4 bg-zinc-700 px-5 cursor-pointer rounded-lg text-base"
       onClick={(e) => {
         if (!isDisabled) {
           onClick?.(e)
         }
       }}
     >
-      <div className={`menu__icon${isDisabled ? '--disabled' : ''}`}>{icon}</div>
-      <pre style={{ fontFamily: 'Segoe UI' }}>{label}</pre>
+      <div className="text-yellow-400 text-2xl">{icon}</div>
+      <pre className="">{label}</pre>
     </button>
   )
 }

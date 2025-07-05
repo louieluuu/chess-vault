@@ -67,13 +67,13 @@ function ChessBoard({
    ********************/
 
   // Hide result icon after some time
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setResult('')
-    }, RESULT_MS)
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setResult('')
+  //   }, RESULT_MS)
 
-    return () => clearTimeout(timeout)
-  }, [result])
+  //   return () => clearTimeout(timeout)
+  // }, [result])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -327,7 +327,7 @@ function ChessBoard({
   }
 
   return (
-    <div className="chessboard">
+    <div className="relative">
       <Chessground
         key={renderKey}
         width={BOARD_DIMENSION}
@@ -342,7 +342,9 @@ function ChessBoard({
         movable={calcMovable()}
         onMove={onMove}
       />
-      <div className="chessboard__result">{showResult(result)}</div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9">
+        {showResult(result)}
+      </div>
       {isGrading && (
         <GradeMenu
           options={options}

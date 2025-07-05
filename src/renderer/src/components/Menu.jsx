@@ -153,9 +153,9 @@ function Menu({
   }
 
   return (
-    <div className="menu">
+    <div className="flex flex-col relative">
       <div className={`menu__message${!message ? '--hidden' : ''}`}>{message}</div>
-      <div className="menu__container--buttons">
+      <div className="flex justify-between">
         <MenuButton
           icon={<FaUnlockAlt />}
           label="Save Variation"

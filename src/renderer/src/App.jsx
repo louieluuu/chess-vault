@@ -37,8 +37,8 @@ function App() {
   }, [])
 
   return (
-    <div className={`app${isStudying ? '--studying' : ''}`}>
-      <div className={`variations__container`}>
+    <div className="flex flex-row">
+      <div className="flex flex-col">
         <Menu
           chess={chess}
           orientation={orientation}

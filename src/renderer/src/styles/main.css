@@ -1,5 +1,6 @@
 @import './base.css';
-@import './styles.scss';
+/* @import './styles.scss'; */
+@import 'tailwindcss';
 
 body {
   display: flex;
