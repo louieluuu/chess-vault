@@ -37,8 +37,8 @@ function App() {
   }, [])
 
   return (
-    <div className={`app${isStudying ? '--studying' : ''}`}>
-      <div className={`variations__container`}>
+    <div className={`app ${isStudying ? 'app--studying' : ''}`}>
+      <div className="study">
         <Menu
           chess={chess}
           orientation={orientation}

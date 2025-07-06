@@ -47,7 +47,7 @@ function Thumbnail({
 
   return (
     <div className="thumbnail">
-      <div className="thumbnail__options">
+      <div className="thumbnail__buttons">
         {view === 'repertoire' ? (
           <LuFolderSymlink className="thumbnail__icon" onClick={handleClick} />
         ) : (
@@ -55,6 +55,7 @@ function Thumbnail({
         )}
         <FaRegTrashAlt className="thumbnail__icon" onClick={deleteVariation} />
       </div>
+      {/* Anonymous div because Chessground doesn't accept onClick prop */}
       <div onClick={() => transferToMainBoard(orientation, pgn)}>
         <Chessground
           width={THUMBNAIL_DIMENSION}

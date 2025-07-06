@@ -1,0 +1,27 @@
+@use '../abstracts' as *;
+
+.thumbnail {
+  opacity: 0.6;
+  overflow: hidden; // necessary because of Chessground's board taking up extra vert
+
+  &:hover {
+    transform: translateY(-2px);
+    opacity: 1;
+    box-shadow: 0 0 0 3px $color-accent;
+  }
+
+  &__buttons {
+    @include flex(row);
+    justify-content: flex-end;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding-bottom: 0.3rem;
+    font-size: 1.5rem;
+  }
+
+  &__icon {
+    &:hover {
+      color: hsl(207, 7%, 75%);
+    }
+  }
+}

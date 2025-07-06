@@ -1,0 +1,54 @@
+@use './abstracts/' as *;
+
+@use 'components/chess-board';
+@use 'components/grade';
+@use 'components/grade-menu';
+@use 'components/menu-button';
+@use 'components/menu';
+@use 'components/layout';
+@use 'components/pgn-input';
+@use 'components/tab';
+@use 'components/thumbnail';
+@use 'components/vault';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  @include flex(row);
+  background-image: url('../assets/img/digital.webp');
+  background-size: cover;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: $text-primary;
+  font-family: $font-primary;
+  user-select: none;
+}
+
+button {
+  border: none;
+}
+
+@media (max-width: 720px) {
+  .text {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 620px) {
+  .versions {
+    display: none;
+  }
+}
+
+@media (max-width: 350px) {
+  .tip,
+  .actions {
+    display: none;
+  }
+}

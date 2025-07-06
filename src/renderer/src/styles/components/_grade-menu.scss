@@ -1,0 +1,16 @@
+@use '../abstracts' as *;
+
+.grade-menu {
+  @include flex(row);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  gap: 3rem;
+  transform: translate(-50%, -50%);
+  z-index: $z-above;
+  border-radius: 1rem;
+  background-color: hsl(240, 7%, 11%);
+  padding: 2rem;
+  width: 115%;
+  height: 23%;
+}

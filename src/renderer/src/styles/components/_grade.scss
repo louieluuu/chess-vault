@@ -1,0 +1,53 @@
+@use '../abstracts' as *;
+@use 'sass:color';
+
+.grade {
+  @include flex(column);
+  gap: 0.3rem;
+  width: 100%;
+
+  &__button {
+    transition: transform 0.1s ease;
+    cursor: pointer;
+    width: 90%;
+    height: 2.5dvh;
+    color: black;
+    font-family: $font-sans;
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &--again {
+      background-color: $color-again;
+
+      &:hover {
+        background-color: color.adjust($color: $color-again, $lightness: -3%);
+      }
+    }
+
+    &--hard {
+      background-color: $color-hard;
+
+      &:hover {
+        background-color: color.adjust($color: $color-hard, $lightness: -7%);
+      }
+    }
+
+    &--good {
+      background-color: $color-good;
+
+      &:hover {
+        background-color: color.adjust($color: $color-good, $lightness: -10%);
+      }
+    }
+
+    &--easy {
+      background-color: $color-easy;
+
+      &:hover {
+        background-color: color.adjust($color: $color-easy, $lightness: -10%);
+      }
+    }
+  }
+}

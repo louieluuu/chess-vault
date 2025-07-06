@@ -1,0 +1,50 @@
+@use '../abstracts' as *;
+
+.tabs {
+  @include flex(row);
+  position: absolute;
+  top: -2rem;
+  align-items: flex-end;
+  gap: 0.5rem;
+  width: 100%;
+
+  &--repertoire {
+    border-bottom: 4px solid $color-repertoire;
+  }
+
+  &--archive {
+    border-bottom: 4px solid $color-archive;
+  }
+
+  .tab {
+    cursor: default;
+    outline: none;
+    border-radius: 0.5rem 2rem 0 0;
+    width: 100%;
+    height: 1.8rem;
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: $font-special;
+    letter-spacing: 0.3rem;
+
+    &--repertoire {
+      background-color: $color-repertoire;
+    }
+
+    &--archive {
+      background-color: $color-archive;
+    }
+
+    &--inactive {
+      cursor: pointer;
+      background-color: hsl(0, 0%, 25%);
+      height: 1.5rem;
+      color: hsl(0, 0%, 50%);
+
+      &:hover {
+        background-color: hsl(0, 0%, 30%);
+      }
+    }
+  }
+}

@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import MenuButton from './MenuButton'
 
 // React icons
-import { FaCirclePlay, FaCirclePause } from 'react-icons/fa6'
-import { FaUnlockAlt } from 'react-icons/fa'
+import { IoIosSave } from 'react-icons/io'
+import { HiPauseCircle, HiPlayCircle } from 'react-icons/hi2'
 
 import { pgnToMovesArray, NUM_AUTO_MOVES_BLACK, NUM_AUTO_MOVES_WHITE } from '../utils/chess'
 import { playSound, sounds } from '../utils/sound'
@@ -154,24 +154,24 @@ function Menu({
 
   return (
     <div className="menu">
-      <div className={`menu__message${!message ? '--hidden' : ''}`}>{message}</div>
-      <div className="menu__container--buttons">
+      <div className={`menu__message${!message ? 'menu__message--hidden' : ''}`}>{message}</div>
+      <div className="menu__buttons">
         <MenuButton
-          icon={<FaUnlockAlt />}
+          icon={<IoIosSave />}
           label="Save Variation"
           onClick={saveVariation}
           isDisabled={isStudying}
         />
         {isStudying ? (
           <MenuButton
-            icon={<FaCirclePause />}
+            icon={<HiPauseCircle />}
             label={`Stop\n[${variations.length} due]`}
             onClick={stopStudy}
             isDisabled={variations.length === 0}
           />
         ) : (
           <MenuButton
-            icon={<FaCirclePlay />}
+            icon={<HiPlayCircle />}
             label={`Study\n[${variations.length} due]`}
             onClick={study}
             isDisabled={variations.length === 0}

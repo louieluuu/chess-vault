@@ -50,8 +50,8 @@ function Grade({ option, variations, setVariations, setIsGrading }) {
 
   return (
     <div className="grade">
-      <div className="grade__interval">{formatInterval(card.interval)}</div>
-      <button className={`grade__button--${desc}`} onClick={handleClick}>
+      <span>{formatInterval(card.interval)}</span>
+      <button className={`grade__button grade__button--${desc}`} onClick={handleClick}>
         {desc}
       </button>
     </div>

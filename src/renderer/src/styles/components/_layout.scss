@@ -1,0 +1,34 @@
+@use '../abstracts/' as *;
+
+$transition-duration: 1.3s;
+
+.app {
+  @include flex(row);
+  gap: 7%;
+  transition: all $transition-duration ease-in-out;
+
+  &--studying {
+    gap: 0;
+  }
+}
+
+.study {
+  @include flex(column);
+  flex: 1;
+  gap: 2rem;
+}
+
+.vault {
+  @include flex(column);
+  position: relative;
+  flex: 1;
+  transition: all $transition-duration - 0.5s ease-in-out;
+  width: 100%;
+
+  &--studying {
+    flex: 0;
+    opacity: 0;
+    width: 0;
+    pointer-events: none;
+  }
+}

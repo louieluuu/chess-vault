@@ -44,7 +44,7 @@ function PgnInput({ chess, setEco, setFen, setHistory, setOpening }) {
     <input
       readOnly
       ref={inputRef}
-      className={`pgn__input${isFading ? '--fading' : ''}`}
+      className={`pgn-input ${isFading ? 'pgn-input--fading' : ''}`}
       type="text"
       value={text}
       placeholder="Paste PGN here..."

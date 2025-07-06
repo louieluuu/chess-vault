@@ -10,10 +10,6 @@ import React, { useState, useEffect } from 'react'
 // Components
 import GradeMenu from './GradeMenu'
 
-// React icons
-import { FaCircleCheck } from 'react-icons/fa6'
-import { FaBook } from 'react-icons/fa'
-
 import Chessground from 'react-chessground'
 import 'react-chessground/dist/styles/chessground.css'
 
@@ -27,7 +23,6 @@ import { playSound, playSoundMove, sounds } from '../utils/sound'
 
 const BOARD_DIMENSION = '50dvh'
 const PAUSE_MS = 500
-const RESULT_MS = 1000
 const STUDY_MODE_ANIMATION_MS = 1000
 const INCORRECT_LIMIT = 2
 
@@ -58,22 +53,12 @@ function ChessBoard({
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
   const [countIncorrect, setCountIncorrect] = useState(0)
 
-  const [result, setResult] = useState('')
   const [isGrading, setIsGrading] = useState(false)
   const [options, setOptions] = useState([])
 
   /********************
    *    useEffects    *
    ********************/
-
-  // Hide result icon after some time
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setResult('')
-    }, RESULT_MS)
-
-    return () => clearTimeout(timeout)
-  }, [result])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -131,7 +116,6 @@ function ChessBoard({
     const timeout = setTimeout(() => {
       // All variations finished
       if (variations.length === 0) {
-        setResult('booked')
         playSound(sounds.booked)
         setIsStudying(false)
         return
@@ -227,18 +211,6 @@ function ChessBoard({
     }, PAUSE_MS * 2)
   }
 
-  function showResult(result) {
-    const className = `chessboard__result--${result}`
-    switch (result) {
-      case 'correct':
-        return <FaCircleCheck className={className} />
-      case 'booked':
-        return <FaBook className={className} />
-      default:
-        return null
-    }
-  }
-
   function onMove(from, to) {
     const move = chess.move({ from, to, promotion: 'x' }, { strict: true })
 
@@ -278,7 +250,6 @@ function ChessBoard({
       // If current variation is finished...
       if (nextCurrCorrectMove >= pgn.length) {
         makeMove(move)
-        setResult('correct')
         playSound(sounds.correct)
 
         const curr = variations[0]
@@ -342,7 +313,6 @@ function ChessBoard({
         movable={calcMovable()}
         onMove={onMove}
       />
-      <div className="chessboard__result">{showResult(result)}</div>
       {isGrading && (
         <GradeMenu
           options={options}

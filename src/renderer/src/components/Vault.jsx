@@ -11,10 +11,6 @@ import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
 
-// TODO the colors and stuff are pretty messy + split btwn inline and SCSS... redo at some point
-const REPERTOIRE_COLOR = 'hsl(200, 75%, 75%)'
-const ARCHIVE_COLOR = 'hsl(50, 75%, 75%)'
-
 function Vault({
   chess,
   setFen,
@@ -56,16 +52,6 @@ function Vault({
     }
   }, [isStudying])
 
-  // Colors
-  const VAULT_COLOR =
-    view === 'repertoire' ? 'hsla(204, 7%, 14%, 97.5%)' : 'hsla(60, 10%, 14%, 97.5%)'
-  const TAB_COLOR = view === 'repertoire' ? REPERTOIRE_COLOR : ARCHIVE_COLOR
-  const scrollViewStyles = {
-    backgroundColor: VAULT_COLOR,
-    '--scrollbar-thumb-color': TAB_COLOR,
-    '--scrollbar-thumb-hover-color': TAB_COLOR
-  }
-
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
     setVault(await window.db.getVault())
@@ -106,31 +92,20 @@ function Vault({
 
   return (
     <>
-      <div className={`vault__container${isStudying ? '--studying' : ''}`}>
+      <div className={`vault ${isStudying ? 'vault--studying' : ''}`}>
         {/* Tabs */}
-        <div className="tabs" style={{ borderBottom: `4px solid ${TAB_COLOR}` }}>
-          <Tab
-            label="REPERTOIRE"
-            backgroundColor={REPERTOIRE_COLOR}
-            onClick={() => setView('repertoire')}
-            isActive={view === 'repertoire'}
-          />
-
-          <Tab
-            label="ARCHIVE"
-            backgroundColor={ARCHIVE_COLOR}
-            onClick={() => setView('archive')}
-            isActive={view === 'archive'}
-          />
+        <div className={`tabs tabs--${view}`}>
+          <Tab label="repertoire" view={view} setView={setView} />
+          <Tab label="archive" view={view} setView={setView} />
         </div>
 
         {/* Pawn icon */}
         <SiChessdotcom
-          className={`vault__pawn${orientation === 'white' ? '--white' : '--black'}`}
+          className={`vault__pawn ${orientation === 'white' ? 'vault__pawn--white' : 'vault__pawn--black'}`}
         />
 
         {/* Vault body */}
-        <div className="vault" style={scrollViewStyles}>
+        <div className={`vault__body vault__body--${view}`}>
           {/* Hide thumbnails during Study Mode animation */}
           {!isStudying &&
             sortedFamilyNames.map((familyName) => (
@@ -150,7 +125,7 @@ function Vault({
                     .map((variationSuffix) => (
                       <div key={variationSuffix} className="opening-variation">
                         <p className="opening-variation__name">{variationSuffix}</p>
-                        <div className="thumbnails-container">
+                        <div className="vault__thumbnails">
                           {groupedVault[familyName][variationSuffix].map((v) => (
                             <Thumbnail
                               key={v.id}
