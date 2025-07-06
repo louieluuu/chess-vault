@@ -18,6 +18,7 @@ function App() {
   const [eco, setEco] = useState('')
   const [vault, setVault] = useState([])
   const [variations, setVariations] = useState([])
+  const [isGrading, setIsGrading] = useState(false)
   const [isStudying, setIsStudying] = useState(false)
 
   // Upon app load, get variations that are due to be studied
@@ -40,6 +41,7 @@ function App() {
           orientation={orientation}
           opening={opening}
           eco={eco}
+          setIsGrading={setIsGrading}
           isStudying={isStudying}
           setIsStudying={setIsStudying}
           variations={variations}
@@ -61,6 +63,8 @@ function App() {
           setPgn={setPgn}
           variations={variations}
           setVariations={setVariations}
+          isGrading={isGrading}
+          setIsGrading={setIsGrading}
           isStudying={isStudying}
           setIsStudying={setIsStudying}
         />

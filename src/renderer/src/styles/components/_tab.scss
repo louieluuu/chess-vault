@@ -6,14 +6,15 @@
   top: -2rem;
   align-items: flex-end;
   gap: 0.5rem;
+  border-bottom: 4px solid;
   width: 100%;
 
   &--repertoire {
-    border-bottom: 4px solid $color-repertoire;
+    border-color: $color-repertoire;
   }
 
   &--archive {
-    border-bottom: 4px solid $color-archive;
+    border-color: $color-archive;
   }
 
   .tab {

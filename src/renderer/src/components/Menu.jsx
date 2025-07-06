@@ -17,6 +17,7 @@ function Menu({
   orientation,
   opening,
   eco,
+  setIsGrading,
   isStudying,
   setIsStudying,
   variations,
@@ -150,6 +151,7 @@ function Menu({
 
   function stopStudy() {
     setIsStudying(false)
+    setIsGrading(false)
   }
 
   return (

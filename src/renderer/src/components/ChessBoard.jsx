@@ -39,6 +39,8 @@ function ChessBoard({
   setOpening,
   eco,
   setEco,
+  isGrading,
+  setIsGrading,
   isStudying,
   setIsStudying,
   variations,
@@ -53,7 +55,6 @@ function ChessBoard({
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
   const [countIncorrect, setCountIncorrect] = useState(0)
 
-  const [isGrading, setIsGrading] = useState(false)
   const [options, setOptions] = useState([])
 
   /********************
@@ -298,7 +299,7 @@ function ChessBoard({
   }
 
   return (
-    <div className="chessboard">
+    <div className={`chessboard ${isGrading ? 'chessboard--grading' : ''}`}>
       <Chessground
         key={renderKey}
         width={BOARD_DIMENSION}
@@ -310,6 +311,7 @@ function ChessBoard({
         lastMove={lastMove}
         selected={selected}
         coordinates={true}
+        viewOnly={isGrading ? true : false}
         movable={calcMovable()}
         onMove={onMove}
       />
