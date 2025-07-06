@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react'
 
-// TODO remove
-// HeroUI styles
-import { HeroUIProvider } from '@heroui/system'
-
 // Components
 import ChessBoard from './components/ChessBoard'
 import Menu from './components/Menu'
