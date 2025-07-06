@@ -104,8 +104,8 @@ function Vault({
           className={`vault__pawn ${orientation === 'white' ? 'vault__pawn--white' : 'vault__pawn--black'}`}
         />
 
-        {/* Vault body */}
-        <div className={`vault__body vault__body--${view}`}>
+        {/* Scrollview */}
+        <div className={`vault__scrollview vault__scrollview--${view}`}>
           {/* Hide thumbnails during Study Mode animation */}
           {!isStudying &&
             sortedFamilyNames.map((familyName) => (

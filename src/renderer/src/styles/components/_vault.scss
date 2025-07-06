@@ -29,7 +29,7 @@ $sticky: 0.5rem;
     }
   }
 
-  &__body {
+  &__scrollview {
     @include flex(column);
     position: relative;
     justify-content: flex-start;
