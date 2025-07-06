@@ -1,7 +1,27 @@
 @use '../abstracts' as *;
+@use 'node_modules/react-chessground/dist/styles/chessground.css';
 
 .chessboard {
   // Note: height and width are not defined here. Passing them into Chessground as props ensures proper re-rendering natively.
   position: relative;
   margin-bottom: 1rem;
+
+  .cg-wrap {
+    // TODO path
+    // background-image: url(../images/board/blue.svg);
+  }
+
+  &--highlighting {
+    cg-board square.move-dest {
+      background: none;
+    }
+
+    cg-board square.move-dest:hover {
+      background: none;
+    }
+
+    cg-board square.selected {
+      background-color: $color-again;
+    }
+  }
 }

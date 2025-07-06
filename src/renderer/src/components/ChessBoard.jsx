@@ -22,8 +22,9 @@ import { classifyOpening } from '../utils/openingClassifier'
 import { playSound, playSoundMove, sounds } from '../utils/sound'
 
 const BOARD_DIMENSION = '50dvh'
-const PAUSE_MS = 500
+const CHESS_MOVE_MS = 500
 const STUDY_MODE_ANIMATION_MS = 1000
+const HIGHLIGHT_MS = 1000
 const INCORRECT_LIMIT = 2
 
 function ChessBoard({
@@ -50,7 +51,7 @@ function ChessBoard({
   const [lastMove, setLastMove] = useState([])
   const [pendingMove, setPendingMove] = useState()
   const [selectVisible, setSelectVisible] = useState(false)
-  const [selected, setSelected] = useState('')
+  const [highlightedSquare, setHighlightedSquare] = useState('')
 
   const [currCorrectMove, setCurrCorrectMove] = useState(0)
   const [countIncorrect, setCountIncorrect] = useState(0)
@@ -163,7 +164,7 @@ function ChessBoard({
         makeMove(move)
         setCurrCorrectMove((prev) => prev + 1)
         playSoundMove(move)
-      }, i * PAUSE_MS)
+      }, i * CHESS_MOVE_MS)
     }
   }
 
@@ -206,10 +207,10 @@ function ChessBoard({
     const correctSquare = chess.move(pgn[currCorrectMove]).from
     chess.undo()
 
-    setSelected(correctSquare)
+    setHighlightedSquare(correctSquare)
     setTimeout(() => {
-      setSelected('')
-    }, PAUSE_MS * 2)
+      setHighlightedSquare('')
+    }, HIGHLIGHT_MS)
   }
 
   function onMove(from, to) {
@@ -237,7 +238,7 @@ function ChessBoard({
           highlightCorrectSquare()
         }
         setCountIncorrect(newCountIncorrect)
-      }, PAUSE_MS)
+      }, CHESS_MOVE_MS)
 
       return
     }
@@ -276,7 +277,7 @@ function ChessBoard({
 
       // Reset
       setCountIncorrect(0)
-    }, PAUSE_MS)
+    }, CHESS_MOVE_MS)
   }
 
   // Calculate the movable squares for the current turn
@@ -299,7 +300,9 @@ function ChessBoard({
   }
 
   return (
-    <div className={`chessboard ${isGrading ? 'chessboard--grading' : ''}`}>
+    <div
+      className={`chessboard ${isGrading ? 'chessboard--grading' : ''} ${highlightedSquare ? 'chessboard--highlighting' : ''}`}
+    >
       <Chessground
         key={renderKey}
         width={BOARD_DIMENSION}
@@ -309,9 +312,9 @@ function ChessBoard({
         turnColor={chess.turn() === 'w' ? 'white' : 'black'}
         check={chess.inCheck()}
         lastMove={lastMove}
-        selected={selected}
+        selected={highlightedSquare}
         coordinates={true}
-        viewOnly={isGrading ? true : false}
+        viewOnly={isGrading || highlightedSquare ? true : false}
         movable={calcMovable()}
         onMove={onMove}
       />
