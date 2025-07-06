@@ -46,7 +46,9 @@ function Thumbnail({
   }
 
   return (
-    <div className="thumbnail">
+    <div
+      className={`thumbnail ${view === 'repertoire' ? 'thumbnail--repertoire' : 'thumbnail--archive'}`}
+    >
       <div className="thumbnail__buttons">
         {view === 'repertoire' ? (
           <LuFolderSymlink className="thumbnail__icon" onClick={handleClick} />

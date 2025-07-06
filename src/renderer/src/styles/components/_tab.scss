@@ -1,4 +1,5 @@
 @use '../abstracts' as *;
+@use 'sass:color';
 
 .tabs {
   @include flex(row);
@@ -10,11 +11,11 @@
   width: 100%;
 
   &--repertoire {
-    border-color: $color-repertoire;
+    border-image: linear-gradient(to right, $color-repertoire-gradient-bottom, $color-repertoire) 1;
   }
 
   &--archive {
-    border-color: $color-archive;
+    border-color: $color-archive-gradient-bottom;
   }
 
   .tab {
@@ -30,15 +31,24 @@
     letter-spacing: 0.3rem;
 
     &--repertoire {
-      background-color: $color-repertoire;
+      background-image: linear-gradient(
+        to bottom,
+        $color-repertoire-gradient-top,
+        $color-repertoire-gradient-bottom
+      );
     }
 
     &--archive {
-      background-color: $color-archive;
+      background-image: linear-gradient(
+        to bottom,
+        $color-archive-gradient-top,
+        $color-archive-gradient-bottom
+      );
     }
 
     &--inactive {
       cursor: pointer;
+      background-image: none;
       background-color: hsl(0, 0%, 25%);
       height: 1.5rem;
       color: hsl(0, 0%, 50%);
