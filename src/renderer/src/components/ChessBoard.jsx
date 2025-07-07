@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react'
 
 // Components
 import GradeMenu from './GradeMenu'
+import AnalysisLink from './AnalysisLink'
 
 import Chessground from 'react-chessground'
 import 'react-chessground/dist/styles/chessground.css'
@@ -303,6 +304,7 @@ function ChessBoard({
     <div
       className={`chessboard ${isGrading ? 'chessboard--grading' : ''} ${highlightedSquare ? 'chessboard--highlighting' : ''}`}
     >
+      <AnalysisLink pgn={chess.pgn()} orientation={orientation} hidden={isStudying && !isGrading} />
       <Chessground
         key={renderKey}
         width={BOARD_DIMENSION}
@@ -313,7 +315,7 @@ function ChessBoard({
         check={chess.inCheck()}
         lastMove={lastMove}
         selected={highlightedSquare}
-        coordinates={true}
+        coordinates={false}
         viewOnly={isGrading || highlightedSquare ? true : false}
         movable={calcMovable()}
         onMove={onMove}

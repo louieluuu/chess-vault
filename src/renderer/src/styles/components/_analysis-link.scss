@@ -1,0 +1,20 @@
+@use '../abstracts' as *;
+
+.analysis-link {
+  position: absolute;
+  top: -0.2rem;
+  right: -2rem;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+  cursor: pointer;
+  color: hsl(0, 0%, 80%);
+  font-size: 1.5rem;
+
+  &:hover {
+    color: $color-archive;
+  }
+
+  &--hidden {
+    opacity: 0;
+  }
+}

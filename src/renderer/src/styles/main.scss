@@ -1,5 +1,6 @@
 @use './abstracts/' as *;
 
+@use 'components/analysis-link';
 @use 'components/chess-board';
 @use 'components/grade';
 @use 'components/grade-menu';
