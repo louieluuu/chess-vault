@@ -4,7 +4,6 @@
 .chessboard {
   // Note: height and width are not defined here. Passing them into Chessground as props ensures proper re-rendering natively.
   position: relative;
-  margin-bottom: 1rem;
 
   .cg-wrap {
     // TODO path
