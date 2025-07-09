@@ -2,11 +2,8 @@
 
 .grade-menu {
   @include flex(row);
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  @include absolute-center;
   gap: 3rem;
-  transform: translate(-50%, -50%);
   z-index: $z-above;
   box-shadow: 0 0 10px 1px hsla(0, 0%, 85%, 0.7);
   border-radius: 1rem;

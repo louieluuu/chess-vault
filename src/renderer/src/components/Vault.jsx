@@ -11,6 +11,20 @@ import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
 
+const REPERTOIRE_EXPLANATION = `
+The Repertoire contains variations that you actively want to review. 
+
+
+To add to your Repertoire: manually play through a variation on the main board or paste a PGN, then click Save Variation.
+`
+
+const ARCHIVE_EXPLANATION = `
+The Archive contains variations that you no longer want to review for now, but also do not want to delete forever.
+
+
+To archive: right click an opening name or a thumbnail, then select Archive.
+`
+
 function Vault({
   chess,
   setFen,
@@ -106,7 +120,12 @@ function Vault({
 
         {/* Scrollview */}
         <div className={`vault__scrollview vault__scrollview--${view}`}>
-          {/* Hide thumbnails during Study Mode animation */}
+          {filteredVault.length === 0 && (
+            <span className="vault__explanation">
+              {view === 'repertoire' ? REPERTOIRE_EXPLANATION : ARCHIVE_EXPLANATION}
+            </span>
+          )}
+          {/* Hide thumbnails changing during Study Mode animation */}
           {!isStudying &&
             sortedFamilyNames.map((familyName) => (
               <div key={familyName} className="opening-family">

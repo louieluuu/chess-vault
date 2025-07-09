@@ -77,6 +77,13 @@ $sticky: 0.5rem;
     }
   }
 
+  &__explanation {
+    @include absolute-center;
+    width: 60%;
+    font-size: 1.8dvh;
+    white-space: pre-wrap;
+  }
+
   &__thumbnails {
     @include flex(row);
     flex-wrap: wrap;
