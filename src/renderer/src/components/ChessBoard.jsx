@@ -301,9 +301,7 @@ function ChessBoard({
   }
 
   return (
-    <div
-      className={`chessboard ${isGrading ? 'chessboard--grading' : ''} ${highlightedSquare ? 'chessboard--highlighting' : ''}`}
-    >
+    <div className={`chessboard ${highlightedSquare ? 'chessboard--highlighting' : ''}`}>
       <AnalysisLink pgn={chess.pgn()} orientation={orientation} hidden={isStudying && !isGrading} />
       <Chessground
         key={renderKey}

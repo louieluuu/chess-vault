@@ -4,10 +4,12 @@
 .chessboard {
   // Note: height and width are not defined here. Passing them into Chessground as props ensures proper re-rendering natively.
   position: relative;
+  transition: box-shadow 1s ease-in-out;
 
-  .cg-wrap {
-    // TODO path
-    // background-image: url(../images/board/blue.svg);
+  // TODO why isn't the transition working?
+  cg-board square.selected {
+    transition: box-shadow 1s ease-in-out;
+    box-shadow: none;
   }
 
   &--highlighting {
@@ -20,7 +22,13 @@
     }
 
     cg-board square.selected {
+      box-shadow: 0 0 0 100vw hsla(0, 0%, 0%, 0.2);
       background-color: $color-again;
     }
   }
+}
+
+.cg-wrap {
+  // TODO path
+  // background-image: url(../images/board/blue.svg);
 }
