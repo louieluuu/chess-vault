@@ -130,13 +130,11 @@ function Vault({
             sortedFamilyNames.map((familyName) => (
               <div key={familyName} className="opening-family">
                 <div className="opening-family__group">
-                  <div className="opening-family__name">
-                    {familyName}
-                    <FaRegTrashAlt
-                      className="opening-family__icon"
-                      onClick={() => deleteOpening(familyName)}
-                    />
-                  </div>
+                  <div className="opening-family__name">{familyName}</div>
+                  <FaRegTrashAlt
+                    className="opening-family__icon"
+                    onClick={() => deleteOpening(familyName)}
+                  />
                 </div>
                 <div className="opening-variations">
                   {Object.keys(groupedVault[familyName])

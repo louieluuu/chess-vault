@@ -95,8 +95,10 @@ $sticky: 0.5rem;
 }
 
 .opening-family__group {
+  @include flex(row);
   position: sticky;
   top: -$sticky;
+  gap: 1rem;
   z-index: $z-above;
   background-color: hsla(204, 7%, 14%, 97.5%);
 }
@@ -106,12 +108,17 @@ $sticky: 0.5rem;
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
+  cursor: pointer;
   font-weight: bold;
   font-size: 1.8dvh;
+
+  &:hover {
+    color: $color-accent;
+  }
 }
 
 .opening-family__icon {
-  display: flex;
+  @include flex(row);
   cursor: pointer;
   font-size: 1.5rem;
 
@@ -130,6 +137,11 @@ $sticky: 0.5rem;
   position: sticky;
   top: 1.8dvh;
   z-index: $z-above - 1; // below .opening-family__group
+  cursor: pointer;
   background-color: hsla(204, 7%, 14%, 97.5%);
   font-size: 1.5dvh;
+
+  &:hover {
+    color: $color-accent;
+  }
 }
