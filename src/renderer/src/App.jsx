@@ -17,20 +17,20 @@ function App() {
   const [opening, setOpening] = useState('')
   const [eco, setEco] = useState('')
   const [vault, setVault] = useState([])
-  const [variations, setVariations] = useState([])
+  const [homework, setHomework] = useState([])
   const [isGrading, setIsGrading] = useState(false)
   const [isStudying, setIsStudying] = useState(false)
 
-  // Upon app load, get variations that are due to be studied
+  // Upon app load, get homework that are due to be studied
   useEffect(() => {
     async function getVault() {
       setVault(await window.db.getVault())
     }
-    async function getVariations() {
-      setVariations(await window.db.getVariations())
+    async function getHomework() {
+      setHomework(await window.db.getHomework())
     }
     getVault()
-    getVariations()
+    getHomework()
   }, [])
 
   return (
@@ -44,8 +44,8 @@ function App() {
           setIsGrading={setIsGrading}
           isStudying={isStudying}
           setIsStudying={setIsStudying}
-          variations={variations}
-          setVariations={setVariations}
+          homework={homework}
+          setHomework={setHomework}
           setVault={setVault}
         />
         <ChessBoard
@@ -61,8 +61,8 @@ function App() {
           setEco={setEco}
           pgn={pgn}
           setPgn={setPgn}
-          variations={variations}
-          setVariations={setVariations}
+          homework={homework}
+          setHomework={setHomework}
           isGrading={isGrading}
           setIsGrading={setIsGrading}
           isStudying={isStudying}
@@ -84,7 +84,7 @@ function App() {
         isStudying={isStudying}
         orientation={orientation}
         setOrientation={setOrientation}
-        setVariations={setVariations}
+        setHomework={setHomework}
         vault={vault}
         setVault={setVault}
       />

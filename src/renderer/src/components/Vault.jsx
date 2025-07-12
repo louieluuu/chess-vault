@@ -32,7 +32,7 @@ function Vault({
   isStudying,
   orientation,
   setOrientation,
-  setVariations,
+  setHomework,
   vault,
   setVault
 }) {
@@ -169,7 +169,7 @@ function Vault({
                               setOrientation={setOrientation}
                               setVault={setVault}
                               setHistory={setHistory}
-                              setVariations={setVariations}
+                              setHomework={setHomework}
                             />
                           ))}
                         </div>

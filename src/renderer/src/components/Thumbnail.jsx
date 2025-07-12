@@ -15,7 +15,7 @@ function Thumbnail({
   setOrientation,
   setVault,
   setHistory,
-  setVariations
+  setHomework
 }) {
   const { fen, orientation, pgn } = variation
 
@@ -52,7 +52,7 @@ function Thumbnail({
   }
 
   async function updateVariations() {
-    setVariations(await window.db.getVariations())
+    setHomework(await window.db.getHomework())
     setVault(await window.db.getVault())
   }
 

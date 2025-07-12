@@ -1,14 +1,14 @@
 import Grade from './Grade'
 
-function GradeMenu({ options, variations, setVariations, setIsGrading }) {
+function GradeMenu({ options, homework, setHomework, setIsGrading }) {
   return (
     <div className="grade-menu">
       {options.map((option) => (
         <Grade
           key={option.desc}
           option={option}
-          variations={variations}
-          setVariations={setVariations}
+          homework={homework}
+          setHomework={setHomework}
           setIsGrading={setIsGrading}
         />
       ))}

@@ -20,8 +20,8 @@ function Menu({
   setIsGrading,
   isStudying,
   setIsStudying,
-  variations,
-  setVariations,
+  homework,
+  setHomework,
   setVault
 }) {
   const [message, setMessage] = useState('')
@@ -124,8 +124,8 @@ function Menu({
     // db has:          "1. e4 e5 2. c3"
     const result = await window.db.deleteRedundantVariation(variation)
     if (result) {
-      // db deletion done; update local variations array as well
-      setVariations((prev) =>
+      // db deletion done; update local homework array as well
+      setHomework((prev) =>
         prev.filter((v) => !(v.pgn === result.pgn && v.orientation === result.orientation))
       )
       setMessage('[OVERWROTE] Variation saved!')
@@ -134,7 +134,7 @@ function Menu({
     }
 
     await window.db.save(variation)
-    setVariations(await window.db.getVariations())
+    setHomework(await window.db.getHomework())
     setVault(await window.db.getVault())
 
     playSound(sounds.saveVariation)
@@ -142,8 +142,8 @@ function Menu({
   }
 
   async function study() {
-    setVariations(await window.db.getVariations())
-    console.log(`Study variations: ${JSON.stringify(variations, null, 2)}`)
+    setHomework(await window.db.getHomework())
+    console.log(`Study homework: ${JSON.stringify(homework, null, 2)}`)
 
     playSound(sounds.startStudy)
     setIsStudying(true)
@@ -167,16 +167,16 @@ function Menu({
         {isStudying ? (
           <MenuButton
             icon={<HiPauseCircle />}
-            label={`Stop\n[${variations.length} due]`}
+            label={`Stop\n[${homework.length} due]`}
             onClick={stopStudy}
-            isDisabled={variations.length === 0}
+            isDisabled={homework.length === 0}
           />
         ) : (
           <MenuButton
             icon={<HiPlayCircle />}
-            label={`Study\n[${variations.length} due]`}
+            label={`Study\n[${homework.length} due]`}
             onClick={study}
-            isDisabled={variations.length === 0}
+            isDisabled={homework.length === 0}
           />
         )}
       </div>

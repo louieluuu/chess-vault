@@ -25,11 +25,11 @@ if (process.contextIsolated) {
       deleteRedundantVariation: (variation) => {
         return ipcRenderer.invoke('db-deleteRedundantVariation', variation)
       },
+      getHomework: () => {
+        return ipcRenderer.invoke('db-getHomework')
+      },
       getVault: () => {
         return ipcRenderer.invoke('db-getVault')
-      },
-      getVariations: () => {
-        return ipcRenderer.invoke('db-getVariations')
       },
       restoreVariation: (variation) => {
         ipcRenderer.invoke('db-restoreVariation', variation)

@@ -45,8 +45,8 @@ function ChessBoard({
   setIsGrading,
   isStudying,
   setIsStudying,
-  variations,
-  setVariations
+  homework,
+  setHomework
 }) {
   const [renderKey, setRenderKey] = useState(false)
   const [lastMove, setLastMove] = useState([])
@@ -117,8 +117,8 @@ function ChessBoard({
     playSound(sounds.nextVariation)
 
     const timeout = setTimeout(() => {
-      // All variations finished
-      if (variations.length === 0) {
+      // All homework finished
+      if (homework.length === 0) {
         playSound(sounds.booked)
         setIsStudying(false)
         return
@@ -126,7 +126,7 @@ function ChessBoard({
 
       // Else, next variation
       // Set chessboard states
-      const { pgn, orientation } = variations[0]
+      const { pgn, orientation } = homework[0]
       const pgnMoves = pgnToMovesArray(pgn)
       setPgn(pgnMoves)
       setOrientation(orientation)
@@ -138,7 +138,7 @@ function ChessBoard({
     }, STUDY_MODE_ANIMATION_MS)
 
     return () => clearTimeout(timeout)
-  }, [isStudying, variations])
+  }, [isStudying, homework])
 
   /********************
    * Helper functions *
@@ -255,7 +255,7 @@ function ChessBoard({
         makeMove(move)
         playSound(sounds.correct)
 
-        const curr = variations[0]
+        const curr = homework[0]
 
         const options = new Card(
           curr.status,
@@ -321,8 +321,8 @@ function ChessBoard({
       {isGrading && (
         <GradeMenu
           options={options}
-          variations={variations}
-          setVariations={setVariations}
+          homework={homework}
+          setHomework={setHomework}
           setIsGrading={setIsGrading}
         />
       )}

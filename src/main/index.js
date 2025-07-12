@@ -152,20 +152,20 @@ app.whenReady().then(() => {
     return result
   })
 
-  ipcMain.handle('db-getVault', () => {
-    const query = `SELECT *
-                   FROM Vault 
-                  `
-    return db.prepare(query).all()
-  })
-
-  ipcMain.handle('db-getVariations', () => {
+  ipcMain.handle('db-getHomework', () => {
     const query = `SELECT *
                    FROM Vault 
                    WHERE next_study <= ? AND active = 1
                    ORDER BY next_study ASC
                   `
     return db.prepare(query).all(new Date().toISOString())
+  })
+
+  ipcMain.handle('db-getVault', () => {
+    const query = `SELECT *
+                   FROM Vault 
+                  `
+    return db.prepare(query).all()
   })
 
   ipcMain.handle('db-save', (_, variation) => {
