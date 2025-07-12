@@ -98,6 +98,13 @@ app.whenReady().then(() => {
   })
 
   // Socket.on functions
+  ipcMain.handle('db-archiveVariation', (_, variation) => {
+    const query = `UPDATE Vault
+                   SET active = 0
+                   WHERE id = ?`
+    db.prepare(query).run(variation.id)
+  })
+
   ipcMain.handle('db-checkDuplicate', (_, variation) => {
     const query = `SELECT pgn, orientation 
                    FROM Vault 
@@ -174,22 +181,11 @@ app.whenReady().then(() => {
     )
   })
 
-  ipcMain.handle('db-archiveVariation', (_, update) => {
-    console.log('Updating db...')
-    console.log(update)
-    const query = `UPDATE Vault
-                   SET active = 0
-                   WHERE id = ?`
-    db.prepare(query).run(update.id)
-  })
-
-  ipcMain.handle('db-activateVariation', (_, update) => {
-    console.log('Updating db...')
-    console.log(update)
+  ipcMain.handle('db-restoreVariation', (_, variation) => {
     const query = `UPDATE Vault
                    SET active = 1
                    WHERE id = ?`
-    db.prepare(query).run(update.id)
+    db.prepare(query).run(variation.id)
   })
 
   ipcMain.handle('db-update', (_, update) => {

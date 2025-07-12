@@ -4,7 +4,8 @@ import Thumbnail from './Thumbnail'
 import Tab from './Tab'
 import ContextMenu from './ContextMenu'
 
-import { LuFolderSymlink, LuFolderOutput, LuTrash2 } from 'react-icons/lu'
+import { FaRegTrashAlt } from 'react-icons/fa'
+import { LuFolderSymlink, LuFolderOutput } from 'react-icons/lu'
 import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
@@ -47,7 +48,7 @@ function Vault({
       }
     },
     {
-      icon: <LuTrash2 />,
+      icon: <FaRegTrashAlt />,
       label: 'Delete',
       action: () => {
         console.log('Delete')
@@ -146,23 +147,17 @@ function Vault({
           {!isStudying &&
             sortedFamilyNames.map((familyName) => (
               <div key={familyName} className="opening-family">
-                <ContextMenu items={items}>
-                  <div className={`opening-family__name opening-family__name--${view}`}>
-                    {familyName}
-                  </div>
-                </ContextMenu>
+                <div className={`opening-family__name opening-family__name--${view}`}>
+                  {familyName}
+                </div>
                 <div className="opening-variations">
                   {Object.keys(groupedVault[familyName])
                     .sort((a, b) => a.localeCompare(b))
                     .map((variationSuffix) => (
                       <div key={variationSuffix} className="opening-variation">
-                        <ContextMenu items={items}>
-                          <div
-                            className={`opening-variation__name opening-variation__name--${view}`}
-                          >
-                            {variationSuffix}
-                          </div>
-                        </ContextMenu>
+                        <div className={`opening-variation__name opening-variation__name--${view}`}>
+                          {variationSuffix}
+                        </div>
                         <div className="vault__thumbnails">
                           {groupedVault[familyName][variationSuffix].map((v) => (
                             <Thumbnail

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 function ContextMenu({ children, items }) {
   const [visible, setVisible] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
+
   const ref = useRef() // ref for the area that triggers the context menu
   const menuRef = useRef() // New ref for the actual context menu div
 

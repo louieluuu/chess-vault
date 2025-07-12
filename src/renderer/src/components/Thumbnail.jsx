@@ -7,23 +7,6 @@ import { LuFolderSymlink, LuFolderOutput } from 'react-icons/lu'
 
 const THUMBNAIL_DIMENSION = '20dvh'
 
-const items = [
-  {
-    icon: <LuFolderSymlink />,
-    label: 'Archive',
-    action: () => {
-      console.log('Archive')
-    }
-  },
-  {
-    icon: <FaRegTrashAlt />,
-    label: 'Delete',
-    action: () => {
-      console.log('Delete')
-    }
-  }
-]
-
 function Thumbnail({
   chess,
   variation,
@@ -36,6 +19,19 @@ function Thumbnail({
 }) {
   const { fen, orientation, pgn } = variation
 
+  const items = [
+    {
+      icon: view === 'repertoire' ? <LuFolderSymlink /> : <LuFolderOutput />,
+      label: view === 'repertoire' ? 'Archive' : 'Restore',
+      action: view === 'repertoire' ? archiveVariation : restoreVariation
+    },
+    {
+      icon: <FaRegTrashAlt />,
+      label: 'Delete',
+      action: deleteVariation
+    }
+  ]
+
   function transferToMainBoard(orientation, pgn) {
     chess.loadPgn(pgn)
     setFen(chess.fen())
@@ -44,26 +40,24 @@ function Thumbnail({
     // TODO: setLastMove here to avoid visual bug where you make a move on main board and then press a thumbnail
   }
 
-  // TODO: rewrite into own functions
-  // TODO: PS. thumbnail__icon is the className
-  async function handleClick() {
-    const { id } = variation.id
-    if (view === 'repertoire') {
-      await window.db.archiveVariation({
-        id: variation.id
-      })
-    } else if (view === 'archive') {
-      await window.db.activateVariation({
-        id: variation.id
-      })
-    }
+  async function updateVariations() {
     setVariations(await window.db.getVariations())
     setVault(await window.db.getVault())
   }
 
+  async function archiveVariation() {
+    await window.db.archiveVariation(variation)
+    await updateVariations()
+  }
+
+  async function restoreVariation() {
+    await window.db.restoreVariation(variation)
+    await updateVariations()
+  }
+
   async function deleteVariation() {
     window.db.deleteVariation(variation)
-    setVault(await window.db.getVault())
+    await updateVariations()
   }
 
   return (

@@ -5,7 +5,11 @@ import { contextBridge, ipcRenderer } from 'electron'
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
+    // TODO rewrite so it only takes variation.id instead of whole variation?
     contextBridge.exposeInMainWorld('db', {
+      archiveVariation: (variation) => {
+        ipcRenderer.invoke('db-archiveVariation', variation)
+      },
       checkDuplicate: (variation) => {
         return ipcRenderer.invoke('db-checkDuplicate', variation)
       },
@@ -27,11 +31,8 @@ if (process.contextIsolated) {
       getVariations: () => {
         return ipcRenderer.invoke('db-getVariations')
       },
-      archiveVariation: (archiveVariation) => {
-        ipcRenderer.invoke('db-archiveVariation', archiveVariation)
-      },
-      activateVariation: (activateVariation) => {
-        ipcRenderer.invoke('db-activateVariation', activateVariation)
+      restoreVariation: (variation) => {
+        ipcRenderer.invoke('db-restoreVariation', variation)
       },
       update: (update) => {
         ipcRenderer.invoke('db-update', update)
