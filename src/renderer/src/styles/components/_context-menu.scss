@@ -1,0 +1,47 @@
+@use '../abstracts' as *;
+@use 'sass:color';
+
+.context-menu {
+  // REMOVE: position: absolute; (as it's now inline style 'fixed')
+  @include flex(column);
+  z-index: $z-overlay; // This can stay, but the inline style will take precedence
+  cursor: pointer;
+  border: 1px solid hsla(0, 0%, 50%);
+  border-radius: 0.35rem;
+  background: $color-bg-primary;
+}
+
+.context-menu__item {
+  @include flex(row);
+  justify-content: center;
+  align-items: center; // Vertically center them
+  gap: 1rem;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+  border-radius: inherit;
+  background: $color-bg-primary;
+  padding: 0.5rem 1rem;
+  width: 100%;
+
+  color: $text-primary;
+  font-size: 1rem;
+  font-family: $font-sans;
+
+  &:hover {
+    background-color: color.adjust($color-bg-primary, $lightness: 10%);
+  }
+}
+
+.context-menu__icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.context-menu__label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  text-align: left;
+}

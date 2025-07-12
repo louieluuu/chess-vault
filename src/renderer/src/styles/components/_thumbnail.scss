@@ -20,19 +20,4 @@
       box-shadow: 0 0 10px 4px $color-archive;
     }
   }
-
-  &__buttons {
-    @include flex(row);
-    justify-content: flex-end;
-    gap: 0.5rem;
-    cursor: pointer;
-    padding-bottom: 0.3rem;
-    font-size: 1.5rem;
-  }
-
-  &__icon {
-    &:hover {
-      color: hsl(207, 7%, 75%);
-    }
-  }
 }

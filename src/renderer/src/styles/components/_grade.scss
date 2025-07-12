@@ -22,7 +22,7 @@
       background-color: $color-again;
 
       &:hover {
-        background-color: color.adjust($color: $color-again, $lightness: -3%);
+        background-color: color.adjust($color-again, $lightness: -3%);
       }
     }
 
@@ -30,7 +30,7 @@
       background-color: $color-hard;
 
       &:hover {
-        background-color: color.adjust($color: $color-hard, $lightness: -7%);
+        background-color: color.adjust($color-hard, $lightness: -7%);
       }
     }
 
@@ -38,7 +38,7 @@
       background-color: $color-good;
 
       &:hover {
-        background-color: color.adjust($color: $color-good, $lightness: -10%);
+        background-color: color.adjust($color-good, $lightness: -10%);
       }
     }
 
@@ -46,7 +46,7 @@
       background-color: $color-easy;
 
       &:hover {
-        background-color: color.adjust($color: $color-easy, $lightness: -10%);
+        background-color: color.adjust($color-easy, $lightness: -10%);
       }
     }
   }

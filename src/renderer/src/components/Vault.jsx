@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react'
 
 import Thumbnail from './Thumbnail'
 import Tab from './Tab'
+import ContextMenu from './ContextMenu'
 
-import { FaRegTrashAlt } from 'react-icons/fa'
-// TODO tab icons?
-// import { FaBookBookmark, FaFolderOpen } from 'react-icons/fa6'
-// import { FaBook, FaBookOpen } from 'react-icons/fa6'
+import { LuFolderSymlink, LuFolderOutput, LuTrash2 } from 'react-icons/lu'
 import { SiChessdotcom } from 'react-icons/si'
 
 import { pgnToMovesArray } from '../utils/chess'
@@ -39,6 +37,24 @@ function Vault({
 }) {
   const [view, setView] = useState('repertoire')
 
+  // TODO: efficiency?
+  const items = [
+    {
+      icon: view === 'repertoire' ? <LuFolderSymlink /> : <LuFolderOutput />,
+      label: view === 'repertoire' ? 'Archive' : 'Restore',
+      action: () => {
+        console.log('Archive')
+      }
+    },
+    {
+      icon: <LuTrash2 />,
+      label: 'Delete',
+      action: () => {
+        console.log('Delete')
+      }
+    }
+  ]
+
   // Keyboard shortcuts
   useEffect(() => {
     // Disable keyboard shortcuts when studying
@@ -66,6 +82,7 @@ function Vault({
     }
   }, [isStudying])
 
+  // TODO
   async function deleteOpening(openingName) {
     await window.db.deleteOpening(openingName)
     setVault(await window.db.getVault())
@@ -129,19 +146,23 @@ function Vault({
           {!isStudying &&
             sortedFamilyNames.map((familyName) => (
               <div key={familyName} className="opening-family">
-                <div className="opening-family__group">
-                  <div className="opening-family__name">{familyName}</div>
-                  <FaRegTrashAlt
-                    className="opening-family__icon"
-                    onClick={() => deleteOpening(familyName)}
-                  />
-                </div>
+                <ContextMenu items={items}>
+                  <div className={`opening-family__name opening-family__name--${view}`}>
+                    {familyName}
+                  </div>
+                </ContextMenu>
                 <div className="opening-variations">
                   {Object.keys(groupedVault[familyName])
                     .sort((a, b) => a.localeCompare(b))
                     .map((variationSuffix) => (
                       <div key={variationSuffix} className="opening-variation">
-                        <p className="opening-variation__name">{variationSuffix}</p>
+                        <ContextMenu items={items}>
+                          <div
+                            className={`opening-variation__name opening-variation__name--${view}`}
+                          >
+                            {variationSuffix}
+                          </div>
+                        </ContextMenu>
                         <div className="vault__thumbnails">
                           {groupedVault[familyName][variationSuffix].map((v) => (
                             <Thumbnail

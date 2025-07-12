@@ -1,9 +1,28 @@
 import Chessground from 'react-chessground'
 
+import ContextMenu from './ContextMenu'
+
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { LuFolderSymlink, LuFolderOutput } from 'react-icons/lu'
 
 const THUMBNAIL_DIMENSION = '20dvh'
+
+const items = [
+  {
+    icon: <LuFolderSymlink />,
+    label: 'Archive',
+    action: () => {
+      console.log('Archive')
+    }
+  },
+  {
+    icon: <FaRegTrashAlt />,
+    label: 'Delete',
+    action: () => {
+      console.log('Delete')
+    }
+  }
+]
 
 function Thumbnail({
   chess,
@@ -25,6 +44,8 @@ function Thumbnail({
     // TODO: setLastMove here to avoid visual bug where you make a move on main board and then press a thumbnail
   }
 
+  // TODO: rewrite into own functions
+  // TODO: PS. thumbnail__icon is the className
   async function handleClick() {
     const { id } = variation.id
     if (view === 'repertoire') {
@@ -46,29 +67,24 @@ function Thumbnail({
   }
 
   return (
-    <div
-      className={`thumbnail ${view === 'repertoire' ? 'thumbnail--repertoire' : 'thumbnail--archive'}`}
-    >
-      <div className="thumbnail__buttons">
-        {view === 'repertoire' ? (
-          <LuFolderSymlink className="thumbnail__icon" onClick={handleClick} />
-        ) : (
-          <LuFolderOutput className="thumbnail__icon" onClick={handleClick} />
-        )}
-        <FaRegTrashAlt className="thumbnail__icon" onClick={deleteVariation} />
+    <ContextMenu items={items}>
+      {/* might need ContextMenu to go after the thumbnail div actually*/}
+      <div
+        className={`thumbnail ${view === 'repertoire' ? 'thumbnail--repertoire' : 'thumbnail--archive'}`}
+      >
+        {/* Anonymous div because Chessground doesn't accept onClick prop */}
+        <div onClick={() => transferToMainBoard(orientation, pgn)}>
+          <Chessground
+            width={THUMBNAIL_DIMENSION}
+            height={THUMBNAIL_DIMENSION}
+            fen={fen}
+            orientation={orientation}
+            coordinates={false}
+            viewOnly={true}
+          />
+        </div>
       </div>
-      {/* Anonymous div because Chessground doesn't accept onClick prop */}
-      <div onClick={() => transferToMainBoard(orientation, pgn)}>
-        <Chessground
-          width={THUMBNAIL_DIMENSION}
-          height={THUMBNAIL_DIMENSION}
-          fen={fen}
-          orientation={orientation}
-          coordinates={false}
-          viewOnly={true}
-        />
-      </div>
-    </div>
+    </ContextMenu>
   )
 }
 
