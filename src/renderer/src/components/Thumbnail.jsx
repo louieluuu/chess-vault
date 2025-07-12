@@ -19,17 +19,28 @@ function Thumbnail({
 }) {
   const { fen, orientation, pgn } = variation
 
-  const items = [
+  const deleteItem = {
+    icon: <FaRegTrashAlt />,
+    label: 'Delete',
+    action: deleteVariation
+  }
+
+  const repertoireItems = [
     {
-      icon: view === 'repertoire' ? <LuFolderSymlink /> : <LuFolderOutput />,
-      label: view === 'repertoire' ? 'Archive' : 'Restore',
-      action: view === 'repertoire' ? archiveVariation : restoreVariation
+      icon: <LuFolderSymlink />,
+      label: 'Archive',
+      action: archiveVariation
     },
+    deleteItem
+  ]
+
+  const archiveItems = [
     {
-      icon: <FaRegTrashAlt />,
-      label: 'Delete',
-      action: deleteVariation
-    }
+      icon: <LuFolderOutput />,
+      label: 'Restore',
+      action: restoreVariation
+    },
+    deleteItem
   ]
 
   function transferToMainBoard(orientation, pgn) {
@@ -61,7 +72,7 @@ function Thumbnail({
   }
 
   return (
-    <ContextMenu items={items}>
+    <ContextMenu items={view === 'repertoire' ? repertoireItems : archiveItems}>
       {/* might need ContextMenu to go after the thumbnail div actually*/}
       <div
         className={`thumbnail ${view === 'repertoire' ? 'thumbnail--repertoire' : 'thumbnail--archive'}`}
