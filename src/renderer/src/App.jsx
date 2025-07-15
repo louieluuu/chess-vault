@@ -13,7 +13,7 @@ function App() {
   const [fen, setFen] = useState('')
   const [orientation, setOrientation] = useState('white')
   const [pgn, setPgn] = useState([]) // TODO: this isn't necessary, can just obtain via currVariation.pgn. Refactor out at some point.
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState([]) // TODO: is this necessary? can't just use chess.history()?
   const [opening, setOpening] = useState('')
   const [eco, setEco] = useState('')
   const [vault, setVault] = useState([])

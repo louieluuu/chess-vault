@@ -90,13 +90,11 @@ function Vault({
   }
 
   const filteredVault = vault.filter((item) => {
-    const historyString = history.join(' ')
-    const variationString = pgnToMovesArray(item.pgn).join(' ')
     const variationCategory = item.active === 1 ? 'repertoire' : 'archive'
     return (
       item.orientation === orientation &&
       view === variationCategory &&
-      variationString.startsWith(historyString)
+      item.pgn.startsWith(chess.pgn())
     )
   })
 
